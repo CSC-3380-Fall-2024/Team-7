@@ -1,4 +1,4 @@
-# Team-7
+# Team-7 (H.O.E.S. = Hotel Operations and Efficiency System)
 Team Members:
 -  Cleveland, Project Manager 👔
 -  Maureen, Communications Lead 🗣️🔊
