@@ -2,6 +2,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
+
+    font-family: 'Fraunces', serif;
 }
 
 main[b-itgwrhsw0u] {
@@ -36,6 +38,12 @@ main[b-itgwrhsw0u] {
         text-overflow: ellipsis;
     }
 
+.nav-title[b-itgwrhsw0u]{
+    font-size: 24px;
+    font-style: italic;
+    color: #1B1F2D;
+}
+
 @media (max-width: 640.98px) {
     .top-row[b-itgwrhsw0u] {
         justify-content: space-between;
@@ -51,12 +59,12 @@ main[b-itgwrhsw0u] {
         flex-direction: row;
     }
 
-    .sidebar[b-itgwrhsw0u] {
+    /*.sidebar {
         width: 250px;
         height: 100vh;
         position: sticky;
         top: 0;
-    }
+    }*/
 
     .top-row[b-itgwrhsw0u] {
         position: sticky;

@@ -2,6 +2,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
+
+    font-family: 'Fraunces', serif;
 }
 
 main {
@@ -36,6 +38,12 @@ main {
         text-overflow: ellipsis;
     }
 
+.nav-title{
+    font-size: 24px;
+    font-style: italic;
+    color: #1B1F2D;
+}
+
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;
@@ -51,12 +59,12 @@ main {
         flex-direction: row;
     }
 
-    .sidebar {
+    /*.sidebar {
         width: 250px;
         height: 100vh;
         position: sticky;
         top: 0;
-    }
+    }*/
 
     .top-row {
         position: sticky;
