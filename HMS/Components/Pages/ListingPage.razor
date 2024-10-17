@@ -4,7 +4,34 @@
 <PageTitle>Listing Page</PageTitle>
 
 <h1>Hotel Trivago!</h1>
-<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.KGuRfbrIg5SoY92BTuGb2gHaHa%26pid%3DApi&f=1&ipt=dfc2e4ea498cf7e54e3256d3b5d7c46bf2f61f8329c6f2c79a234a89421964ff&ipo=images" alt="Nice Hotel">
+
+<img src=@getImg() alt="Nice Hotel">
+
 <p>This is a nice description of the picture</p>
-<p>The price is $500 and the rating is a 4.8</p>
+<p>The price is $@getPrice() and the rating is a @getRating()</p>
 <button class="button-to-book">Book Now</button>
+
+@code {
+	private double getPrice()
+	{
+		//Will eventually call to firebase to get the price
+		double price = 340;
+		return price;
+	}
+
+	private double getRating()
+	{
+		//Will eventually call to firebase to get the rating
+		double rating = 2.3;
+		return rating;
+	}
+
+	private string getImg()
+	{
+		//Will eventually call to firebase to get the images
+
+		string img = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.KGuRfbrIg5SoY92BTuGb2gHaHa%26pid%3DApi&f=1&ipt=dfc2e4ea498cf7e54e3256d3b5d7c46bf2f61f8329c6f2c79a234a89421964ff&ipo=images";
+		
+		return img;
+	}
+}
