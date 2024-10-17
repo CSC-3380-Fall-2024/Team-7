@@ -158,3 +158,4 @@ C:/Users/Cleveland/Desktop/3380/Team-7/HMS/bin/Debug/net8.0/hotelmanagementsyste
 /home/ronald/Classes/3380/Team-7/HMS/obj/Debug/net8.0/HMS.pdb
 /home/ronald/Classes/3380/Team-7/HMS/obj/Debug/net8.0/HMS.genruntimeconfig.cache
 /home/ronald/Classes/3380/Team-7/HMS/obj/Debug/net8.0/ref/HMS.dll
+/home/ronald/Classes/3380/Team-7/HMS/obj/Debug/net8.0/scopedcss/Components/Pages/ListingPage/ListingPage.razor.rz.scp.css

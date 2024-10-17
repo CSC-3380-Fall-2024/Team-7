@@ -1,0 +1,79 @@
+@page "/listings"
+@rendermode InteractiveServer
+
+<PageTitle>Listing Page</PageTitle>
+
+<div class="flex-container">
+	<div class="d-flex">
+		<div class="leftpane">
+			<h3>Filters</h3>
+			<div class="hotel-info-border">
+				<input type="checkbox" id="price-range-1" name="price-range-1">
+				<label for="price-range-1">$0-$200 200 match this</label><br>
+				<input type="checkbox" id="price-range-2" name="price-range-2">
+				<label for="price-range-2">$200-$400 2 match this</label><br>
+				<input type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">$400-$1000 56 match this</label><br>
+			</div>
+		</div>
+		<div class="rightpane">
+			<h1>Testing</h1>
+			<div class="hotel-info-border">
+				<div class="column" style="width: 30%">
+					<img src=@getImg() class="center" alt="Nice Hotel">
+				</div>
+				<div class="column" style="width: 50%">
+					<h1>Hotel Trivago</h1>
+					<p>This is a nice description of the picture</p>
+					<p>The rating is a @getRating()</p>
+				</div>
+				<div class="column" style="width: 20%">
+					<p>The price is $@getPrice()</p>
+					<button class="button-to-book">See Rooms</button>
+				</div>
+			</div>
+			<div class="hotel-info-border">
+				<div class="column" style="width: 30%">
+					<img src=@getImg() class="center" alt="Nice Hotel">
+				</div>
+				<div class="column" style="width: 50%">
+					<h1>Hotel Trivago</h1>
+					<p>This is a nice description of the picture</p>
+					<p>The rating is a @getRating()</p>
+				</div>
+				<div class="column" style="width: 20%">
+					<p>The price is $@getPrice()</p>
+					<button class="button-to-book">See Rooms</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bottompane">
+		<h1>Bottom of Page</h1>
+	</div>
+</div>
+
+@code {
+	private double getPrice()
+	{
+		//Will eventually call to firebase to get the price
+		double price = 340;
+		return price;
+	}
+
+	private double getRating()
+	{
+		//Will eventually call to firebase to get the rating
+		double rating = 2.3;
+		return rating;
+	}
+
+	private string getImg()
+	{
+		//Will eventually call to firebase to get the images
+
+		string img = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.KGuRfbrIg5SoY92BTuGb2gHaHa%26pid%3DApi&f=1&ipt=dfc2e4ea498cf7e54e3256d3b5d7c46bf2f61f8329c6f2c79a234a89421964ff&ipo=images";
+		
+		return img;
+	}
+}

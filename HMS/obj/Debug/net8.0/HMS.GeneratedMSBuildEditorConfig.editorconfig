@@ -34,10 +34,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ronald/Classes/3380/Team-7/HMS/Components/Pages/ListingPage.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9MaXN0aW5nUGFnZS5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [/home/ronald/Classes/3380/Team-7/HMS/Components/Pages/Todoapp.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ub2RvYXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -61,3 +57,7 @@ build_metadata.AdditionalFiles.CssScope = b-kjk4i4izn2
 [/home/ronald/Classes/3380/Team-7/HMS/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-w3exwq9m2g
+
+[/home/ronald/Classes/3380/Team-7/HMS/Components/Pages/ListingPage/ListingPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9MaXN0aW5nUGFnZS9MaXN0aW5nUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-tv0ku9m6lm
