@@ -1,0 +1,67 @@
+@using Google.Cloud.Firestore;
+@rendermode InteractiveServer
+@page "/todoapp"
+
+<PageTitle>TodoApp</PageTitle>
+
+
+
+<input @bind="newNotes"/>&nbsp;
+<button @onclick="addNewNote">Add Note</button>
+@foreach(var note in notes)
+{
+    <p>
+        <b>* @note.description</b>
+        <button @onclick="(()=>deleteNote(note.Id))">Delete Note</button>
+    </p>
+}
+
+
+@code{
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+    public class Notes {
+        public string Id { get; set;}
+        public string description { get; set;}
+    }
+
+    private IEnumerable<Notes> notes = Array.Empty<Notes>();
+     string newNotes = "";
+    private async Task refreshList()
+    {
+        CollectionReference collection = db.Collection("notes");
+        QuerySnapshot docs = await collection.GetSnapshotAsync();
+
+        var lst = new List<Notes>();
+            foreach (var doc in docs.Documents)
+            {
+                lst.Add(new Notes {Id = doc.Id, description = doc.GetValue<string>("description")});
+            }
+        notes = lst;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await refreshList();
+    }
+
+    private async Task RandomShit()
+    {
+        Console.WriteLine("Duck");
+        await refreshList();
+
+    }
+
+    private async Task addNewNote()
+    {
+        CollectionReference collection = db.Collection("notes");
+        await collection.AddAsync(new { description  = newNotes});
+        await refreshList();
+    }
+
+    private async Task deleteNote(string id)
+    {
+        DocumentReference docref = db.Document("notes/" + id);
+        await docref.DeleteAsync();
+        await refreshList();
+    }
+    
+}
