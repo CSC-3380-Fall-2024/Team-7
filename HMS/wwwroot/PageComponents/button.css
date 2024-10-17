@@ -1,0 +1,23 @@
+.button
+{
+    background-color: #b0e0ee;
+    border-radius: 6px;
+    border: 2px;
+    border-color: rgb(91, 93, 96);
+    color: rgb(2, 4, 61);
+    padding: 5px 20px;
+    text-align: center;
+    font-size: 16px;
+    margin: 1px 1px;
+    cursor: pointer;
+    box-shadow: 0px 0px 4px rgb(54, 120, 201);;
+    transition-property: transform, background-color, box-shadow;
+    transition-duration: 300ms;
+    transition-timing-function: ease;
+}
+
+button:hover{
+    transform: scale(1.08);
+    background-color: rgb(133, 197, 214);
+    box-shadow: 0px 0px 8px rgb(54, 120, 201);
+}

@@ -1,8 +1,102 @@
 ﻿@page "/HomePage"
+@rendermode InteractiveServer
+@using System.Numerics
+
+@{int icon_d = 160; string icon_ds = (icon_d+20).ToString()+"px";}
 
 <PageTitle>HomePage</PageTitle>
+<head>
+    <style>
+        .titleBox {
+            border: 10px outset black;
+            background-color: lightblue;
+            text-align: center;
+        }
+    </style>
+</head>
 
-<h1>Home Page</h1>
-<p>Ok. This is your Homepage</p>
 
-Welcome to your new app.
+<body>
+    <div style="display: block;
+                margin: auto;
+                background-color:lightblue;
+                text-align:center;
+                border:5px solid black;
+                border-radius: 6px;
+                width: 75%;">
+        <h1>Home Page</h1>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div style="display: block;
+                margin: auto;
+                width: @icon_ds;
+                height: @icon_ds;">
+        <svg xmlns="http://www.w3.org/2000/svg" width=@icon_d height=@icon_d fill="currentColor" class="bi bi-globe-americas" viewBox="0 0 16 16">
+            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"/>
+        </svg>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    
+    <p style="text-align: center;">Ok. This is your Homepage</p>
+
+    <div class="buttonflexcontainer">
+        <a href="/weather"><br>
+            <button class="button">Weather</button>
+        </a>
+        <a href="/counter"><br>
+            <button class="button">Counter</button>
+        </a>          
+    </div>
+
+
+</body>
+
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<p>Count: @count</p>
+<p>Count (sin): @sin_time(@count)</p>
+
+@code {
+    private double count = 0;
+    private double interval = .05; //interval in seconds
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Set up a timer to update the current count every (interval) seconds
+        var timer = new System.Threading.Timer(
+            e =>
+            {
+                //This is where the timer begins to count.
+                InvokeAsync(() =>
+                {
+                    count+=.1;
+
+               
+                    // Call this to force the server to send a new updated view
+                    StateHasChanged();
+                });
+            },
+            null,
+            TimeSpan.Zero,
+            TimeSpan.FromSeconds(interval)
+        );
+    }
+
+    public double sin_time(double time)
+    {
+        double count_s = Math.Sin(time);
+        return count_s;
+    }
+}

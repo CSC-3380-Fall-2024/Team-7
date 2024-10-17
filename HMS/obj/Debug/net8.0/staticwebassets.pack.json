@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\HMS.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\PageComponents\\FlexContainer_H.css",
+      "PackagePath": "staticwebassets\\PageComponents\\FlexContainer_H.css"
+    },
+    {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\PageComponents\\button.css",
+      "PackagePath": "staticwebassets\\PageComponents\\button.css"
+    },
+    {
       "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
