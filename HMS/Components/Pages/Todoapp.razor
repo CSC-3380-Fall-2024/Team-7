@@ -1,4 +1,4 @@
-@using Google.Cloud.Firestore;
+@using Google.Cloud.Firestore
 @rendermode InteractiveServer
 @page "/todoapp"
 
@@ -42,14 +42,6 @@
     {
         await refreshList();
     }
-
-    private async Task RandomShit()
-    {
-        Console.WriteLine("Duck");
-        await refreshList();
-
-    }
-
     private async Task addNewNote()
     {
         CollectionReference collection = db.Collection("notes");
