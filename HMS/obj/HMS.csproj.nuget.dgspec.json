@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\HMS.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Jp\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+    "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\HMS.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\HMS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\HMS.csproj",
+        "projectName": "HMS",
+        "projectPath": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\HMS.csproj",
+        "packagesPath": "C:\\Users\\gonza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\gonza\\AppData\\Roaming\\NuGet\\NuGet.Config"
+>>>>>>> a399d36b9a776d6417bc309a1ec84028f3f4b0c6
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -42,6 +59,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Google.Cloud.Firestore": {
+              "target": "Package",
+              "version": "[3.9.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

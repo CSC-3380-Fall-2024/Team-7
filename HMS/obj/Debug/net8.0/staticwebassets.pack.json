@@ -1,6 +1,7 @@
 {
   "Files": [
     {
+<<<<<<< HEAD
       "Id": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\HMS.bundle.scp.css",
       "PackagePath": "staticwebassets\\HMS.bundle.scp.css"
     },
@@ -18,6 +19,25 @@
     },
     {
       "Id": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\favicon.png",
+=======
+      "Id": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\HMS.bundle.scp.css",
+      "PackagePath": "staticwebassets\\HMS.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\wwwroot\\favicon.png",
+>>>>>>> a399d36b9a776d6417bc309a1ec84028f3f4b0c6
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
