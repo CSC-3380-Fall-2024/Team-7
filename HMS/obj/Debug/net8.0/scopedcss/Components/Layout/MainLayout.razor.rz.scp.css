@@ -1,7 +1,7 @@
 .page[b-itgwrhsw0u] {
     position: relative;
     display: flex;
-    /*flex-direction: column;*/
+    flex-direction: row;
 
     font-family: 'Fraunces', serif;
 }
@@ -20,7 +20,7 @@ main[b-itgwrhsw0u] {
     justify-content: space-between;
     height: 3.5rem;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     padding-left: 1rem;
 }
 
@@ -29,6 +29,7 @@ main[b-itgwrhsw0u] {
     font-style: italic;
     color: #1B1F2D;
     flex-grow: 1;
+    padding-right: 1rem;
 }
 
 .navbar-toggle[b-itgwrhsw0u] {
@@ -45,6 +46,7 @@ main[b-itgwrhsw0u] {
 
 .navbar-nav[b-itgwrhsw0u]{
     display: flex;
+    flex-direction: row;
     padding-left: 0;
 }
 

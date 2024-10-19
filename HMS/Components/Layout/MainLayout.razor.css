@@ -1,7 +1,7 @@
 .page {
     position: relative;
     display: flex;
-    /*flex-direction: column;*/
+    flex-direction: row;
 
     font-family: 'Fraunces', serif;
 }
@@ -20,7 +20,7 @@ main {
     justify-content: space-between;
     height: 3.5rem;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     padding-left: 1rem;
 }
 
@@ -29,6 +29,7 @@ main {
     font-style: italic;
     color: #1B1F2D;
     flex-grow: 1;
+    padding-right: 1rem;
 }
 
 .navbar-toggle {
@@ -45,6 +46,7 @@ main {
 
 .navbar-nav{
     display: flex;
+    flex-direction: row;
     padding-left: 0;
 }
 
