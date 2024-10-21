@@ -1,6 +1,13 @@
 ﻿@page "/dashboard"
 @rendermode InteractiveServer
 
+<div class="img-header">
+    <h2>Enjoy Your Dream Vacation</h2>
+    <p>Book your Bliss</p>
+</div>
+
+<br>
+
 <div class="trips">
     <h2>Upcoming Trips</h2>
     <h3>You have </h3> @*pull from user bookings*@ <h3> upcoming trips</h3>
@@ -16,6 +23,20 @@
     body{
         font-family: 'Fraunces';
         font-size: 24px;
+    }
+
+    .img-header{
+        background-image: url('/images/background_header.png');
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #FFFFFF;
+        flex-direction: column;
+        border-radius: 6px;
     }
 
     .trips{

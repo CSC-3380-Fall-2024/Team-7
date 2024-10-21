@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RD2sWlxdDuEJ+rsObWIUVKmwxuV1+CduyJ8uB0tkTRw=",
+  "Hash": "QKMgiujuFs77H2rcCEY8zcqZRR9KSuD7Ex+8TsXbIiY=",
   "Source": "HMS",
   "BasePath": "_content/HMS",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "C:\\Users\\maure\\projects\\3380\\Team-7\\HMS\\wwwroot\\images\\background_header.png",
+      "SourceId": "HMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maure\\projects\\3380\\Team-7\\HMS\\wwwroot\\",
+      "BasePath": "_content/HMS",
+      "RelativePath": "images/background_header.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\background_header.png"
     }
   ]
 }
