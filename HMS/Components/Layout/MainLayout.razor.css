@@ -29,7 +29,8 @@ main {
     font-style: italic;
     color: #1B1F2D;
     flex-grow: 1;
-    padding-right: 1rem;
+    margin-right: 5px;
+    margin-top: 5px;
 }
 
 .navbar-toggle {
@@ -46,8 +47,8 @@ main {
 
 .navbar-nav{
     display: flex;
-    flex-direction: row;
-    padding-left: 0;
+    flex-direction: column;
+    padding-left: 5px;
 }
 
 .nav-link {
