@@ -21,13 +21,21 @@ main[b-itgwrhsw0u] {
     justify-content: space-between;
     height: 3.5rem;
     display: flex;
-    align-items: baseline;
+    align-items:center;
     padding-left: 1rem;
 }
 
+.title-icon[b-itgwrhsw0u]{
+    width: 25px;
+    height: 25px;
+    background-image: url('/images/plane_logo.png');
+    background-repeat:no-repeat;
+}
+
 .nav-title[b-itgwrhsw0u]{
-    font-size: 24px;
+    font-size: 18px;
     font-style: italic;
+    font-weight: bold;
     color: #1B1F2D;
     flex-grow: 1;
     margin-right: 5px;
