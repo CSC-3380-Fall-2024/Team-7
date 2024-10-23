@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Jp\\.nuget\\packages\\": {}
+    "C:\\Users\\ebere\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\HMS.csproj",
+      "projectUniqueName": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\HMS.csproj",
       "projectName": "HMS",
-      "projectPath": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\HMS.csproj",
-      "packagesPath": "C:\\Users\\Jp\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\",
+      "projectPath": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\HMS.csproj",
+      "packagesPath": "C:\\Users\\ebere\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Jp\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ebere\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -67,7 +67,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

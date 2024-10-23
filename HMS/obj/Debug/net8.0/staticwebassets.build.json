@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Z4Of9qSNLcTQj7wJcUVSDJuIQuHMsaGuLR+CFHbBES4=",
+  "Hash": "4sYIgKDurlS7Yo40GEp+JOK576q1WcJOXhX1wOBehl4=",
   "Source": "HMS",
   "BasePath": "_content/HMS",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "HMS\\wwwroot",
       "Source": "HMS",
-      "ContentRoot": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\",
       "BasePath": "_content/HMS",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\HMS.styles.css",
+      "Identity": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\HMS.styles.css",
       "SourceId": "HMS",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/HMS",
       "RelativePath": "HMS.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\HMS.styles.css"
+      "OriginalItemSpec": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\HMS.styles.css"
     },
     {
-      "Identity": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\HMS.bundle.scp.css",
+      "Identity": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\HMS.bundle.scp.css",
       "SourceId": "HMS",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/HMS",
       "RelativePath": "HMS.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\HMS.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\HMS.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\app.css",
+      "Identity": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\app.css",
       "SourceId": "HMS",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\",
       "BasePath": "_content/HMS",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\bootstrap\\bootstrap.min.css",
       "SourceId": "HMS",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\",
       "BasePath": "_content/HMS",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "HMS",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\",
       "BasePath": "_content/HMS",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\favicon.png",
       "SourceId": "HMS",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ebere\\OneDrive\\Documents\\Classwork\\3380Project\\HMS\\wwwroot\\",
       "BasePath": "_content/HMS",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
