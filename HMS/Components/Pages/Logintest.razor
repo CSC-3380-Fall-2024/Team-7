@@ -1,0 +1,51 @@
+@using Google.Cloud.Firestore
+@rendermode InteractiveServer
+@page "/login"
+
+<PageTitle>Login</PageTitle>
+
+<input @bind="newEmail"/>&nbsp;
+<input @bind="newPassword"/>&nbsp;
+<button @onclick="addNewUser">Add Account</button>
+
+
+
+@code{
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+    public class Users {
+        public string Id {get; set;}
+        public string Email { get; set;}
+        public string Password { get; set;}
+    }
+
+    private IEnumerable<Users> users = Array.Empty<Users>();
+
+    string newEmail = "";
+    string newPassword = "";
+    private async Task refreshList()
+    {
+        CollectionReference collection = db.Collection("UserAccount");
+        QuerySnapshot docs = await collection.GetSnapshotAsync();
+
+        var lst = new List<Users>();
+            foreach (var doc in docs.Documents)
+            {
+                lst.Add(new Users {Id = doc.Id, Email = doc.GetValue<string>("Email"), Password = doc.GetValue<string>("Password") });
+            }
+        users = lst;
+    }
+
+protected override async Task OnInitializedAsync()
+{
+    await refreshList();
+}
+ 
+private async Task addNewUser()
+{
+        CollectionReference collection = db.Collection("UserAccount");
+        await collection.AddAsync(new { Email = newEmail, Password = newPassword});
+        await refreshList();
+}
+    
+    
+}

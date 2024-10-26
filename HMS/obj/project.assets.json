@@ -1096,19 +1096,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gonza\\.nuget\\packages\\": {}
+    "C:\\Users\\Jp\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\HMS.csproj",
+      "projectUniqueName": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\HMS.csproj",
       "projectName": "HMS",
-      "projectPath": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\HMS.csproj",
-      "packagesPath": "C:\\Users\\gonza\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gonza\\OneDrive\\Documents\\Class Coding Projects\\CSC 3380\\Team-7\\HMS\\obj\\",
+      "projectPath": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\HMS.csproj",
+      "packagesPath": "C:\\Users\\Jp\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jp\\Documents\\Class Code\\CSC 3380\\Team-7\\HMS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\gonza\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Jp\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
