@@ -68,6 +68,11 @@ main {
     color: #0056b3;
 }
 
+.navbar-collapse {
+    height: auto;
+    flex-basis: 0%;
+}
+
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;

@@ -68,6 +68,11 @@ main[b-itgwrhsw0u] {
     color: #0056b3;
 }
 
+.navbar-collapse[b-itgwrhsw0u] {
+    height: auto;
+    flex-basis: 0%;
+}
+
 @media (max-width: 640.98px) {
     .top-row[b-itgwrhsw0u] {
         justify-content: space-between;
