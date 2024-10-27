@@ -45,7 +45,7 @@
     private async Task addNewNote()
     {
         CollectionReference collection = db.Collection("notes");
-        await collection.AddAsync(new { description  = newNotes});
+        await collection.AddAsync(new { description = newNotes});
         await refreshList();
     }
 
