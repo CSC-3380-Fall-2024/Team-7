@@ -5,12 +5,40 @@
       "PackagePath": "staticwebassets\\HMS.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\PageComponents\\FlexContainer_H.css",
-      "PackagePath": "staticwebassets\\PageComponents\\FlexContainer_H.css"
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\Images\\globe-americas.svg",
+      "PackagePath": "staticwebassets\\Images\\globe-americas.svg"
+    },
+    {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\Images\\greece.png",
+      "PackagePath": "staticwebassets\\Images\\greece.png"
+    },
+    {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\Images\\nz.png",
+      "PackagePath": "staticwebassets\\Images\\nz.png"
+    },
+    {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\Images\\pool.png",
+      "PackagePath": "staticwebassets\\Images\\pool.png"
+    },
+    {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\Images\\vegas.png",
+      "PackagePath": "staticwebassets\\Images\\vegas.png"
     },
     {
       "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\PageComponents\\button.css",
       "PackagePath": "staticwebassets\\PageComponents\\button.css"
+    },
+    {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\PageComponents\\centerDiv.css",
+      "PackagePath": "staticwebassets\\PageComponents\\centerDiv.css"
+    },
+    {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\PageComponents\\flexContainer_H.css",
+      "PackagePath": "staticwebassets\\PageComponents\\flexContainer_H.css"
+    },
+    {
+      "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\PageComponents\\listing.css",
+      "PackagePath": "staticwebassets\\PageComponents\\listing.css"
     },
     {
       "Id": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\wwwroot\\app.css",

@@ -1,6 +1,136 @@
-.button
+.button_base{
+    border-radius: 6px;
+    border: 2px;
+    width: 200px;
+    text-align: center;
+    font-size: 16px;
+    margin: auto;
+    cursor: pointer;
+    transition-property: background-color, box-shadow;
+    transition-duration: 300ms;
+    transition-timing-function: ease;
+}
+
+
+
+.button_s
 {
-    background-color: #b0e0ee;
+    width: 100px;
+}
+
+.button_s-m
+{
+    width: 125px;
+}
+
+.button_m
+{
+    width: 155px;
+}
+
+.button_l
+{
+    padding-top: 20px;
+    width: 350px;
+}
+
+
+
+
+/*WHITE-GRAY COLOR*/
+.button_color_home
+{
+    background: #F2F2F2;
+    border-color: rgb(91, 93, 96);
+    color: rgb(2, 4, 61);
+    box-shadow: 0px 0px 4px #cecdcd;
+}
+
+.button_color_home:hover{
+    /*transform: scale(1.08);*/
+    background-color: #dedcdc;
+    box-shadow: 0px 0px 6px #bebdbd;
+}
+
+
+
+/*BLUE COLOR*/
+.button_color_blue
+{
+    background: #609dff;
+    border-color: rgb(22, 67, 134);
+    color: rgb(2, 4, 61);
+    box-shadow: 0px 0px 4px #2e63a8;
+}
+
+.button_color_blue:hover{
+    /*transform: scale(1.08);*/
+    background-color: #4289fa;
+    box-shadow: 0px 0px 6px rgb(54, 96, 150);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.bimage
+{
+    width:100%;
+    background-image: url("Images/vegas.png");
+}
+
+
+
+/*UNUSED CLASSES
+***DO NOT DELETE***/
+
+
+.button_homecontainer
+{
+    background: #F2F2F2;
+    border-radius: 6px;
+    border: 2px;
+    border-color: rgb(91, 93, 96);
+    color: rgb(2, 4, 61);
+    padding: 5px 20px;
+    width: 200px;
+    text-align: center;
+    font-size: 16px;
+    /*margin: 1px 1px;*/
+    cursor: pointer;
+    box-shadow: 0px 0px 4px #cecdcd;
+    transition-property: transform, background-color, box-shadow;
+    transition-duration: 300ms;
+    transition-timing-function: ease;
+
+    margin: 0;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.button_homecontainer:hover{
+    /*transform: scale(1.08);*/
+    background-color: #dedcdc;
+    box-shadow: 0px 0px 6px #bebdbd;
+}
+
+
+
+
+
+.button_homecontainer_B
+{
+    background: #609dff;
     border-radius: 6px;
     border: 2px;
     border-color: rgb(91, 93, 96);
@@ -10,14 +140,52 @@
     font-size: 16px;
     margin: 1px 1px;
     cursor: pointer;
-    box-shadow: 0px 0px 4px rgb(54, 120, 201);;
+    box-shadow: 0px 0px 4px #2e63a8;
     transition-property: transform, background-color, box-shadow;
     transition-duration: 300ms;
     transition-timing-function: ease;
+
+    margin: 0;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
-button:hover{
-    transform: scale(1.08);
-    background-color: rgb(133, 197, 214);
-    box-shadow: 0px 0px 8px rgb(54, 120, 201);
+.button_homecontainer_B:hover
+{
+    /*transform: scale(1.08);*/
+    background-color: #4289fa;
+    box-shadow: 0px 0px 6px rgb(54, 96, 150);
 }
+
+
+
+
+
+.button_test
+{
+    background: #2F80ED;
+    width: Fixed (148px)px;
+    height: Hug (44px)px;
+    top: 558px;
+    left: 1075px;
+    padding: 12px 18px 12px 18px;
+    gap: 10px;
+    border-radius: 6px 0px 0px 0px;
+    opacity: 0px;
+
+}
+
+.button_test:hover
+{
+    /*transform: scale(1.08);*/
+    background-color: #4e85df;
+    box-shadow: 0px 0px 6px #4579bd;
+}
+
+
+
+
+

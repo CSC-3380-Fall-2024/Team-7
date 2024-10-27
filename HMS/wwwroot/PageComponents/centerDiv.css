@@ -1,0 +1,6 @@
+.centered {
+  border: 5px solid;
+  display: grid;
+  place-items: center;
+
+}
