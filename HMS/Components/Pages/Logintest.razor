@@ -4,48 +4,83 @@
 
 <PageTitle>Login</PageTitle>
 
-<input @bind="newEmail"/>&nbsp;
-<input @bind="newPassword"/>&nbsp;
-<button @onclick="addNewUser">Add Account</button>
+<p>
+     Email: 
+    <input @bind="newEmail"/>&nbsp;
+</p>
+<p>
+    Password: 
+    <input @bind="newPassword"/>&nbsp;
+</p>
+
+<p>
+    Employee Id (If Applicable):  
+    <input @bind="EmployeeId"/>&nbsp;
+</p>
+<button @onclick="addNewUser">Sign Up</button>
+@LoginMessage
+
 
 
 
 @code{
     FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
-    public class Users {
+    public class Users 
+    {
         public string Id {get; set;}
         public string Email { get; set;}
         public string Password { get; set;}
     }
 
+    public class Employee
+    {
+        public string Id {get; set;}
+        public bool HasAccount {get; set;}
+
+        public string Name {get; set;}
+    }
+
     private IEnumerable<Users> users = Array.Empty<Users>();
+    private IEnumerable<Employee> employees =Array.Empty<Employee>();
 
     string newEmail = "";
     string newPassword = "";
-    private async Task refreshList()
-    {
-        CollectionReference collection = db.Collection("UserAccount");
-        QuerySnapshot docs = await collection.GetSnapshotAsync();
+    string EmployeeId = "";
+    string LoginMessage = "";
 
-        var lst = new List<Users>();
-            foreach (var doc in docs.Documents)
-            {
-                lst.Add(new Users {Id = doc.Id, Email = doc.GetValue<string>("Email"), Password = doc.GetValue<string>("Password") });
-            }
-        users = lst;
-    }
 
-protected override async Task OnInitializedAsync()
-{
-    await refreshList();
-}
  
 private async Task addNewUser()
-{
+{         
+        CollectionReference Employees = db.Collection("Employees");
+        DocumentReference docRef;
+        if (EmployeeId != "")
+        {
+            docRef = Employees.Document(EmployeeId);
+            DocumentSnapshot docSnapshot = await docRef.GetSnapshotAsync();
+            bool hasAccount = docSnapshot.GetValue<bool>("HasAccount");
+            if(!hasAccount)
+            {
+                 var updateData = new Dictionary<string, object>
+                {
+                    { "HasAccount", true }
+                };
+                await docRef.UpdateAsync(updateData);
+
+                CollectionReference collection = db.Collection("UserAccount");
+                await collection.AddAsync(new {Email = newEmail, Password = newPassword});
+            }
+            else
+            {
+                LoginMessage = "Sorry, this employee Id already has an account";
+            }   
+
+        }
+        else
+        {
         CollectionReference collection = db.Collection("UserAccount");
-        await collection.AddAsync(new { Email = newEmail, Password = newPassword});
-        await refreshList();
+        await collection.AddAsync(new {Email = newEmail, Password = newPassword});
+        }
 }
-    
     
 }
