@@ -1,0 +1,53 @@
+@page "/contact"
+@rendermode InteractiveServer
+
+<PageTitle>Contact Us</PageTitle>
+<main>
+    <div class="contact-info">
+        <h2>Contact Us</h2>
+        <p>
+            Let us know if there is anything you would like to talk to our team about whether it's
+            questions, concerns, or feeback. We're here to help so let us know it the form and we 
+            will get back to your promptly! 
+        </p>
+        <div class="contact-img"><img src="/images/contact_img.png"/></div> 
+    </div>
+    <div class="contact-info">
+        <h3>Send us your questions and concerns in the form below</h3>
+        <form>
+
+        </form>
+    </div>
+</main>
+
+<style>
+    .contact-info {
+        margin-top: 10px;
+        width: 50%;
+        float: left;
+        padding: 20px;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: left;
+    }
+
+    .contact-img {
+        margin-top: 100px;
+        border-radius: 6px;
+        width: 100%;
+        max-width: 500px;
+        height: 300px;
+        overflow: hidden;
+    }
+
+    .contact-img img {
+        width: 100%; /* Make image fill the contact-img div */
+        height: auto; /* Maintain aspect ratio */
+        object-fit: cover; /* Cover the area of contact-img */
+    }
+</style>
+
+@code {
+
+}
