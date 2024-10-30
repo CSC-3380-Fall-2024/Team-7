@@ -1,0 +1,2 @@
+Made the design for the login page. Edited the navbar + other component with the new login page. Edit/merge the two design from the two differnt login pages. 
+So that it look like what jp wanted. The css file is inside the css compontent file so that it not attached to the login.
