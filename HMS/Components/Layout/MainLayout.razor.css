@@ -73,6 +73,16 @@ main {
     flex-basis: 0%;
 }
 
+.footer {
+    display: grid;
+    
+}
+
+.ftr-section {
+    width: 20%;
+    float: left;
+}
+
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;
