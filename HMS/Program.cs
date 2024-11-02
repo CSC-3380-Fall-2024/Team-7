@@ -1,8 +1,6 @@
 using HMS.Components;
 
 
-
-
 string credentialPath = @"..\..\hotelmanagementsystem-3f342-firebase-adminsdk-njalz-ea30d4f99f.json";
 Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialPath);
 var builder = WebApplication.CreateBuilder(args);
