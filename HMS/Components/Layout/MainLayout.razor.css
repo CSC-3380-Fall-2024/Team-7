@@ -113,6 +113,29 @@ main {
     }
 }
 
+.scrollmenu {
+  width: 100%;
+  overflow-y: auto;
+  white-space: nowrap;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  z-index: 1000;
+}
+
+.scrollmenu a {
+  display: inline-block;
+  padding: 15px;
+  text-decoration: none;
+  color: #fff;
+  transition: background-color 0.3s;
+}
+
+.scrollmenu a:hover {
+  background-color: #555;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
