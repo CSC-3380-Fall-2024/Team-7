@@ -27,7 +27,7 @@ main {
 .title-icon{
     width: 25px;
     height: 25px;
-    background-image: url('/images/plane_logo.png');
+    background-image: url('/images/generalImages/plane_logo.png');
     background-repeat:no-repeat;
 }
 
