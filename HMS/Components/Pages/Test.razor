@@ -1,0 +1,19 @@
+@page "/basic-dropdown"
+
+@{ var list = new List<string>{ ".NET", "Python","Java" }; }
+<Dropdown TItem="string" OnSelected="@OnSelected" >
+    <InitialTip>This is a dropdown list</InitialTip>
+    <ChildContent>
+        <DropdownListItem Item="@list[0]">.NET</DropdownListItem>
+        <DropdownListItem Item="@list[1]">Python</DropdownListItem>
+        <div class="dropdown-divider"></div>
+        <DropdownListItem Item="@list[2]">Java</DropdownListItem>
+    </ChildContent>
+</Dropdown>
+
+@code {
+    private void OnSelected(string selection)
+    {
+        Console.WriteLine(selection);
+    }
+}
