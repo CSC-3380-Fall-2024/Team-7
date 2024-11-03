@@ -1,12 +1,16 @@
 @using Microsoft.AspNetCore.Components.Web
 @typeparam TItem
 
+
+
 <p>@show</p>
 <div class="dropdown">
    <!-- #region  <button class="btn btn-primary dropdown-toggle mr-4" data-toggle="dropdown" type="button" @onclick="e => this.show=!this.show " 
             aria-haspopup="true" aria-expanded="false">
             @Tip
     </button>
+    code from : https://stackoverflow.com/questions/58929072/dropdown-list-is-not-working-in-the-asp-net-blazor-component
+    still doesnt work tho
     -->
     <button class="btn btn-primary dropdown-toggle mr-4" type="button" @onclick="ToggleDropdown">
     @Tip
