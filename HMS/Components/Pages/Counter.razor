@@ -1,20 +1,33 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
+@inject c_user c_users
 
 <PageTitle>Counter</PageTitle>
-
+  
 <h1>Counter</h1>
 
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+
+<p> </p>
+<p>s</p>
+<p> </p>
+<h3>Welcome, @c_users.Email</h3>
+@if (c_users.IsLoggedIn)
+{
+    <p>You are logged in.</p>
+}
+else
+{
+    <p>Please log in.</p>
+}
 @code {
     private int currentCount = 0;
 
     private void IncrementCount()
     {
-        Console.Write("Bananas");
         currentCount = currentCount + 2 ;
     }
 }
