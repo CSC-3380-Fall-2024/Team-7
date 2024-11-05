@@ -15,7 +15,8 @@ namespace HMS.Components.Pages.razorComponents
         public Listing[] Listings_Back = new Listing[5];
         protected override Task OnInitializedAsync()
         {
-            LoadItems();
+			AddItem();
+            //LoadItems();
             return base.OnInitializedAsync();
         }
 
