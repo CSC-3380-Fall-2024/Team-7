@@ -49,74 +49,52 @@ namespace HMS.Components.Pages.razorComponents
         private void RemoveItem()
         {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 	}
 }
-
-
-
-//Listing l1 = new Listing
-//{
-//	Title = "Test1 " + listingCount.ToString(),
-//	Description = "Description " + listingCount.ToString(),
-//	BedCount = listingCount,
-//	BathCount = listingCount,
-//	Price = listingCount,
-//	Date = 110224,
-//	Picture = "image"
-//};
-
-//Listing l2 = new Listing
-//{
-//	Title = "Test2 " + listingCount.ToString(),
-//	Description = "Description " + listingCount.ToString(),
-//	BedCount = listingCount,
-//	BathCount = listingCount,
-//	Price = listingCount,
-//	Date = 110224,
-//	Picture = "image"
-//};
-
-//Listing l3 = new Listing
-//{
-//	Title = "Test3 " + listingCount.ToString(),
-//	Description = "Description " + listingCount.ToString(),
-//	BedCount = listingCount,
-//	BathCount = listingCount,
-//	Price = listingCount,
-//	Date = 110224,
-//	Picture = "image"
-//};
-
-//Listing l4 = new Listing
-//{
-//	Title = "Test4 " + listingCount.ToString(),
-//	Description = "Description " + listingCount.ToString(),
-//	BedCount = listingCount,
-//	BathCount = listingCount,
-//	Price = listingCount,
-//	Date = 110224,
-//	Picture = "image"
-//};
-
-//Listing l5 = new Listing
-//{
-//	Title = "Test5 " + listingCount.ToString(),
-//	Description = "Description " + listingCount.ToString(),
-//	BedCount = listingCount,
-//	BathCount = listingCount,
-//	Price = listingCount,
-//	Date = 110224,
-//	Picture = "image"
-//};
-
-//Listing l6 = new Listing
-//{
-//	Title = "Test6 " + listingCount.ToString(),
-//	Description = "Description " + listingCount.ToString(),
-//	BedCount = listingCount,
-//	BathCount = listingCount,
-//	Price = listingCount,
-//	Date = 110224,
-//	Picture = "image"
-//};
