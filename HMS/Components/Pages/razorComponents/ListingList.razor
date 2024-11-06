@@ -1,5 +1,6 @@
 ﻿@page "/Listings"
 @inherits ListingsBase
+@rendermode InteractiveServer
 
 <h3>Component</h3>
 
@@ -8,7 +9,10 @@
 	{
 		<div class="card m-3" style="min-width:18rem; max-width:30.5%">
 			<div class="card-header">
-				<h3>@listing.Title @listing.Price</h3>			
+				<h3>@listing.Title</h3>			
+			</div>
+			<div class="card-body">
+				<h3>@listing.ID</h3>
 			</div>
 			<p>@listing.Description</p>
 		</div>
