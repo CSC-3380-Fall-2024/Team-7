@@ -74,7 +74,7 @@ main {
 }
 
 .navbar-collapse {
-    height: auto;
+    height: 20rem;
     flex-basis: 0%;
 }
 
@@ -144,6 +144,12 @@ main {
 
 .scrollmenu a:hover {
   background-color: #cdcdcd;
+}
+
+@media (min-width: 1080px) {
+    .top-row {
+        background-color: red;
+    }
 }
 
 #blazor-error-ui {
