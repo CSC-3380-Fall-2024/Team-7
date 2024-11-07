@@ -2,7 +2,6 @@
     position: relative;
     display: flex;
     flex-direction: row;
-
     font-family: 'Fraunces', serif;
 }
 
@@ -74,13 +73,18 @@ main {
 }
 
 .footer {
-    display: grid;
-    
+    background-color: #f7f7f7;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
 }
 
 .ftr-section {
-    width: 20%;
-    float: left;
+    margin-left: 15px;
+    flex: 1;
+    text-align: center;
 }
 
 @media (max-width: 640.98px) {
