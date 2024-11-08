@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using System;
+@using System.Collections.Generic;
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <body>
 <div class="page">
@@ -12,13 +15,9 @@
             <div class="nav-title">Euphoria Hotels</div> 
             <nav class="navbar">
                 <ul class="nav-list">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="todoapp">Activities</a></li>
-		            <li><a href="listings">Listing Page</a></li>
-                    <li><a href="about">About</a></li>
-                    <li><a href="contact">Contact Us</a></li>
-                    <li><a href="dashboard">My Account</a></li>
-                    <li><a href="login">Log In</a></li>
+                    @for(int i = 0; i < NavBarNames.Length; i++) {
+                        <li><a href=@NavBarPages[i]>@NavBarNames[i]</a></li>
+                    }
                 </ul>
             </nav>
             <button class="navbar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" 
@@ -27,30 +26,11 @@
 	    <div class="scrollmenu">
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="todoapp">Discover</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="todoapp">Activities</a>
-                    </li>
-		    <li class="nav-item">
-                        <a class="nav-link" href="listings">Listing Page</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard">My Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="login">Log In</a>
-                    </li>
+                    @for(int i = 0; i < NavBarNames.Length; i++){
+                        <li class="nav-item">
+                            <a class="nav-link" href=@NavBarPages[i]>@NavBarNames[i]</a>
+                        </li>
+                    }
                 </ul>
             @*<a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>*@
             </div>
@@ -64,3 +44,9 @@
     </main>
 </div>
 </body>
+
+@code {
+    // Create a dictionary that will hold the NavBar pages
+    string[] NavBarNames = {"Home", "Discover", "Activities", "Listing Page", "About", "Contact Us", "My Account", "Log In"};
+    string[] NavBarPages = {"#", "todoapp", "toodoapp", "listings", "about", "contact", "dashboard", "login"};
+}
