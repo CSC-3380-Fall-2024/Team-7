@@ -109,9 +109,11 @@ main {
     font-weight: 400;
     line-height: 17.26px;
     letter-spacing: 0.02em;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
+}
 
+.footer a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .title-box { 
