@@ -2,90 +2,7 @@
 @rendermode InteractiveServer
 <PageTitle>Listing Page</PageTitle>
 
-<html>
-<head>
-<style>
-
-/* All of the CSS is designed for a mobile web app and it scales to higher resolutions through the @@media tag */
-
-/* This is the border that contains all the information about a specific listing */
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  background-color: #f1f1f1;
-}
-
-/* This is the container that modifies a div so that it can fit whatever information is needed. E.g: an image or a rating */
-.flex-container > div {
-  background-color: DodgerBlue;
-  color: black;
-  margin: 0.2rem;
-}
-
-/* Container that moves a section to the left */
-.left {
-	width: 100%;
-}
-
-/* Container that moves a section to the right */
-.right {
-	width: 100%;
-}
-
-/* This modifies the img tag so that it scales with the size of the screen */ 
-img {
-	max-width: 50%;
-	height: auto;
-	width: auto\9;
-}
-
-/* At a certain pixel width, makes the column layout into a row layout */
-@@media (min-width: 950px) {
-  .flex-container {
-    flex-direction: row;
-    width: 100%;
-  }
-
-  .flex-container > div {
-	height: 10%;
-  }
-	
-  .left {
-	width: 35%;
-	height: 80%;
-  }
-
-  .right {
-	width: 65%;
-	height: 80%;
-  }
-
-  .column1 {
-	width: 30%;
-	height: 100%;
-  }
-
-  .column2 {
-	width: 50%;
-	height: 100%;
-  }
-
-  .column3 {
-	width: 20%;
-	height: 100%;
-  }
-
-  img {
-	max-width: 75%;
-  }
-}
-
-</style>
-</head>
-<body>
-
 <h1>Listing Page</h1>
-
 
 <div class="flex-container">
 	<div class="left">
@@ -107,9 +24,6 @@ img {
   		</div>
 	</div>
 </div>
-
-</body>
-</html>
 
 @code {
 	private double getPrice()

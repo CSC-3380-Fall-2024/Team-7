@@ -101,6 +101,7 @@ button {
 .nav-list {
     display: flex;
     list-style: none;
+    text-align: center;
 }
 
 .nav-list li {
@@ -108,7 +109,7 @@ button {
 }
 
 .nav-list li:last-child {
-    margin-right: 0;
+    margin-right: 10px;   
 }
 
 .nav-list li a {
