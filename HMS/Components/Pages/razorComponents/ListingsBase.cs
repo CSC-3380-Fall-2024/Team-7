@@ -1,8 +1,10 @@
-﻿using HMS.Models;
+﻿
+//using HMS.Models;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 #nullable enable
@@ -10,7 +12,17 @@ namespace HMS.Components.Pages.razorComponents
 {
     public class ListingsBase : ComponentBase
     {
-        private int listingCount {  get; set; }
+		public class Listing
+		{
+			public String Title {get; set;} 
+            public String Description {get; set;} 
+           	public int BedCount {get; set;} 
+            public int BathCount {get; set;} 
+            public int Price {get; set;} 
+            public int Date {get; set;} 
+            public String Picture {get; set;} 
+		}
+        private int listingCount { get; set; }
         public IEnumerable<Listing>? Listings { get; set; }
         public Listing[] Listings_Back = new Listing[5];
         protected override Task OnInitializedAsync()
@@ -127,3 +139,4 @@ namespace HMS.Components.Pages.razorComponents
         }
     }
 }
+
