@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: row;
     font-family: 'Fraunces', serif;
+    min-height: 100vh;
 }
 
 main {
@@ -75,7 +76,7 @@ main {
 .footer {
     padding: 15px 10px 10px 15px;
     background-color: #f7f7f7;
-    position: fixed;
+    margin-top: 20px;
     bottom: 0;
     width: 100%;
     text-align: center;
@@ -93,7 +94,7 @@ main {
 
 .h3 {
     font-weight: 400;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-family: 'Fraunces';
     font-style: italic;
     font-weight: 900;
@@ -103,7 +104,7 @@ main {
 }
 
 .p {
-    font-size: 1rem;
+    font-size: 0.5rem;
     color: #4F4F4F;
     font-family: Fraunces;
     font-weight: 400;
@@ -128,6 +129,12 @@ main {
 
     .top-row ::deep a, .top-row ::deep .btn-link {
         margin-left: 0;
+    }
+    .footer a, p {
+        font-size: 0.5rem;  
+    }
+    .footer h3{
+        font-size: 0.75rem;  
     }
 }
 
