@@ -2,8 +2,8 @@
     position: relative;
     display: flex;
     flex-direction: row;
-
     font-family: 'Fraunces', serif;
+    min-height: 100vh;
 }
 
 main {
@@ -25,8 +25,8 @@ main {
 }
 
 .title-icon{
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     background-image: url('/images/plane_logo.png');
     background-repeat:no-repeat;
 }
@@ -41,6 +41,87 @@ main {
     margin-top: 5px;
 }
 
+.navbar-toggle {
+    background-color: #007bff;
+    border: none;
+    cursor: pointer;
+}
+
+.navbar-toggle-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url('data:image/svg+xml;charset=UTF8,%3csvg xmlns%3d"http%3a//www.w3.org/2000/svg" viewBox%3d"0 0 30 30"%3e%3cpath stroke%3d"rgba(0, 0, 0, 0.5)" stroke-width%3d"2" d%3d"M4 7h22M4 15h22M4 23h22"%3e%3c/path%3e%3c/svg%3e');
+}
+
+.navbar-nav{
+    display: flex;
+    flex-direction: column;
+    padding-left: 5px;
+}
+
+.nav-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: #0056b3;
+}
+
+.navbar-collapse {
+    height: auto;
+    flex-basis: 0%;
+}
+
+.footer {
+    padding: 15px 10px 10px 15px;
+    background-color: #f7f7f7;
+    margin-top: 20px;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1rem;
+}
+
+.ftr-section {
+    margin-left: 15px;
+    flex: 1;
+    text-align: left;
+    font-family: 'Fraunces';
+}
+
+.h3 {
+    font-weight: 400;
+    font-size: 1rem;
+    font-family: 'Fraunces';
+    font-style: italic;
+    font-weight: 900;
+    line-height: 19.73px;
+    letter-spacing: 0.02em;
+    text-decoration-skip-ink: none;
+}
+
+.p {
+    font-size: 0.5rem;
+    color: #4F4F4F;
+    font-family: Fraunces;
+    font-weight: 400;
+    line-height: 17.26px;
+    letter-spacing: 0.02em;
+}
+
+.footer a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.title-box { 
+    display: flex;
+    align-items: center;
+}
+
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;
@@ -48,6 +129,12 @@ main {
 
     .top-row ::deep a, .top-row ::deep .btn-link {
         margin-left: 0;
+    }
+    .footer a, p {
+        font-size: 0.5rem;  
+    }
+    .footer h3{
+        font-size: 0.75rem;  
     }
 }
 
