@@ -1,0 +1,25 @@
+@page "/dropdowntest"
+@using ComponentsCSS
+
+<h3>Dropdown Test</h3>
+
+<div style="margin: 20px;">
+    <Dropdown 
+        Title="Menu" 
+        Items="@items" 
+        OnSelect="HandleSelection" />
+</div>
+
+@code {
+    private List<DropdownItem> items = new()
+    {
+        new() { Text = "Option 1", Value = "1" },
+        new() { Text = "Option 2", Value = "2" },
+        new() { Text = "Option 3", Value = "3" }
+    };
+
+    private void HandleSelection(DropdownItem item)
+    {
+        Console.WriteLine($"Selected: {item.Text}");
+    }
+}
