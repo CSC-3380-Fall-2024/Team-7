@@ -1,0 +1,18 @@
+﻿@page "/Listings"
+@inherits ListingsBase
+
+<h3>Component</h3>
+
+<div>
+	@foreach(var listing in Listings)
+	{
+		<div class="card m-3" style="min-width:18rem; max-width:30.5%">
+			<div class="card-header">
+				<h3>@listing.Title @listing.Price</h3>			
+			</div>
+			<p>@listing.Description</p>
+		</div>
+	}
+	<button class="btn btn-primary" @onclick=AddItem>Click me</button>
+	<a href="/home">OK</a>
+</div>
