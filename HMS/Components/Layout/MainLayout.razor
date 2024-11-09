@@ -1,5 +1,9 @@
 ﻿@inherits LayoutComponentBase
+@using System;
+@using System.Collections.Generic;
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<body>
 <div class="page">
     @*<div class="sidebar">
         <NavMenu />
@@ -9,11 +13,17 @@
         <div class="top-row px-4">
             <div class="title-icon"></div>
             <div class="nav-title">Euphoria Hotels</div> 
-            <button class="nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" 
+            <nav class="navbar">
+                <ul class="nav-list">
+                    @for(int i = 0; i < NavBarNames.Length; i++) {
+                        <li><a href=@NavBarPages[i]>@NavBarNames[i]</a></li>
+                    }
+                </ul>
+            </nav>
+            <button class="navbar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" 
                 aria-controls="navbarCollapse" aria-label="Toggle navigation">
-                <span class="navbar-toggle-icon"></span>
             </button>
-
+	    <div class="scrollmenu">
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -34,9 +44,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="dashboard">My Account | Log In</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Listings">Listings</a>
+                    </li>
+
                 </ul>
             @*<a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>*@
             </div>
+	    </div>
         </div>
 
         <article class="content">
@@ -87,3 +105,10 @@
         </div>
     </main>
 </div>
+</body>
+
+@code {
+    // Create a dictionary that will hold the NavBar pages
+    string[] NavBarNames = {"Home", "Discover", "Activities", "Listing Page", "About", "Contact Us", "My Account", "Log In"};
+    string[] NavBarPages = {"#", "todoapp", "todoapp", "listings", "about", "contact", "dashboard", "login"};
+}
