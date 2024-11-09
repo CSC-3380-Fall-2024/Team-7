@@ -1,0 +1,137 @@
+@page "/listings"
+@rendermode InteractiveServer
+<PageTitle>Listing Page</PageTitle>
+
+<html>
+<head>
+<style>
+
+/* All of the CSS is designed for a mobile web app and it scales to higher resolutions through the @@media tag */
+
+/* This is the border that contains all the information about a specific listing */
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f1f1;
+}
+
+/* This is the container that modifies a div so that it can fit whatever information is needed. E.g: an image or a rating */
+.flex-container > div {
+  background-color: DodgerBlue;
+  color: black;
+  margin: 0.2rem;
+}
+
+/* Container that moves a section to the left */
+.left {
+	width: 100%;
+}
+
+/* Container that moves a section to the right */
+.right {
+	width: 100%;
+}
+
+/* This modifies the img tag so that it scales with the size of the screen */ 
+img {
+	max-width: 50%;
+	height: auto;
+	width: auto\9;
+}
+
+/* At a certain pixel width, makes the column layout into a row layout */
+@@media (min-width: 950px) {
+  .flex-container {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .flex-container > div {
+	height: 10%;
+  }
+	
+  .left {
+	width: 35%;
+	height: 80%;
+  }
+
+  .right {
+	width: 65%;
+	height: 80%;
+  }
+
+  .column1 {
+	width: 30%;
+	height: 100%;
+  }
+
+  .column2 {
+	width: 50%;
+	height: 100%;
+  }
+
+  .column3 {
+	width: 20%;
+	height: 100%;
+  }
+
+  img {
+	max-width: 75%;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<h1>Listing Page</h1>
+
+
+<div class="flex-container">
+	<div class="left">
+		<p>Hello World</p>
+	</div>
+	<div class="right">
+  		<div class="column1" style="text-align: center;"><img src=@getImg() alt="Nice Hotel"></div>
+  		<div class="column2">
+  			<h3><b>Hotel Trivago</b></h3>
+		 	<p>The rating is @getRating()</p>
+			<p><b>Random motto of the hotel</b></p>
+			<p>Hotel includes a nice view of the beach. You don't want to miss it!</p>
+		</div>
+  		<div class="column3" style="line-height: 0.8rem; padding-top: 0.5rem;">
+  			<p>5% off</p>
+			<p>1 room 2 days</p>
+			<p>@getPrice()</p>
+			<p>Includes taxes and fees</p>
+  		</div>
+	</div>
+</div>
+
+</body>
+</html>
+
+@code {
+	private double getPrice()
+	{
+		//Will eventually call to firebase to get the price
+		double price = 340;
+		return price;
+	}
+
+	private double getRating()
+	{
+		//Will eventually call to firebase to get the rating
+		double rating = 2.3;
+		return rating;
+	}
+
+	private string getImg()
+	{
+		//Will eventually call to firebase to get the images
+
+		string img = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.KGuRfbrIg5SoY92BTuGb2gHaHa%26pid%3DApi&f=1&ipt=dfc2e4ea498cf7e54e3256d3b5d7c46bf2f61f8329c6f2c79a234a89421964ff&ipo=images";
+		
+		return img;
+	}
+}
