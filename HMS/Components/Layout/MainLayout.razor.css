@@ -18,7 +18,7 @@ main {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
     justify-content: space-between;
-    height: 3.5rem;
+    height: 5rem;
     display: flex;
     align-items:center;
     padding-left: 1rem;
@@ -32,45 +32,13 @@ main {
 }
 
 .nav-title{
-    font-size: 18px;
+    font-size: 1.0rem;
     font-style: italic;
     font-weight: bold;
     color: #1B1F2D;
     flex-grow: 1;
     margin-right: 5px;
     margin-top: 5px;
-}
-
-.navbar-toggle {
-    background-color: #007bff;
-    border: none;
-    cursor: pointer;
-}
-
-.navbar-toggle-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    background-image: url('data:image/svg+xml;charset=UTF8,%3csvg xmlns%3d"http%3a//www.w3.org/2000/svg" viewBox%3d"0 0 30 30"%3e%3cpath stroke%3d"rgba(0, 0, 0, 0.5)" stroke-width%3d"2" d%3d"M4 7h22M4 15h22M4 23h22"%3e%3c/path%3e%3c/svg%3e');
-}
-
-.navbar-nav{
-    display: flex;
-    flex-direction: column;
-    padding-left: 5px;
-}
-
-.nav-link {
-    color: #000;
-    text-decoration: none;
-}
-
-.nav-link:hover {
-    color: #0056b3;
-}
-
-.navbar-collapse {
-    height: auto;
-    flex-basis: 0%;
 }
 
 @media (max-width: 640.98px) {
@@ -113,27 +81,125 @@ main {
     }
 }
 
-.scrollmenu {
-  width: 100%;
-  overflow-y: auto;
-  white-space: nowrap;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #333;
-  z-index: 1000;
+button {
+    display: none;
 }
 
-.scrollmenu a {
-  display: inline-block;
-  padding: 15px;
-  text-decoration: none;
-  color: #fff;
-  transition: background-color 0.3s;
+.navbar {
+    display: flex;
+    position: sticky;
+    align-items: center;
+    justify-content: space-between;
+    top: 5rem;
+    /* background: rgb(255 127 39);
+    background-blend-mode: darken;
+    background-size: cover; */
+    color: white;
+    padding: 10px 20px;
 }
 
-.scrollmenu a:hover {
-  background-color: #555;
+.nav-list {
+    display: flex;
+    list-style: none;
+}
+
+.nav-list li {
+    margin-right: 20px;
+}
+
+.nav-list li:last-child {
+    margin-right: 0;
+}
+
+.nav-list li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-list li a:hover {
+    color: #0056b3;
+    /* Change the color on hover */
+}
+
+.rightNav {
+    text-align: right;
+}
+
+@media (max-width: 1080px) {
+    .navbar {
+        display: none;
+    }
+
+    div.nav-item {
+        display: none;
+    }
+    
+    button.navbar-toggle {
+        background-color: #f7f7f7;
+        border: none;
+        color: white;
+        width: 3rem;
+        height: 3.2rem;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        background-image: url('data:image/svg+xml;charset=UTF8,%3csvg xmlns%3d"http%3a//www.w3.org/2000/svg" viewBox%3d"0 0 30 30"%3e%3cpath stroke%3d"rgba(0, 0, 0, 0.5)" stroke-width%3d"2" d%3d"M4 7h22M4 15h22M4 23h22"%3e%3c/path%3e%3c/svg%3e');
+        background-position: center;
+        cursor: pointer;
+    }
+    
+    .navbar-nav{
+        display: flex;
+        flex-direction: column;
+        padding-left: 5px;
+    }
+    
+    .nav-link {
+        color: #000;
+        text-decoration: none;
+    }
+    
+    .nav-link:hover {
+        color: #0056b3;
+    }
+    
+    .navbar-collapse {
+        height: 30rem;
+        flex-basis: 0%;
+    }
+    
+    .nav-item {
+        font-size: 1.5rem;
+    }
+
+    .scrollmenu {
+        width: 100%;
+        overflow-y: auto;
+        white-space: nowrap;
+        position: fixed;
+        margin-top: 5rem;
+        top: 0;
+        left: 0;
+        background-color: #f7f7f7;
+        z-index: 1000;
+      }
+      
+      .scrollmenu a {
+        display: inline-block;
+        padding: 15px;
+        text-decoration: none;
+        color: black;
+        transition: background-color 0.3s;
+      }
+      
+      .scrollmenu a:hover {
+        background-color: #cdcdcd;
+      }
 }
 
 #blazor-error-ui {
