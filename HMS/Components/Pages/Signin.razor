@@ -32,7 +32,7 @@
 {
     string s_Email = string.Empty;
     string s_Password = string.Empty;
-    string LoginMessage = string.Empty;
+    string LoginMessage = "";
     private bool isLoading = false; // Track loading state
     FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 
@@ -84,11 +84,6 @@
         {
             LoginMessage = "Invalid Email or Password";
         }
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await retrieveData();
     }
 
 }
