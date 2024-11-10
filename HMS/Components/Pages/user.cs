@@ -1,21 +1,21 @@
 
 
 public class c_user{
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public bool IsLoggedIn { get; set; } = false;
+    public string s_email { get; set; }
+    public string s_password { get; set; }
+    public bool b_isLoggedIn { get; set; } = false;
 
     public void SetUser(string email, string password)
     {
-        Email = email;
-        Password = password;
-        IsLoggedIn = true;
+        s_email = email;
+        s_password = password;
+        b_isLoggedIn = true;
     }
 
     public void ClearUser()
     {
-        Email = string.Empty;
-        Password = string.Empty;
-        IsLoggedIn = false;
+        s_email = string.Empty;
+        s_password = string.Empty;
+        b_isLoggedIn = false;
     }
 }
