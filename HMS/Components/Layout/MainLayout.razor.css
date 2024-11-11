@@ -22,6 +22,8 @@ main {
     display: flex;
     align-items:center;
     padding-left: 1rem;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .title-icon{
@@ -117,7 +119,7 @@ main {
 }
 
 .p {
-    font-size: 0.5rem;
+    font-size: 0.7rem;
     color: #4F4F4F;
     font-family: Fraunces;
     font-weight: 400;
@@ -148,6 +150,9 @@ main {
     }
     .footer h3{
         font-size: 0.75rem;  
+    }
+    .navbar-collapse {
+        background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);
     }
 }
 

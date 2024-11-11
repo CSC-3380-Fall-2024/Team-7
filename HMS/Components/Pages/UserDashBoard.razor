@@ -1,7 +1,7 @@
 @page "/userDashBoard"
 
 <PageTitle>My Account</PageTitle>
-<main>
+<body>
     <div class="pg-hdr">
         <h1>My Account</h1>
         <div class="act-items">
@@ -22,25 +22,37 @@
         <h2>Upcoming Trips</h2>
         <h3>You have </h3> @*pull from user bookings*@ <h3> upcoming trips</h3>
     </div>
-</main>
+</body>
 
 <style>
+html, body {
+    margin: 0;
+    padding 0;
+}
+
 .pg-hdr {
     background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);
     color: #FFFFFF;
     width: 100%; 
-    margin-top: 0px;
+    margin-top: 0;
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
-.act-items{
-    display: flex;
-    flex-direction: row; 
+.act-items {
+    margin-left: auto;
+    margin-right: 20px;
 }
 
-ul { 
-    list-style-type: none;
+ul {
+    display: flex; 
+    gap: 20px;  
+    list-style-type: none; 
+}  
+
+.user-info {
+    padding-top: 20px;
 }
 
 .trips{
