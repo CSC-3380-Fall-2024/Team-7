@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using System;
 @using System.Collections.Generic;
+@inject NavigationManager Navigation
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <body>
@@ -10,13 +11,13 @@
     </div>*@
 
     <main>
-        <div class="top-row px-4">
+        <div class="top-row px-4" style="@NavBarStyle">
             <div class="title-icon"></div>
-            <div class="nav-title">Euphoria Hotels</div> 
+            <div class="nav-title" style="@NavTextStyle">Euphoria Hotels</div> 
             <nav class="navbar">
                 <ul class="nav-list">
                     @for(int i = 0; i < NavBarNames.Length; i++) {
-                        <li><a href=@NavBarPages[i]>@NavBarNames[i]</a></li>
+                        <li><a href=@NavBarPages[i] style="@NavTextStyle">@NavBarNames[i]</a></li>
                     }
                 </ul>
             </nav>
@@ -28,7 +29,7 @@
                 <ul class="navbar-nav">
                     @for(int i = 0; i < NavBarNames.Length; i++){
                         <li class="nav-item">
-                            <a class="nav-link" href=@NavBarPages[i]>@NavBarNames[i]</a>
+                            <a class="nav-link" href=@NavBarPages[i] style="@NavTextStyle">@NavBarNames[i]</a>
                         </li>
                     }
                 </ul>
@@ -93,4 +94,14 @@
     // Create a dictionary that will hold the NavBar pages
     string[] NavBarNames = {"Home", "Discover", "Activities", "Listing Page", "About", "Contact Us", "My Account", "Log In"};
     string[] NavBarPages = {"#", "todoapp", "todoapp", "listings", "about", "contact", "userDashBoard", "login"};
+    string NavBarStyle, NavTextStyle;
+    protected override void OnInitialized() {
+        var currentPage = Navigation.ToBaseRelativePath(Navigation.Uri);
+        
+        // changes the color of the navbar based on the page it's on
+        (NavBarStyle, NavTextStyle) = currentPage switch {
+            "userDashBoard" => ("background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);", "color: #FFFFFF;"),
+            _ => ("background-color: #f7f7f7;", "color: #333333;") 
+        };
+    }
 }
