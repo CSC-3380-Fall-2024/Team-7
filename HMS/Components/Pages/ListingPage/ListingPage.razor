@@ -2,26 +2,37 @@
 @rendermode InteractiveServer
 <PageTitle>Listing Page</PageTitle>
 
-<h1>Listing Page</h1>
-
 <div class="flex-container">
 	<div class="left">
-		<p>Hello World</p>
+		<h5 class="filter-heading-text" style="text-align: left; margin-left: 3rem; font-size: 1.2rem;">
+			<p>Filter by:</p>
+		</h5>
+		<div class="filter-box">
+			<div class="filter-box-top">
+				<p class="filter-heading-text" style="margin: auto;">Your Budget Per Day</p>
+			</div>
+		</div>
+		<div class="filter-box">
+			<div class="filter-box-top">
+				<p class="filter-heading-text" style="margin: auto;">Rating</p>
+			</div>
+		</div>
+		<div class="filter-box">
+			<div class="filter-box-top">
+				<p class="filter-heading-text" style="margin: auto;">Popular Filters</p>
+			</div>
+		</div>
+		<div class="filter-box">
+			<div class="filter-box-top">
+				<p class="filter-heading-text" style="margin: auto;">Activities</p>
+			</div>
+		</div>
+		
 	</div>
 	<div class="right">
-  		<div class="column1" style="text-align: center;"><img src=@getImg() alt="Nice Hotel"></div>
-  		<div class="column2">
-  			<h3><b>Hotel Trivago</b></h3>
-		 	<p>The rating is @getRating()</p>
-			<p><b>Random motto of the hotel</b></p>
-			<p>Hotel includes a nice view of the beach. You don't want to miss it!</p>
+		<div class="hotel-info-border">
+			Hello World
 		</div>
-  		<div class="column3" style="line-height: 0.8rem; padding-top: 0.5rem;">
-  			<p>5% off</p>
-			<p>1 room 2 days</p>
-			<p>@getPrice()</p>
-			<p>Includes taxes and fees</p>
-  		</div>
 	</div>
 </div>
 
