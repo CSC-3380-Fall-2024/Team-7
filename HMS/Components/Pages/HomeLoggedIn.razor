@@ -1,0 +1,63 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<main>
+    <div class="img-header">
+        <h2>Enjoy Your Dream Vacation</h2>
+        <p>Book your Bliss</p>
+    </div>
+
+    <br>
+
+    <div class="trips">
+        <h2>Upcoming Trips</h2>
+        <h3>You have </h3> @*pull from user bookings*@ <h3> upcoming trips</h3>
+    </div>
+
+    <div class="trips">
+        <h2>Previous Trips</h2>
+    </div>
+
+    <div class="trips" id="resorts">
+        <h2>Featured Resorts</h2>
+    </div>
+</main>
+
+<style>
+    body{
+        font-family: 'Fraunces';
+        font-size: 24px;
+    }
+
+    .img-header{
+        background-image: url('/images/background_header.png');
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #FFFFFF;
+        flex-direction: column;
+        border-radius: 6px;
+    }
+
+    .trips{
+        border: 1px solid #E0E0E0;
+        padding: 20px;
+        background-color: #f9f9f9;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .h2{
+        font-weight: bold;
+    }
+</style>
+
+@code {
+
+}
