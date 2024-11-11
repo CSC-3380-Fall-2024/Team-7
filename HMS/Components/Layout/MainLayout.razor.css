@@ -79,17 +79,30 @@ main {
     margin-top: 20px;
     bottom: 0;
     width: 100%;
-    text-align: center;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     font-size: 1rem;
 }
 
+.ft-title {
+    margin-left: 30px;
+    margin-bottom: 20px;
+    /*text-align: left;
+    justify-items: left;*/
+}
+
 .ftr-section {
+    align-items: center;
     margin-left: 15px;
     flex: 1;
     text-align: left;
     font-family: 'Fraunces';
+}
+.ftr-wrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .h3 {

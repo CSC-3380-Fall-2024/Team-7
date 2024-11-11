@@ -1,20 +1,55 @@
 @page "/userDashBoard"
 
-<PageTitle>User Dashboard</PageTitle>
+<PageTitle>My Account</PageTitle>
+<main>
+    <div class="pg-hdr">
+        <h1>My Account</h1>
+        <div class="act-items">
+            <ul>
+                <li>My Trips</li>
+                <li>Reward and Wallet</li>
+                <li>Profile</li>
+            </ul>
+        </div>
+    </div>
 
-<h1>Account Details</h1>
-<div class="userInfo">
-    <ul>
-        <li>Name: @*pulls user's name from database*@</li>
-        <li>Payment Method: @*pull users's payment methods from database*@</li>
-        <li>Future Bookings: @*pulls user's future bookings from database*@</li>
-        <li>Previous Bookings: @*pull user's previous bookings from database*@</li>
-    </ul>
-</div>
+    <div class="userInfo">
+        <h3>Hi, User</h3>
+        <p>Member #</p>
+    </div>
+
+    <div class="trips">
+        <h2>Upcoming Trips</h2>
+        <h3>You have </h3> @*pull from user bookings*@ <h3> upcoming trips</h3>
+    </div>
+</main>
 
 <style>
+.pg-hdr {
+    background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);
+    color: #FFFFFF;
+    width: 100%; 
+    margin-top: 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+.act-items{
+    display: flex;
+    flex-direction: row;
+}
 
 ul { 
     list-style-type: none;
+}
+
+.trips{
+    border: 1px solid #E0E0E0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 </style>
