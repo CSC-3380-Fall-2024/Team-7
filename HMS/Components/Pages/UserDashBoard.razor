@@ -20,7 +20,7 @@
 
     <div class="psection">
         <h3>Upcoming Trips</h3>
-        <h3>You have </h3> @*pull from user bookings*@ <h3> upcoming trips</h3>
+        <h3 class="trip-nmbr">You have @*pull from user bookings*@ upcoming trips</h3>
         <div class="img-header"></div>
     </div>
 
@@ -59,6 +59,8 @@ ul {
 
 .user-info {
     padding-top: 20px;
+    padding-left: 25px;
+    max-width: 70%;
 }
 
 .psection{
@@ -70,6 +72,14 @@ ul {
     margin-left: 5px;
     margin-right: 5px;
     border-radius: 6px 6px 0px 0px;
+}
+
+.trip-nmbr {
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .img-header {
