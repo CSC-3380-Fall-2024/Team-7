@@ -1,11 +1,12 @@
 @page "/contact"
+@using Google.Cloud.Firestore
 @rendermode InteractiveServer
 
 <PageTitle>Contact Us</PageTitle>
 <main>
     <div class="contact-info">
         <h2>Contact Us</h2>
-        <p>
+        <p class="text-box">
             Let us know if there is anything you would like to talk to our team about whether it's
             questions, concerns, or feeback. We're here to help so let us know it the form and we 
             will get back to your promptly! 
@@ -13,10 +14,11 @@
         <div class="contact-img"><img src="/images/contact_img.png"/></div> 
     </div>
     <div class="contact-info">
-        <h3>Send us your questions and concerns in the form below</h3>
-        <form>
-
-        </form>
+        <h3 class="form-hdr">Send us your questions and concerns in the form below</h3>
+        <input placeholder="Name" @bind="contactName"/> <br/>
+        <input placeholder="Email" @bind="contactEmail"/> <br/>
+        <input placeholder="Message" @bind="contactMessage"/> <br/>
+        <button @onclick="addContactForm">Submit</button>
     </div>
 </main>
 
@@ -42,12 +44,66 @@
     }
 
     .contact-img img {
-        width: 100%; /* Make image fill the contact-img div */
-        height: auto; /* Maintain aspect ratio */
-        object-fit: cover; /* Cover the area of contact-img */
+        width: 100%;  
+        height: auto;  
+        object-fit: cover;  
+    }
+
+    .form-hdr {
+        margin-bottom: 30px;
+    }
+
+    .text-box {
+        max-width: 600px;
+        margin-top: 30px;
     }
 </style>
 
 @code {
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+    public class ContactForm {
+        public string Id { get; set;}
+        public string Name { get; set;}
+        public string Email { get; set;}
+        public string Message { get; set;}
+    }
+    private IEnumerable<ContactForm> contactForms = Array.Empty<ContactForm>();
+    private string contactName = "";
+    private string contactEmail = "";
+    private string contactMessage = "";
 
+    private async Task refreshList(){
+        CollectionReference collection = db.Collection("ContactForm");
+        QuerySnapshot docs = await collection.GetSnapshotAsync();
+
+        var lst = new List<ContactForm>();
+            foreach (var doc in docs.Documents){
+                lst.Add(new ContactForm {
+                    Id = doc.Id,
+                    Name = doc.GetValue<string>("name"),
+                    Email = doc.GetValue<string>("email"),
+                    Message = doc.GetValue<string>("message")
+                });
+            }
+        contactForms = lst;
+    }
+    protected override async Task OnInitializedAsync() {
+        await refreshList();
+    }
+
+     private async Task addContactForm() {
+        CollectionReference collection = db.Collection("ContactForm");
+        var newEntry = new {
+            name = contactName,
+            email = contactEmail,
+            message = contactMessage
+        };
+        
+        await collection.AddAsync(newEntry);
+        await refreshList();
+
+        contactName = "";
+        contactEmail = "";
+        contactMessage = "";
+    }
 }
