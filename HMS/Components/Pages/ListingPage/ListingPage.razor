@@ -4,7 +4,7 @@
 
 <div class="flex-container">
 	<div class="left">
-		<h5 class="filter-heading-text" style="text-align: left; margin-left: 3rem; font-size: 1.2rem;">
+		<h5 class="filter-heading-text" style="text-align: left; margin-left: 5.5rem; font-size: 1.2rem;">
 			<p>Filter by:</p>
 		</h5>
 		<div class="filter-box">
@@ -31,7 +31,18 @@
 	</div>
 	<div class="right">
 		<div class="hotel-info-border">
-			Hello World
+			<div class="column" style="width: 35%;">
+				<img src=@getImg() class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
+			</div>
+			<div class="column" style="width: 45%">
+					<h1>Hotel Trivago</h1>
+					<p>This is a nice description of the picture</p>
+					<p>The rating is a @getRating()</p>
+				</div>
+				<div class="column" style="width: 20%">
+					<p>The price is $@getPrice()</p>
+					<button class="button-to-book">See Rooms</button>
+				</div>
 		</div>
 	</div>
 </div>

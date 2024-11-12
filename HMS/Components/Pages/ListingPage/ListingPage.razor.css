@@ -26,7 +26,7 @@
 }
 
 .hotel-info-border {
-    width: 90%;
+    width: 95%;
 height: 240px;
 top: 426px;
 left: 425px;
@@ -37,6 +37,13 @@ margin-right: auto;
 opacity: 0px;
 border: 1px solid #E0E0E0
   }
+
+.column {
+  float: left;
+  padding: 1%;
+  height: 100%;
+  width: 50%;
+}
 
 
 /* The border that houses the filter information */
@@ -85,7 +92,8 @@ text-decoration-skip-ink: none;
 
 /* This modifies the img tag so that it scales with the size of the screen */ 
 img {
-	max-width: 50%;
+	max-width: 100%;
+  max-height: 100%;
 	height: auto;
 	width: auto\9;
 }
@@ -107,7 +115,7 @@ img {
   }
 
   .filter-box {
-    background-color: red;
+    background-color: blue;
     width: 20.1rem;
   }
 
@@ -136,7 +144,8 @@ border: 1px solid #E0E0E0
   }
 
   img {
-	max-width: 75%;
+	max-width: 100%;
+  width: 100%;
   }
 
 }
