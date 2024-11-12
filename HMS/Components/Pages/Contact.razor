@@ -13,7 +13,7 @@
         </p>
         <div class="contact-img"><img src="/images/contact_img.png"/></div> 
     </div>
-    <div class="contact-info">
+    <div class="contact-info" id="form">
         <h3 class="form-hdr">Send us your questions and concerns in the form below</h3>
         <input placeholder="Name" @bind="contactName"/> <br/>
         <input placeholder="Email" @bind="contactEmail"/> <br/>
@@ -50,12 +50,16 @@
     }
 
     .form-hdr {
-        margin-bottom: 30px;
+        margin-bottom: 100px;
     }
 
     .text-box {
         max-width: 600px;
         margin-top: 30px;
+    }
+    .form {
+        border-color: black;
+        border-width: 1px;
     }
 </style>
 
