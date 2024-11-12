@@ -14,13 +14,19 @@
     </div>
 
     <div class="userInfo">
-        <h3>Hi, User</h3>
+        <h2>Hi, User</h2>
         <p>Member #</p>
     </div>
 
-    <div class="trips">
-        <h2>Upcoming Trips</h2>
+    <div class="psection">
+        <h3>Upcoming Trips</h3>
         <h3>You have </h3> @*pull from user bookings*@ <h3> upcoming trips</h3>
+        <div class="img-header"></div>
+    </div>
+
+    <div class="psection">
+        <h2>Member Rewards</h2>
+        <p>Earn qualifiying points or nights to unlock more tier benefits</p>
     </div>
 </body>
 
@@ -55,7 +61,7 @@ ul {
     padding-top: 20px;
 }
 
-.trips{
+.psection{
     border: 1px solid #E0E0E0;
     padding: 20px;
     background-color: #f9f9f9;
@@ -63,5 +69,23 @@ ul {
     border-radius: 6px;
     margin-left: 5px;
     margin-right: 5px;
+    border-radius: 6px 6px 0px 0px;
+}
+
+.img-header {
+    background-image: url('/images/upcoming_trips.svg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
+    flex-direction: column;
+}
+
+p {
+   size: 1rem; 
 }
 </style>
