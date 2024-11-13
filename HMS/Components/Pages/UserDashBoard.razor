@@ -19,7 +19,7 @@
         <p>Member #</p>
     </div>
 
-    <div class="user-section">
+    <div class="user-section" id="upcoming-trips">
         <h3>Upcoming Trips</h3>
         <h3 class="trip-number">You have @*pull from user bookings*@ upcoming trips</h3>
         <div class="img-header"></div>
@@ -40,18 +40,30 @@
         </div>
         <div class="tier-progress" id="tier-labels">
             @*this next part is for the labeling over the tiers*@ 
-            <p class="tier-level" style="left: 10%;">10</p>
-            <p class="tier-level" style="left: 20%;">20</p>  
-            <p class="tier-level" style="left: 40%;">40</p> 
-            <p class="tier-level" style="left: 60%;">60</p> 
-            <p class="tier-level" style="left: 80%;">80</p>  
-            <p class="tier-level" style="left: 100%;">100</p> 
+            <div class="label-container" style="left: 10%;">
+                <p class="tier-level">10</p>
+            </div>
+            <div class="label-container" style="left: 20%;">
+                <p class="tier-level">20</p>
+            </div>
+            <div class="label-container" style="left: 40%;">
+                <p class="tier-level">40</p>
+            </div>
+            <div class="label-container" style="left: 60%;">
+                <p class="tier-level">60</p>
+            </div>
+            <div class="label-container" style="left: 80%;">
+                <p class="tier-level">80</p>
+            </div>
+            <div class="label-container" style="left: 100%;">
+                <p class="tier-level">100</p>
+            </div>
         </div>  
     </div>
 </body>
 
 <style>
-html, body {
+html, body, content {
     margin: 0;
     padding 0;
 }
@@ -61,6 +73,7 @@ html, body {
     color: #FFFFFF;
     width: 100%; 
     margin-top: 0;
+    padding-top: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -69,6 +82,7 @@ html, body {
 .action-items {
     margin-left: auto;
     margin-right: 20px;
+    padding-top: 10px;
 }
 
 ul {
@@ -78,7 +92,7 @@ ul {
 }  
 
 .user-info {
-    padding-top: 20px;
+    padding-top: 30px;
     padding-left: 25px;
     max-width: 70%;
 }
@@ -86,7 +100,7 @@ ul {
 .user-section {
     border: 1px solid #E0E0E0;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #F2F2F2;
     margin-bottom: 20px;
     border-radius: 6px;
     margin-left: 5px;
@@ -106,6 +120,7 @@ ul {
     margin-bottom: 15px;
     justify-content: center;
     align-items: center;
+    margin-bottom: 10px;;
 }
 
 .img-header {
@@ -155,21 +170,21 @@ p {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 2px;
+    font-size: 0.9rem;
     height: 100%;
 }
 
-.dot {
-    height: 5px;
-    width: 5px;
-    background-color: #A56E38;
-    border-radius: 50%;
-    display: inline-block;
+.label-container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    transform: translateX(-50%); 
 }
 
 #tier-labels {
     background-color: transparent;
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 </style>
