@@ -37,9 +37,10 @@
             <div class="tier-line" style="left: 60%;"></div> 
             <div class="tier-line" style="left: 80%;"></div>  
             <div class="tier-line" style="left: 100%;"></div>
-
+        </div>
+        <div class="tier-progress" id="tier-labels">
             @*this next part is for the labeling over the tiers*@ 
-            <p class="tier-level" style="left: 10%;">10</p>  
+            <p class="tier-level" style="left: 10%;">10</p>
             <p class="tier-level" style="left: 20%;">20</p>  
             <p class="tier-level" style="left: 40%;">40</p> 
             <p class="tier-level" style="left: 60%;">60</p> 
@@ -65,7 +66,7 @@ html, body {
     align-items: center;
 }
 
-.action-item {
+.action-items {
     margin-left: auto;
     margin-right: 20px;
 }
@@ -158,12 +159,30 @@ p {
     height: 100%;
 }
 
+.dot {
+    height: 5px;
+    width: 5px;
+    background-color: #A56E38;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+#tier-labels {
+    background-color: transparent;
+    margin-top: 0px;
+}
+
 </style>
 
 @code {
     FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
     private double progressPercentage = 0; //var that'll hold value pulled from database
+    public class c_users {
+        public string s_id { get; set;}
+        public int i_rewards { get; set;}
+    }
 
+    private c_users user = new c_users{s_id = ""};
     protected override async Task OnInitializedAsync() {
         await LoadUserRewardsProgress();
     }
