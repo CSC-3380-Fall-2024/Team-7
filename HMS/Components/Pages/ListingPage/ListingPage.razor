@@ -1,5 +1,7 @@
-@page "/listings"
+@using Google.Cloud.Firestore
 @rendermode InteractiveServer
+@page "/listings"
+
 <PageTitle>Listing Page</PageTitle>
 
 <div class="flex-container">
@@ -35,19 +37,91 @@
 				<img src=@getImg() class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
 			</div>
 			<div class="column" style="width: 45%">
-					<h1>Hotel Trivago</h1>
-					<p>This is a nice description of the picture</p>
-					<p>The rating is a @getRating()</p>
+					<h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">Hotel Trivago</h1>
+					<p style="margin-bottom: 0.5rem;">The rating is a @getRating() (1200 reviews)</p>
+					<b>Slogan of hotel</b>
+					<p>This is a nice description of the picture and im going to keep talking until this thign does what I do not want it to do oh my!</p>
+					<button class="button-to-book">See Rooms</button>
 				</div>
 				<div class="column" style="width: 20%">
 					<p>The price is $@getPrice()</p>
-					<button class="button-to-book">See Rooms</button>
 				</div>
 		</div>
+
+		@foreach (var num in hotel)
+		{
+			if (!string.IsNullOrEmpty(s_path))
+			{
+				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
+					<div class="column" style="width: 35%;">
+						<img src=@s_path class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;" />
+					</div>
+					<div class="column" style="width: 45%">
+						<h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">Hotel Trivago</h1>
+						<p style="margin-bottom: 0.5rem;">The rating is a @getRating() (1200 reviews)</p>
+						<b>Slogan of hotel</b>
+						<p>This is a nice description of the picture and im going to keep talking until this thign does what I do not want it to do oh my!</p>
+						<button class="button-to-book">See Rooms</button>
+					</div>
+					<div class="column" style="width: 20%">
+						<p>The price is $@getPrice()</p>
+					</div>
+				</div>
+			}
+			//grabHotelsImage(num.s_id);
+			<button @onclick="(() => grabHotelsImage(num.s_id))">@num.s_id</button>
+		}
 	</div>
 </div>
 
 @code {
+
+	// Set up an instance of the firebase
+	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+	string s_path = string.Empty;
+
+	public class c_hotels
+    {
+        public string s_id { get; set;}
+        public string s_name { get; set;}
+    }
+
+    private IEnumerable<c_hotels> hotel = Array.Empty<c_hotels>();
+
+	private async Task grabImages()
+    {
+        CollectionReference cr_hotels =  db.Collection("Hotels");
+        QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+
+        var lst = new List<c_hotels>();
+            foreach (var doc in qs_hotelDocs.Documents)
+            {
+                lst.Add(new c_hotels{s_id = doc.Id, s_name = doc.GetValue<string>("name")});
+            }
+        hotel = lst;
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await grabImages();
+    }
+
+    private async Task grabHotelsImage(string x)
+    {
+
+        CollectionReference cr_hotelsImages = db.Collection("Hotels").Document(x).Collection("images");
+        DocumentReference dr_docRef = cr_hotelsImages.Document("0");
+        DocumentSnapshot ds_path = await dr_docRef.GetSnapshotAsync();
+        if (ds_path.Exists) // Check if the document exists
+        {
+            s_path = ds_path.GetValue<string>("path");
+        }
+        else
+        {
+            s_path = string.Empty; // Reset if no image found
+        }
+    }
+
 	private double getPrice()
 	{
 		//Will eventually call to firebase to get the price

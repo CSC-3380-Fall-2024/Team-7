@@ -1,0 +1,78 @@
+@using Google.Cloud.Firestore;
+
+@rendermode InteractiveServer
+
+@page "/images"
+
+<PageTitle>Hotels</PageTitle>
+
+@if (!string.IsNullOrEmpty(s_path))
+{
+    <div class="half-img"><img src=@s_path alt="Hotel Image" /></div>
+}
+
+@foreach (var num in hotel)
+{
+    <button @onclick="(() => grabHotelsImage(num.s_id))">@num.s_id</button>
+}
+
+
+<style>
+    .half-img{
+        position: relative;
+        width: 300px;  
+        height: 200px; 
+        overflow: hidden;  
+        margin-bottom: 10px;
+    }
+</style>
+
+
+@code
+{
+    string s_path = string.Empty;
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+
+    public class c_hotels
+    {
+        public string s_id { get; set;}
+        public string s_name { get; set;}
+    }
+
+    private IEnumerable<c_hotels> hotel = Array.Empty<c_hotels>();
+
+    private async Task grabImages()
+    {
+        CollectionReference cr_hotels =  db.Collection("Hotels");
+        QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+
+        var lst = new List<c_hotels>();
+            foreach (var doc in qs_hotelDocs.Documents)
+            {
+                lst.Add(new c_hotels{s_id = doc.Id, s_name = doc.GetValue<string>("name")});
+            }
+        hotel = lst;
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await grabImages();
+    }
+
+    private async Task grabHotelsImage(string x)
+    {
+
+        CollectionReference cr_hotelsImages = db.Collection("Hotels").Document(x).Collection("images");
+        DocumentReference dr_docRef = cr_hotelsImages.Document("0");
+        DocumentSnapshot ds_path = await dr_docRef.GetSnapshotAsync();
+        if (ds_path.Exists) // Check if the document exists
+        {
+            s_path = ds_path.GetValue<string>("path");
+        }
+        else
+        {
+            s_path = string.Empty; // Reset if no image found
+        }
+    }
+}
+
