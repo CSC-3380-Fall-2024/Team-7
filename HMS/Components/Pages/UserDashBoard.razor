@@ -1,11 +1,101 @@
-@page "/UserDashBoard"
+@page "/userDashBoard"
 
-<PageTitle>User Dashboard</PageTitle>
+<PageTitle>My Account</PageTitle>
+<body>
+    <div class="pg-hdr">
+        <h1>My Account</h1>
+        <div class="act-items">
+            <ul>
+                <li>My Trips</li>
+                <li>Reward and Wallet</li>
+                <li>Profile</li>
+            </ul>
+        </div>
+    </div>
 
-<h1>Account Details</h1>
-<p>
-    Name: @*pulls user's name from database*@
-    Payment Method: @*pull users's payment methods from database*@
-    Future Bookings: @*pulls user's future bookings from database*@
-    Previous Bookings: @*pull user's previous bookings from database*@
-</p>
+    <div class="userInfo">
+        <h2>Hi, User</h2>
+        <p>Member #</p>
+    </div>
+
+    <div class="psection">
+        <h3>Upcoming Trips</h3>
+        <h3 class="trip-nmbr">You have @*pull from user bookings*@ upcoming trips</h3>
+        <div class="img-header"></div>
+    </div>
+
+    <div class="psection">
+        <h2>Member Rewards</h2>
+        <p>Earn qualifiying points or nights to unlock more tier benefits</p>
+    </div>
+</body>
+
+<style>
+html, body {
+    margin: 0;
+    padding 0;
+}
+
+.pg-hdr {
+    background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);
+    color: #FFFFFF;
+    width: 100%; 
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.act-items {
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+ul {
+    display: flex; 
+    gap: 20px;  
+    list-style-type: none; 
+}  
+
+.user-info {
+    padding-top: 20px;
+    padding-left: 25px;
+    max-width: 70%;
+}
+
+.psection{
+    border: 1px solid #E0E0E0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 6px 6px 0px 0px;
+}
+
+.trip-nmbr {
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.img-header {
+    background-image: url('/images/upcoming_trips.svg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
+    flex-direction: column;
+}
+
+p {
+   size: 1rem; 
+}
+</style>

@@ -1,14 +1,27 @@
 using HMS.Components;
+using System;
 
+string credentialPath = "";
 
+/*
+ * Check to see which platform a developer or user is on
+ */
 
-string credentialPath = @".\hotelmanagementsystem-3f342-firebase-adminsdk-njalz-225dac129b.json";
+if(OperatingSystem.IsLinux() == true || OperatingSystem.IsMacOS() == true) {
+   credentialPath = @"../../hotelmanagementsystem-3f342-firebase-adminsdk-njalz-ea30d4f99f.json"; 
+} else if(OperatingSystem.IsWindows() == true) {
+   credentialPath = @"..\..\hotelmanagementsystem-3f342-firebase-adminsdk-njalz-ea30d4f99f.json"; 
+}
+ 
+
 Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialPath);
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<c_user>();
 
 var app = builder.Build();
 
@@ -29,3 +42,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+
