@@ -15,9 +15,9 @@
     </div>
     <div class="contact-info" id="form">
         <h3 class="form-hdr">Send us your questions and concerns in the form below</h3>
-        <input placeholder="Name" @bind="contactName"/> <br/>
-        <input placeholder="Email" @bind="contactEmail"/> <br/>
-        <input placeholder="Message" @bind="contactMessage"/> <br/>
+        <input placeholder="Name" @bind="s_contactName"/> <br/>
+        <input placeholder="Email" @bind="s_contactEmail"/> <br/>
+        <input placeholder="Message" @bind="s_contactMessage"/> <br/>
         <button @onclick="addContactForm">Submit</button>
     </div>
 </main>
@@ -68,15 +68,15 @@
 @code {
     FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
     public class ContactForm {
-        public string Id { get; set;}
-        public string Name { get; set;}
-        public string Email { get; set;}
-        public string Message { get; set;}
+        public string s_id { get; set;}
+        public string s_name { get; set;}
+        public string s_email { get; set;}
+        public string s_message { get; set;}
     }
     private IEnumerable<ContactForm> contactForms = Array.Empty<ContactForm>();
-    private string contactName = "";
-    private string contactEmail = "";
-    private string contactMessage = "";
+    private string s_contactName = "";
+    private string s_contactEmail = "";
+    private string s_contactMessage = "";
 
     private async Task refreshList(){
         CollectionReference collection = db.Collection("ContactForm");
@@ -85,10 +85,10 @@
         var lst = new List<ContactForm>();
             foreach (var doc in docs.Documents){
                 lst.Add(new ContactForm {
-                    Id = doc.Id,
-                    Name = doc.GetValue<string>("name"),
-                    Email = doc.GetValue<string>("email"),
-                    Message = doc.GetValue<string>("message")
+                    s_id = doc.Id,
+                    s_name = doc.GetValue<string>("name"),
+                    s_email = doc.GetValue<string>("email"),
+                    s_message = doc.GetValue<string>("message")
                 });
             }
         contactForms = lst;
@@ -100,16 +100,16 @@
      private async Task addContactForm() {
         CollectionReference collection = db.Collection("ContactForm");
         var newEntry = new {
-            name = contactName,
-            email = contactEmail,
-            message = contactMessage
+            name = s_contactName,
+            email = s_contactEmail,
+            message = s_contactMessage
         };
         
         await collection.AddAsync(newEntry);
         await refreshList();
 
-        contactName = "";
-        contactEmail = "";
-        contactMessage = "";
+        s_contactName = "";
+        s_contactEmail = "";
+        s_contactMessage = "";
     }
 }
