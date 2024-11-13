@@ -1,0 +1,90 @@
+@using Google.Cloud.Firestore
+@rendermode InteractiveServer
+@page "/login"
+
+<PageTitle>Login</PageTitle>
+
+<h1>Sign Up</h1>
+<form @onsubmit="HandleSubmit">
+    <p>
+        <input type="email" @bind="newEmail" placeholder="Enter your email" id="email" size="30" maxlength="69" minlength="3" required />
+    </p>
+    <p>
+        <input type="password" @bind="newPassword" placeholder="Enter your password" id="password" size="30" maxlength="69" minlength="10" required />
+    </p>
+    <p>
+        <input type="checkbox" @bind="IsEmployee" /> I am an employee
+    </p>
+    @if (IsEmployee)
+    {
+        <p>
+            <input type="text" @bind="EmployeeId" placeholder="Enter Employee Id" id="employeeId" size="30" maxlength="69" />
+        </p>
+    }
+    <p>
+        <button type="submit">Sign Up</button>
+    </p>
+    <p>@LoginMessage</p>
+</form>
+
+@code {
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+
+    public class Users {
+        public string Id { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class Employee {
+        public string Id { get; set; }
+        public bool HasAccount { get; set; }
+        public string Name { get; set; }
+    }
+
+    private IEnumerable<Users> users = Array.Empty<Users>();
+    private IEnumerable<Employee> employees = Array.Empty<Employee>();
+
+    string newEmail = "";
+    string newPassword = "";
+    string EmployeeId = "";
+    string LoginMessage = "";
+    private bool IsEmployee { get; set; } = false;
+
+    
+
+    private async Task HandleSubmit()
+    {
+        CollectionReference Employees = db.Collection("Employees");
+        DocumentReference docRef;
+
+        if (!string.IsNullOrEmpty(EmployeeId))
+        {
+            docRef = Employees.Document(EmployeeId);
+            DocumentSnapshot docSnapshot = await docRef.GetSnapshotAsync();
+
+            bool hasAccount = docSnapshot.GetValue<bool>("HasAccount");
+            if (!hasAccount)
+            {
+                var updateData = new Dictionary<string, object> {
+                    { "HasAccount", true }
+                };
+                await docRef.UpdateAsync(updateData);
+
+                CollectionReference collection = db.Collection("UserAccount");
+                await collection.AddAsync(new { Email = newEmail, Password = newPassword });
+                LoginMessage = "Account created successfully!";
+            }
+            else
+            {
+                LoginMessage = "Sorry, this employee Id already has an account";
+            }
+        }
+        else
+        {
+            CollectionReference collection = db.Collection("UserAccount");
+            await collection.AddAsync(new { Email = newEmail, Password = newPassword });
+            LoginMessage = "Account created successfully!";
+        }
+    }
+}
