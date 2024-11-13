@@ -22,6 +22,8 @@ main {
     display: flex;
     align-items:center;
     padding-left: 1rem;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .title-icon{
@@ -79,17 +81,30 @@ main {
     margin-top: 20px;
     bottom: 0;
     width: 100%;
-    text-align: center;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     font-size: 1rem;
 }
 
+.ft-title {
+    margin-left: 30px;
+    margin-bottom: 20px;
+    /*text-align: left;
+    justify-items: left;*/
+}
+
 .ftr-section {
+    align-items: center;
     margin-left: 15px;
     flex: 1;
     text-align: left;
     font-family: 'Fraunces';
+}
+.ftr-wrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .h3 {
@@ -104,7 +119,7 @@ main {
 }
 
 .p {
-    font-size: 0.5rem;
+    font-size: 0.7rem;
     color: #4F4F4F;
     font-family: Fraunces;
     font-weight: 400;
@@ -135,6 +150,9 @@ main {
     }
     .footer h3{
         font-size: 0.75rem;  
+    }
+    .navbar-collapse {
+        background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);
     }
 }
 
