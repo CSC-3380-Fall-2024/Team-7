@@ -194,8 +194,10 @@ p {
     private double progressPercentage = 0; //var that'll hold value pulled from database
     public class c_users {
         public string s_id { get; set;}
-        public int i_rewards { get; set;}
+        public int i_rewards { get; set;} 
     }
+
+    private c_users users = new c_users{s_id = ""};
 
     private c_users user = new c_users{s_id = ""};
     protected override async Task OnInitializedAsync() {
