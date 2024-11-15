@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.13.0.496" />
     <PackageReference Include="Google.Cloud.Firestore" Version="3.9.0" />
   </ItemGroup>
 
