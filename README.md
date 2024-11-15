@@ -58,3 +58,12 @@ Remove the following line from Components/App.razor file:
 ```html
 <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
 ```
+
+After do this in your bash 
+```
+dotnet clean
+```
+then 
+```
+dotnet build
+```
