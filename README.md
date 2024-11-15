@@ -15,9 +15,13 @@ Team Members:
 - Installing the Bootstrap
 
 ### To add Blazor Bootstrap into the project
-In your powershell
+In your bash do
 ```
-Install-Package Blazor.Bootstrap -Version 3.1.1
+dotnet add package Microsoft.AspNetCore.Components.Web --version 8.0.4
+```
+then 
+```
+dotnet add package Blazor.Bootstrap --version 3.1.1
 ```
 
 ### If the references are not already added->
