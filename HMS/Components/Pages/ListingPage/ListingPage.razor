@@ -1,4 +1,4 @@
-@using Google.Cloud.Firestore
+@using Google.Cloud.Firestore;
 @rendermode InteractiveServer
 @page "/listings"
 
@@ -12,6 +12,26 @@
 		<div class="filter-box">
 			<div class="filter-box-top">
 				<p class="filter-heading-text" style="margin: auto;">Your Budget Per Day</p>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem; padding-top: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1">
+				<label for="price-range-1">$0 - $200</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2">
+				<label for="price-range-2">$200 - $400</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">$400 - $1000</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">$1000 - $2000</label><br>
+			</div>
+			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" onclick="@test()">
+				<label for="price-range-3">$2000 - $5000</label><br>
 			</div>
 		</div>
 		<div class="filter-box">
@@ -32,116 +52,76 @@
 		
 	</div>
 	<div class="right">
-		<div class="hotel-info-border">
-			<div class="column" style="width: 35%;">
-				<img src=@getImg() class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
-			</div>
-			<div class="column" style="width: 45%">
-					<h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">Hotel Trivago</h1>
-					<p style="margin-bottom: 0.5rem;">The rating is a @getRating() (1200 reviews)</p>
-					<b>Slogan of hotel</b>
-					<p>This is a nice description of the picture and im going to keep talking until this thign does what I do not want it to do oh my!</p>
-					<button class="button-to-book">See Rooms</button>
+		@foreach(var hotel in hotelInfo) {
+			i_resultCount++;	
+		}
+		<h1 class="filter-heading-text" style="margin-left: 2rem; font-size: 2rem; margin-bottom: 2rem;">@i_resultCount Listings Found</h1>
+		@if(1 == 1) {
+			i_resultCount = 0;
+		}
+		@foreach(var hotel in hotelInfo) {
+			<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
+				<div class="column" style="width: 35%;">
+					<img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
 				</div>
-				<div class="column" style="width: 20%">
-					<p>The price is $@getPrice()</p>
-				</div>
-		</div>
-
-		@foreach (var num in hotel)
-		{
-			if (!string.IsNullOrEmpty(s_path))
-			{
-				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
-					<div class="column" style="width: 35%;">
-						<img src=@s_path class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;" />
-					</div>
-					<div class="column" style="width: 45%">
-						<h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">Hotel Trivago</h1>
-						<p style="margin-bottom: 0.5rem;">The rating is a @getRating() (1200 reviews)</p>
-						<b>Slogan of hotel</b>
-						<p>This is a nice description of the picture and im going to keep talking until this thign does what I do not want it to do oh my!</p>
+				<div class="column" style="width: 45%">
+						<h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
+						<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
+						<b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
+						<p style="font-size: 0.9rem;">@hotel.s_description</p>
 						<button class="button-to-book">See Rooms</button>
 					</div>
 					<div class="column" style="width: 20%">
-						<p>The price is $@getPrice()</p>
+						<p>The price is $@hotel.d_price</p>
 					</div>
-				</div>
-			}
-			//grabHotelsImage(num.s_id);
-			<button @onclick="(() => grabHotelsImage(num.s_id))">@num.s_id</button>
+			</div>
 		}
 	</div>
 </div>
 
 @code {
-
 	// Set up an instance of the firebase
 	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
-	string s_path = string.Empty;
+	public int i_resultCount;
 
-	public class c_hotels
-    {
-        public string s_id { get; set;}
-        public string s_name { get; set;}
-    }
+	public class c_hotelInfo {
+		public string s_id {get; set;} = string.Empty;
+		public string s_name {get; set;} = string.Empty;
+		public string s_hotelImgPath {get; set;} = string.Empty;
+		public double d_rating {get; set;} = 0.0;
+		public double d_price {get; set;} = 0.0;
+		public int i_reviewCount {get; set;} = 0;
+		public string s_slogan {get; set;} = string.Empty;
+		public string s_description {get; set;} = string.Empty;
+	}
 
-    private IEnumerable<c_hotels> hotel = Array.Empty<c_hotels>();
+	private IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
 
-	private async Task grabImages()
-    {
-        CollectionReference cr_hotels =  db.Collection("Hotels");
-        QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+	protected override async Task OnInitializedAsync() {
+			await refreshList();
+	}
 
-        var lst = new List<c_hotels>();
-            foreach (var doc in qs_hotelDocs.Documents)
+	private async Task refreshList() {
+
+		// List of colection references to be able to access different parts of the database
+		CollectionReference cr_hotels =  db.Collection("Hotels");
+		QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+
+		var lst = new List<c_hotelInfo>();
+			foreach (var doc in qs_hotelDocs.Documents)
             {
-                lst.Add(new c_hotels{s_id = doc.Id, s_name = doc.GetValue<string>("name")});
+				DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
+				DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
+                lst.Add(new c_hotelInfo{s_id = doc.Id, 
+				s_name = doc.GetValue<string>("name"), 
+				s_hotelImgPath = hotelImgs.GetValue<string>("path"),
+				d_rating = doc.GetValue<double>("rating"),
+				d_price = doc.GetValue<double>("price"),
+				i_reviewCount = doc.GetValue<int>("review_count"),
+				s_slogan = doc.GetValue<string>("slogan"),
+				s_description = doc.GetValue<string>("description")
+				});
             }
-        hotel = lst;
-    }
-    
-    protected override async Task OnInitializedAsync()
-    {
-        await grabImages();
-    }
-
-    private async Task grabHotelsImage(string x)
-    {
-
-        CollectionReference cr_hotelsImages = db.Collection("Hotels").Document(x).Collection("images");
-        DocumentReference dr_docRef = cr_hotelsImages.Document("0");
-        DocumentSnapshot ds_path = await dr_docRef.GetSnapshotAsync();
-        if (ds_path.Exists) // Check if the document exists
-        {
-            s_path = ds_path.GetValue<string>("path");
-        }
-        else
-        {
-            s_path = string.Empty; // Reset if no image found
-        }
-    }
-
-	private double getPrice()
-	{
-		//Will eventually call to firebase to get the price
-		double price = 340;
-		return price;
-	}
-
-	private double getRating()
-	{
-		//Will eventually call to firebase to get the rating
-		double rating = 2.3;
-		return rating;
-	}
-
-	private string getImg()
-	{
-		//Will eventually call to firebase to get the images
-
-		string img = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.KGuRfbrIg5SoY92BTuGb2gHaHa%26pid%3DApi&f=1&ipt=dfc2e4ea498cf7e54e3256d3b5d7c46bf2f61f8329c6f2c79a234a89421964ff&ipo=images";
-		
-		return img;
+        hotelInfo = lst;
 	}
 }

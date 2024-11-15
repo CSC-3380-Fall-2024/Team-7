@@ -26,7 +26,7 @@
 }
 
 .hotel-info-border {
-    width: 95%;
+    width: 100%;
 height: 240px;
 top: 426px;
 left: 425px;
@@ -115,8 +115,19 @@ img {
   }
 
   .filter-box {
-    background-color: blue;
     width: 20.1rem;
+  }
+
+  .filter-button {
+    width: 20px;
+    height: 20px;
+    top: 539px;
+    left: 129px;
+    gap: 0px;
+    border-radius: 5px 0px 0px 0px;
+    border: 1px 0px 0px 0px;
+    opacity: 0px;
+
   }
 
   .filter-box-top {
@@ -134,18 +145,17 @@ img {
 
   .hotel-info-border {
     width: 90%;
-height: 240px;
-top: 426px;
-left: 425px;
-gap: 0px;
-border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
-opacity: 0px;
-border: 1px solid #E0E0E0
+    height: 240px;
+    top: 426px;
+    left: 425px;
+    gap: 0px;
+    border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
+    opacity: 0px;
+    border: 1px solid #E0E0E0
   }
 
   img {
-	max-width: 100%;
-  width: 100%;
+    max-width: 100%;
+    width: 100%;
   }
-
 }
