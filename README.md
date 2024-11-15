@@ -65,7 +65,7 @@ Remove the following line from Components/App.razor file:
 
 After do this in your bash 
 ```
-dotnet clean
+dotnet restore
 ```
 then 
 ```
