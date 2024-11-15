@@ -4,17 +4,25 @@ using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 #nullable enable
 namespace HMS.Components.Pages.razorComponents
 {
-    public class ListingsBase : ComponentBase
-    {
-        private int listingCount = 0;
-        public IEnumerable<Listing>? Listings { get; set; }
-		public List<Listing> Listings_DB = new List<Listing>();
-		public Listing[] listHolder = Array.Empty<Listing>();
+	public class ListingsBase : ComponentBase
+	{
+		private int listingCount { get; set; } = 0;
+		public IEnumerable<Listing>? Listings { get; set; }
+		public List<Listing> Listings_DB { get; set; } = new List<Listing>();
+
+
+
+		[Parameter] public string value { get; set; } = "";
+
+
+
+
         protected override Task OnInitializedAsync()
         {
             LoadItems();
@@ -46,55 +54,27 @@ namespace HMS.Components.Pages.razorComponents
 			StateHasChanged();
 		}
 
-        private void RemoveItem()
+        public void RemoveItem(string getID)
         {
+			int index = 0;
+			int iter = 0;
+			bool rm = false;
 
+			foreach (Listing listing in Listings)
+			{
+				if (listing.ID == getID) { index = iter; rm = true; }
+				iter++;
+			}
 
+			if(rm == true) { 
+				Listings_DB.RemoveAt(index); 
+				value = "";
+				listingCount--;
+			}
 
+			LoadItems();
+			StateHasChanged();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        }
+		}
 	}
 }

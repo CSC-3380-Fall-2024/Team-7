@@ -17,5 +17,12 @@
 			<p>@listing.Description</p>
 		</div>
 	}
-	<button class="btn btn-primary" @onclick=AddItem></button>
+	<button class="btn btn-primary" @onclick=AddItem>Add a Listing</button>
+	<br />
+	<label>
+		Listing ID
+		<input type="text" @bind="value">
+	</label>
+	
+	<button class="btn btn-primary" @onclick="() => RemoveItem(value)">Remove Listing</button>
 </div>
