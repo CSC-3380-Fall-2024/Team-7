@@ -28,6 +28,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddSingleton<GoogleSheetsService>(sp =>
+    new GoogleSheetsService(s_sheetCredentialPath,  "1fzb746EikuIEnrHHV2Ek36RucMEhc847sh9TaZvtrYI", "HMS"));
+
+
 builder.Services.AddScoped<c_user>();
 
 var app = builder.Build();
