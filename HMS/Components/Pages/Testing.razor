@@ -1,0 +1,12 @@
+@page "/tester"
+@rendermode InteractiveServer
+
+<input type="checkbox" @bind="checkedValue">
+
+@if(checkedValue == true) {
+    <p>Hello World</p>
+}
+
+@code {
+    public bool checkedValue = false;
+}
