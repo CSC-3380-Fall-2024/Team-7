@@ -1,5 +1,12 @@
 @page "/contact"
+@using Google.Apis.Auth.OAuth2
+@using System.IO
 @using Google.Cloud.Firestore
+@using Google.Apis.Sheets.v4
+@using Google.Apis.Services;
+@using Google.Apis.Sheets.v4.Data;
+@using System;
+@using System.Threading.Tasks;
 @rendermode InteractiveServer
 
 <PageTitle>Contact Us</PageTitle>
@@ -67,6 +74,16 @@
 
 @code {
     FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+
+    static readonly string[] s_Scopes = { SheetsService.Scope.Spreadsheets};
+    static readonly string s_spreedSheetId = "1fzb746EikuIEnrHHV2Ek36RucMEhc847sh9TaZvtrYI";
+    static readonly string s_sheetName = "Messages";
+    static readonly string _applicationName = "HMS";
+    static SheetsService service;
+    GoogleCredential credential;
+    static readonly string credentialsFilePath = "hotelmanagementsystem-3f342-firebase-adminsdk-njalz-ea30d4f99f.json";
+
+
     public class ContactForm {
         public string s_id { get; set;}
         public string s_name { get; set;}
@@ -97,7 +114,34 @@
         await refreshList();
     }
 
+
+    public GoogleSheetsService(string credentialsFilePath)
+    {
+         using var stream = new FileStream("hotelmanagementsystem-3f342-firebase-adminsdk-njalz-ea30d4f99f.json", FileMode.Open, FileAccess.Read);
+        var credential = GoogleCredential.FromStream(stream).CreateScoped(s_Scopes);
+
+        service = new SheetsService(new BaseClientService.Initializer
+        {
+            HttpClientInitializer = credential,
+            ApplicationName = _applicationName,
+        });
+    }
+
      private async Task addContactForm() {
+
+        using var stream = new FileStream("hotelmanagementsystem-3f342-firebase-adminsdk-njalz-ea30d4f99f.json", FileMode.Open, FileAccess.Read);
+        var credential = GoogleCredential.FromStream(stream).CreateScoped(s_Scopes);
+
+        service = new SheetsService(new BaseClientService.Initializer
+        {
+            HttpClientInitializer = credential,
+            ApplicationName = _applicationName,
+        });
+
+
+
+
+
         CollectionReference collection = db.Collection("ContactForm");
         var newEntry = new {
             name = s_contactName,
