@@ -1,5 +1,11 @@
 @page "/contact"
-@using Google.Cloud.Firestore
+@using Google.Apis.Auth.OAuth2
+@using System.IO
+@using Google.Apis.Sheets.v4
+@using Google.Apis.Services;
+@using Google.Apis.Sheets.v4.Data;
+@using System;
+@using System.Threading.Tasks;
 @rendermode InteractiveServer
 
 <PageTitle>Contact Us</PageTitle>
@@ -18,7 +24,7 @@
         <input placeholder="Name" @bind="s_contactName"/> <br/>
         <input placeholder="Email" @bind="s_contactEmail"/> <br/>
         <input placeholder="Message" @bind="s_contactMessage"/> <br/>
-        <button @onclick="addContactForm">Submit</button>
+        <button @onclick="AddContactForm">Submit</button>
     </div>
 </main>
 
@@ -66,50 +72,33 @@
 </style>
 
 @code {
-    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
-    public class ContactForm {
-        public string s_id { get; set;}
-        public string s_name { get; set;}
-        public string s_email { get; set;}
-        public string s_message { get; set;}
-    }
-    private IEnumerable<ContactForm> contactForms = Array.Empty<ContactForm>();
+
+
+
+
     private string s_contactName = "";
     private string s_contactEmail = "";
     private string s_contactMessage = "";
 
-    private async Task refreshList(){
-        CollectionReference collection = db.Collection("ContactForm");
-        QuerySnapshot docs = await collection.GetSnapshotAsync();
+    [Inject]
+    private GoogleSheetsService GoogleSheetsService { get; set; } = default!;
 
-        var lst = new List<ContactForm>();
-            foreach (var doc in docs.Documents){
-                lst.Add(new ContactForm {
-                    s_id = doc.Id,
-                    s_name = doc.GetValue<string>("name"),
-                    s_email = doc.GetValue<string>("email"),
-                    s_message = doc.GetValue<string>("message")
-                });
-            }
-        contactForms = lst;
-    }
-    protected override async Task OnInitializedAsync() {
-        await refreshList();
-    }
 
-     private async Task addContactForm() {
-        CollectionReference collection = db.Collection("ContactForm");
-        var newEntry = new {
-            name = s_contactName,
-            email = s_contactEmail,
-            message = s_contactMessage
-        };
-        
-        await collection.AddAsync(newEntry);
-        await refreshList();
+    private async Task AddContactForm()
+    {
+        if (string.IsNullOrWhiteSpace(s_contactName) || string.IsNullOrWhiteSpace(s_contactEmail) || string.IsNullOrWhiteSpace(s_contactMessage))
+        {
+            Console.WriteLine("Please fill in all fields.");
+            return;
+        }
 
+        var rowData = new List<object> { s_contactName, s_contactEmail, s_contactMessage, DateTime.Now.ToString("g") };
+        await GoogleSheetsService.AppendRowAsync("Messages", rowData);
+
+        // Reset form fields
         s_contactName = "";
         s_contactEmail = "";
         s_contactMessage = "";
+        Console.WriteLine("Message successfully added to Google Sheet!");
     }
 }
