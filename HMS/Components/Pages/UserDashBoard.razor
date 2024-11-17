@@ -16,7 +16,7 @@
 
     <div class="userInfo">
         <h2>Hi, User</h2>
-        <p>Member #</p>
+        <p>Member # @user.s_id</p>
     </div>
 
     <div class="user-section" id="upcoming-trips">
@@ -28,7 +28,7 @@
     <div class="user-section">
         <h2>Member Rewards</h2>
         <p>Earn qualifiying points or nights to unlock more tier benefits</p>
-        <div class="nights-tracker"> @*calculate how many nights they've had while trips in total*@ Night(s)</div>
+        <div class="nights-tracker"> @user.i_rewards Night(s) earned</div>
         <div class="tier-progress">
             <div class="progress-bar" style="width: @progressPercentage%;"></div>
             <div class="tier-line" style="left: 10%;"></div>  
