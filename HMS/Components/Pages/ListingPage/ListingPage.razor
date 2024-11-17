@@ -53,8 +53,10 @@
 	</div>
 	<div class="right">
 		@foreach(var hotel in hotelInfo) {
-			@if(@b_Filter1Function(@hotel.d_price)) {
+			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price)) {
 				i_resultCount++;	
+			} else if (b_noFiltersChecked()) {
+				i_resultCount++;
 			}
 		}
 		<h1 class="filter-heading-text" style="margin-left: 2rem; font-size: 2rem; margin-bottom: 2rem;">@i_resultCount Listings Found</h1>
@@ -62,7 +64,23 @@
 			i_resultCount = 0;
 		}
 		@foreach(var hotel in hotelInfo) {
-			@if(@b_Filter1Function(@hotel.d_price)) {
+			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price)) {
+				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
+					<div class="column" style="width: 35%;">
+						<img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
+					</div>
+					<div class="column" style="width: 45%">
+							<h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
+							<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
+							<b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
+							<p style="font-size: 0.9rem;">@hotel.s_description</p>
+							<button class="button-to-book">See Rooms</button>
+						</div>
+						<div class="column" style="width: 20%">
+							<p>The price is $@hotel.d_price</p>
+						</div>
+				</div>
+			} else if (b_noFiltersChecked()) {
 				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
 					<div class="column" style="width: 35%;">
 						<img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
@@ -136,50 +154,50 @@
 	}
 
 	public bool b_Filter1Function(double x) {
-		if(b_filter1) {
-			if(x >= 0 && x <= 200) {
+		if(b_filter1 == true) {
+			if(x >= 0 && x < 200) {
 				return true;
 			} else {
 				return false;
 			}
 		} else {
-			return true;
+			return false;
 		}
 	}
 
 	public bool b_Filter2Function(double x) {
-		if(b_filter2) {
-			if(x >= 200 && x <= 400) {
+		if(b_filter2 == true) {
+			if(x >= 200 && x < 400) {
 				return true;
 			} else {
 				return false;
 			}
 		} else {
-			return true;
+			return false;
 		}
 	}
 
 	public bool b_Filter3Function(double x) {
 		if(b_filter3) {
-			if(x >= 400 && x <= 1000) {
+			if(x >= 400 && x < 1000) {
 				return true;
 			} else {
 				return false;
 			}
 		} else {
-			return true;
+			return false;
 		}
 	}
 
 	public bool b_Filter4Function(double x) {
 		if(b_filter4) {
-			if(x >= 1000 && x <= 2000) {
+			if(x >= 1000 && x < 2000) {
 				return true;
 			} else {
 				return false;
 			}
 		} else {
-			return true;
+			return false;
 		}
 	}
 
@@ -191,7 +209,15 @@
 				return false;
 			}
 		} else {
+			return false;
+		}
+	}
+
+	public bool b_noFiltersChecked() {
+		if(b_filter1 == false && b_filter2 == false && b_filter3 == false && b_filter4 == false && b_filter5 == false) {
 			return true;
+		} else {
+			return false;
 		}
 	}
 }
