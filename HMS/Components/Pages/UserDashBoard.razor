@@ -212,7 +212,7 @@ p {
         DocumentSnapshot userSnapshot = await userDoc.GetSnapshotAsync();
 
         user = new c_users {
-            s_id = userSnapshot.Id,
+            s_id = userSnapshot.GetValue<string>("MemberId"),
             i_rewards = userSnapshot.GetValue<int>("Reward")
         };
         progressPercentage = ((double)user.i_rewards * 10); // temp value but this is what displays the progress
