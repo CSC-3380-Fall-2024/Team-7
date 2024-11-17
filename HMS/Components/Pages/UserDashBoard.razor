@@ -21,14 +21,14 @@
 
     <div class="user-section" id="upcoming-trips">
         <h3>Upcoming Trips</h3>
-        <h3 class="trip-number">You have @*pull from user bookings*@ upcoming trips</h3>
+        <h3 class="trip-number">You have @user.i_upcomingTrips upcoming trip(s)</h3>
         <div class="img-header"></div>
     </div>
 
     <div class="user-section">
         <h2>Member Rewards</h2>
         <p>Earn qualifiying points or nights to unlock more tier benefits</p>
-        <div class="nights-tracker"> @user.i_rewards Night(s) earned</div>
+        <div class="nights-tracker"> @user.d_rewards Night(s) earned</div>
         <div class="tier-progress">
             <div class="progress-bar" style="width: @progressPercentage%;"></div>
             <div class="tier-line" style="left: 10%;"></div>  
@@ -194,7 +194,8 @@ p {
     private double progressPercentage = 0; //var that'll hold value pulled from database
     public class c_users {
         public string s_id { get; set;} = string.Empty;
-        public int i_rewards { get; set;} = 0;
+        public double d_rewards { get; set;} = 0;
+        public int i_upcomingTrips {get; set;} = 0;
     }
 
     private c_users user = new c_users{s_id = ""};
@@ -213,8 +214,9 @@ p {
 
         user = new c_users {
             s_id = userSnapshot.GetValue<string>("MemberId"),
-            i_rewards = userSnapshot.GetValue<int>("Reward")
+            d_rewards = userSnapshot.GetValue<double>("Reward"),
+            i_upcomingTrips = userSnapshot.GetValue<int>("UpcomingTrips")
         };
-        progressPercentage = ((double)user.i_rewards * 10); // temp value but this is what displays the progress
+        progressPercentage = (user.d_rewards * 10); // temp value but this is what displays the progress
     }
 }
