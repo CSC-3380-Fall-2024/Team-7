@@ -42,6 +42,7 @@
         public string s_id {get; set;}
         public string s_email {get; set;}
         public string s_password {get; set;}
+        public Boolean s_IsEmployee { get; set;}
     }
 
     private IEnumerable<Users> iE_users = Array.Empty<Users>();
@@ -60,7 +61,7 @@
         var lst = new List<Users>();
             foreach(var doc in qs_userData.Documents)
             {
-                lst.Add(new Users {s_id = doc.Id, s_email = doc.GetValue<string>("Email"), s_password = doc.GetValue<string>("Password")});
+                lst.Add(new Users {s_id = doc.Id, s_email = doc.GetValue<string>("Email"), s_password = doc.GetValue<string>("Password"), s_IsEmployee = doc.GetValue<Boolean>("IsEmployee")});
             }
         iE_users = lst;
         
@@ -73,7 +74,15 @@
                 successSignin = 1;
                 c_user.SetUser(s_Email,s_Password);
                 LoginMessage = c_user.s_email;
-                NavManager.NavigateTo("/about");
+
+                if(user.s_IsEmployee == true)
+                {
+                   NavManager.NavigateTo("/contact"); 
+                }
+                else
+                {
+                   NavManager.NavigateTo("/"); 
+                }
                 break;
             }
             else
