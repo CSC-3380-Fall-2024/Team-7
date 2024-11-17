@@ -23,6 +23,7 @@ if(OperatingSystem.IsLinux() == true || OperatingSystem.IsMacOS() == true) {
 
 Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialPath);
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddBlazorBootstrap();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
