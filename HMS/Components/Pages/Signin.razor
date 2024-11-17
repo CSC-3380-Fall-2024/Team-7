@@ -1,0 +1,100 @@
+@using Google.Cloud.Firestore;
+@inject NavigationManager NavManager
+
+@rendermode InteractiveServer
+
+@page "/signin"
+
+@inject c_user c_user
+
+<PageTitle>Sign in</PageTitle>
+
+<form @onsubmit="HandleSubmit">
+    <p>
+        <input type="email" @bind="s_Email" placeholder="Enter your email" id="email" size="30" maxlength="69" minlength="3" required />
+    </p>
+    <p>
+        <input type="password" @bind="s_Password" placeholder="Enter your password" id="password" size="30" maxlength="69" minlength="10" required />
+    </p>
+    <p>
+       <button type="submit" disabled="@isLoading">Sign In</button>
+        @if (isLoading)
+        {
+            <span>Loading...</span> <!-- You can replace this with a spinner icon -->
+        }
+    </p>
+    @if (!string.IsNullOrEmpty(LoginMessage))
+    {
+        <p>@LoginMessage</p>
+    }
+</form>
+
+@code
+{
+    string s_Email = string.Empty;
+    string s_Password = string.Empty;
+    string LoginMessage = "";
+    private bool isLoading = false; // Track loading state
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+
+    public class Users
+    {
+        public string s_id {get; set;}
+        public string s_email {get; set;}
+        public string s_password {get; set;}
+        public Boolean s_IsEmployee { get; set;}
+    }
+
+    private IEnumerable<Users> iE_users = Array.Empty<Users>();
+
+    private async Task HandleSubmit()
+    {
+        isLoading = true; // Set loading state to true
+        await retrieveData();
+        isLoading = false; // Reset loading state
+    }
+
+    private async Task retrieveData()
+    {
+        CollectionReference cr_userCollection = db.Collection("UserAccount");
+        QuerySnapshot qs_userData = await cr_userCollection.GetSnapshotAsync();
+        var lst = new List<Users>();
+            foreach(var doc in qs_userData.Documents)
+            {
+                lst.Add(new Users {s_id = doc.Id, s_email = doc.GetValue<string>("Email"), s_password = doc.GetValue<string>("Password"), s_IsEmployee = doc.GetValue<Boolean>("IsEmployee")});
+            }
+        iE_users = lst;
+        
+        int successSignin = -1;
+        foreach(var user in iE_users)
+        {
+            if(user.s_email == s_Email && user.s_password == s_Password)
+            {
+                LoginMessage = "Succesfully Logged In!";
+                successSignin = 1;
+                c_user.SetUser(s_Email,s_Password);
+                LoginMessage = c_user.s_email;
+
+                if(user.s_IsEmployee == true)
+                {
+                   NavManager.NavigateTo("/contact"); 
+                }
+                else
+                {
+                   NavManager.NavigateTo("/"); 
+                }
+                break;
+            }
+            else
+            {
+                successSignin = 0;
+            }
+        }
+
+        if(successSignin == 0)
+        {
+            LoginMessage = "Invalid Email or Password";
+        }
+    }
+
+}

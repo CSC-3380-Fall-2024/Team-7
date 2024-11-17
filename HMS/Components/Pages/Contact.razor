@@ -1,22 +1,30 @@
 @page "/contact"
+@using Google.Apis.Auth.OAuth2
+@using System.IO
+@using Google.Apis.Sheets.v4
+@using Google.Apis.Services;
+@using Google.Apis.Sheets.v4.Data;
+@using System;
+@using System.Threading.Tasks;
 @rendermode InteractiveServer
 
 <PageTitle>Contact Us</PageTitle>
 <main>
     <div class="contact-info">
         <h2>Contact Us</h2>
-        <p>
+        <p class="text-box">
             Let us know if there is anything you would like to talk to our team about whether it's
             questions, concerns, or feeback. We're here to help so let us know it the form and we 
             will get back to your promptly! 
         </p>
-        <div class="contact-img"><img src="/images/contact_img.png"/></div> 
+        <div class="contact-img"><img src="/images/generalImages/contact_img.png"/></div> 
     </div>
-    <div class="contact-info">
-        <h3>Send us your questions and concerns in the form below</h3>
-        <form>
-
-        </form>
+    <div class="contact-info" id="form">
+        <h3 class="form-hdr">Send us your questions and concerns in the form below</h3>
+        <input placeholder="Name" @bind="s_contactName"/> <br/>
+        <input placeholder="Email" @bind="s_contactEmail"/> <br/>
+        <input placeholder="Message" @bind="s_contactMessage"/> <br/>
+        <button @onclick="AddContactForm">Submit</button>
     </div>
 </main>
 
@@ -30,6 +38,7 @@
         flex-direction: column;
         align-items: center;
         text-align: left;
+        margin-bottom: 20px;
     }
 
     .contact-img {
@@ -42,12 +51,54 @@
     }
 
     .contact-img img {
-        width: 100%; /* Make image fill the contact-img div */
-        height: auto; /* Maintain aspect ratio */
-        object-fit: cover; /* Cover the area of contact-img */
+        width: 100%;  
+        height: auto;  
+        object-fit: cover;  
+    }
+
+    .form-hdr {
+        margin-bottom: 100px;
+    }
+
+    .text-box {
+        max-width: 600px;
+        margin-top: 30px;
+    }
+    #form {
+        border-color: black;
+        border-width: 1px;
+        border: solid;
     }
 </style>
 
 @code {
 
+
+
+
+    private string s_contactName = "";
+    private string s_contactEmail = "";
+    private string s_contactMessage = "";
+
+    [Inject]
+    private GoogleSheetsService GoogleSheetsService { get; set; } = default!;
+
+
+    private async Task AddContactForm()
+    {
+        if (string.IsNullOrWhiteSpace(s_contactName) || string.IsNullOrWhiteSpace(s_contactEmail) || string.IsNullOrWhiteSpace(s_contactMessage))
+        {
+            Console.WriteLine("Please fill in all fields.");
+            return;
+        }
+
+        var rowData = new List<object> { s_contactName, s_contactEmail, s_contactMessage, DateTime.Now.ToString("g") };
+        await GoogleSheetsService.AppendRowAsync("Messages", rowData);
+
+        // Reset form fields
+        s_contactName = "";
+        s_contactEmail = "";
+        s_contactMessage = "";
+        Console.WriteLine("Message successfully added to Google Sheet!");
+    }
 }
