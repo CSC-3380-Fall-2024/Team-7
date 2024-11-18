@@ -1,0 +1,96 @@
+@page "/TestPG"
+@using Google.Cloud.Firestore;
+@rendermode InteractiveServer
+
+
+<body>
+    <p>Variable: @test</p>
+
+</body>
+
+<div>
+    <label>
+		<input type="text" placeholder="City, State" @bind="query">
+	</label>
+
+    <button class="btn btn-primary" @onclick="() => search(query)">Search</button>
+</div>
+
+@foreach(var hotel in hotelInfo) {
+			<div style="margin-bottom: 1.5rem;">
+				<div style="width: 45%">
+						<h1 style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
+						<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a (@hotel.i_reviewCount reviews)</p>
+						<b style="font-size: 0.9rem;">@hotel.s_slogan</b>
+						<p style="font-size: 0.9rem;">@hotel.s_description</p>
+						<button>See Rooms</button>
+					</div>
+					<div style="width: 20%">
+						<p>The price is $money</p>
+					</div>
+			</div>
+		}
+
+
+
+
+@code{
+    public FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+
+    [Parameter] public string query { get; set; }= "";
+
+    public class c_hotelInfo {
+		public string s_id {get; set;} = string.Empty;
+		public string s_name {get; set;} = string.Empty;
+		public string s_hotelImgPath {get; set;} = string.Empty;
+		public double d_rating {get; set;} = 0.0;
+		public double d_price {get; set;} = 0.0;
+		public int i_reviewCount {get; set;} = 0;
+		public string s_slogan {get; set;} = string.Empty;
+		public string s_description {get; set;} = string.Empty;
+	}
+
+
+    public IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
+
+    public async void search(string qry)
+    {
+        CollectionReference cr_hotels = db.Collection("Hotels");
+        QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+        
+
+    
+        Query allHotels = db.Collection("Hotels");
+        QuerySnapshot qs_allHotels = await allHotels.GetSnapshotAsync();
+
+
+        List<c_hotelInfo> results = new List<c_hotelInfo>();
+
+		Console.WriteLine(qry);
+
+        foreach (DocumentSnapshot doc in qs_allHotels.Documents)
+        {
+            //DocumentReference cr_hotelListing = cr_hotels.Document(x.ToString());
+            //DocumentSnapshot hotelListings = await cr_hotelListing.GetSnapshotAsync();
+
+
+            if(doc.GetValue<string>("location").Contains(qry))
+            {
+
+                results.Add(new c_hotelInfo{s_id = doc.Id, 
+				    s_name = doc.GetValue<string>("name"), 
+				    i_reviewCount = doc.GetValue<int>("review_count"),
+				    s_slogan = doc.GetValue<string>("slogan"),
+				    s_description = doc.GetValue<string>("description")
+				    });
+            }
+        }
+        hotelInfo = results;
+		StateHasChanged();
+    }
+
+
+    public string test = "AHHHHHHHH";
+
+
+}
