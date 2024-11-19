@@ -2,42 +2,94 @@
 @using Google.Cloud.Firestore
 
 <PageTitle>Employee Dashboard</PageTitle>
-@*
-<Sidebar Href="/"
-         IconName="IconName.BootstrapFill"
-         Title="Blazor Bootstrap"
-         DataProvider="SidebarDataProvider" />
 
-<h3>Welcome back, User!</h3>
-*@
+<div class="page-container">
+    <div class="sidebar-container">
+        <h2>Front-Desk</h2>
+        <p id="sidebar-text">Dashboard</p>
+        <p id="sidebar-text">Schedule</p>
+        <p id="sidebar-text">Booking</p>
+        <p id="sidebar-text">Room Access</p>
+        <p id="sidebar-text">Edit Listings</p>
+        <p id="sidebar-text">Request Leave</p>
+        <p id="sidebar-text">Payroll History</p>
+        <p id="sidebar-text">Tank List</p>
+        <p id="sidebar-text">Report an Issue</p>
+    </div> 
+
+    <div class="main-container">
+        <h2>Welcome back, User!</h2>
+        <div class="main-buttons">
+            <div class="button-box">
+                <p>Clock In/Out</p>
+            </div>
+            <div class="button-box">
+                <p>View Schedule</p>
+            </div>
+            <div class="button-box">
+                <p>Manage Guests</p>
+            </div>
+        </div>
+        <div class="double-box">
+            <div class="left-box">
+
+            </div>
+            <div class="right-box">
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
-h3 {
+.page-container {
+    display: flex;
+    height:auto 100vh;
+}
 
+.sidebar-container {
+    max-width: 33%;
+    background-color: #EBEBEB;
+}
+
+.main-container {
+    width: 67%;
+}
+
+h2 {
+    padding-left: 30px;
+    padding-right: 20px;
+}
+
+#sidebar-text {
+    padding-left: 45px;
+}
+
+.main-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center;
+    margin: 20px 0;
+}
+
+.button-box {
+    background-color: #000000;
+    width: 100px;  
+    height: 75px; 
+    display: flex; 
+    justify-content: center;  
+    align-items: center; 
+    margin: 15px;
+}
+
+.button-box p {
+    font-family: 'Albert Sans';
+    color: #FFFFFF;
+    font-size: 1rem;
 }
 </style>
 
 @code {
-    /*IEnumerable<NavItem> navItems;
-
-    private async Task<SidebarDataProviderResult> SidebarDataProvider(SidebarDataProviderRequest request)
-    {
-        if (navItems is null)
-            navItems = GetNavItems();
-
-        return await Task.FromResult(request.ApplyTo(navItems));
-    }
-
-    private IEnumerable<NavItem> GetNavItems()
-    {
-        navItems = new List<NavItem>
-        {
-            new NavItem { Href = "/getting-started", IconName = IconName.HouseDoorFill, Text = "Getting Started"},
-            new NavItem { Href = "/alerts", IconName = IconName.CheckCircleFill, Text = "Alerts"},
-            new NavItem { Href = "/autocomplete", IconName = IconName.InputCursorText, Text = "Auto Complete"},
-            new NavItem { Href = "/breadcrumb", IconName = IconName.SegmentedNav, Text = "Breadcrumb"},
-            new NavItem { Href = "/sidebar", IconName = IconName.LayoutSidebarInset, Text = "Sidebar"},
-        };
-        return navItems;*/
 
 }
