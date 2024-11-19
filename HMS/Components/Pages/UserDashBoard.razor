@@ -1,5 +1,6 @@
 @page "/userDashBoard"
 @using Google.Cloud.Firestore
+@inject NavigationManager NavigationManager
 
 <PageTitle>My Account</PageTitle>
 <body>
@@ -7,7 +8,7 @@
         <h1>My Account</h1>
         <div class="action-items">
             <ul>
-                <li>My Trips</li>
+                <li><a href="mytrips">My Trips</a></li>
                 <li>Reward and Wallet</li>
                 <li>Profile</li>
             </ul>
@@ -83,6 +84,11 @@ html, body, {
     margin-left: auto;
     margin-right: 20px;
     padding-top: 10px;
+}
+
+.action-items a {
+    text-decoration: none;
+    color:#FFFFFF;
 }
 
 ul {

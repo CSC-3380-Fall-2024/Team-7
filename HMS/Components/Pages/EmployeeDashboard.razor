@@ -1,0 +1,210 @@
+@page "/employeedashboard"
+@using Google.Cloud.Firestore
+
+<PageTitle>Employee Dashboard</PageTitle>
+
+<div class="page-container">
+    <div class="sidebar-container">
+        <div class="sidebar-title-box">
+            <div class="sidebar-title-icon"></div>
+            <h2>Front-Desk</h2>
+        </div>
+        <p id="sidebar-text">Dashboard</p>
+        <p id="sidebar-text">Schedule</p>
+        <p id="sidebar-text">Booking</p>
+        <p id="sidebar-text">Room Access</p>
+        <p id="sidebar-text">Edit Listings</p>
+        <p id="sidebar-text">Request Leave</p>
+        <p id="sidebar-text">Payroll History</p>
+        <p id="sidebar-text">Tank List</p>
+        <p id="sidebar-text">Report an Issue</p>
+    </div> 
+
+    <div class="main-container">
+        <h2>Welcome back, User!</h2>
+
+        <div class="main-buttons">
+            <div class="button-box">
+                <p>Clock In/Out</p>
+            </div>
+            <div class="button-box">
+                <p>View Schedule</p>
+            </div>
+            <div class="button-box">
+                <p>Manage Guests</p>
+            </div>
+        </div>
+        <div class="double-box">
+            <div class="box">
+                <h3>Upcoming Shifts</h3>
+                <p>Your schedule for the next 3 days</p>
+                <div class="shift-list">
+                    <ul>
+                        <li>
+                            <h4>Mon, Jun 5</h4>
+                            <p>9:00AM - 5:00PM</p>
+                        </li>
+                        <li>
+                            <h4>Tuesday, Jun 6</h4>
+                            <p>2:00PM - 10:00PM</p>
+                        </li>
+                        <li>
+                            <h4>Mon, Jun 7</h4>
+                            <p>5:00PM - 10:00PM</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="box">
+                <h3>Announcements</h3>
+                <ul>
+                    <li>
+                        <p>Team Meeting at 3pm</p>
+                    </li>
+                    <li>
+                        <p>Upcoming Maintenence at 11/26/24 at 10:00am CST</p>
+                    </li>
+                    <li>
+                        <p>New parking policy effect from Dec. 1</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="task-box">
+                <h3>Upcoming tasks</h3>
+                <ul>
+                    <li>
+                        <p>Send a welcome email to new arrivals.</p>
+                    </li>
+                    <li>
+                        <p>Arrangge transportation for a VIP guest at 6 PM.</p>
+                    </li>
+                    <li>
+                        <p>Update room availability in the system.</p>
+                    </li>
+                    <li>
+                        <p>Follow Upcoming on room service requests.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    font-family: 'Albert Sans';
+}
+
+.sidebar-container {
+    max-width: 33%;
+    background-color: #EBEBEB;
+}
+
+.main-container {
+    flex-grow: 1;
+}
+
+h2 {
+    padding-left: 10px;
+    padding-right: 20px;
+}
+
+#sidebar-text {
+    padding-left: 45px;
+}
+
+.main-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 600px;
+    gap: 30px;
+    margin: 0 auto;
+    padding: 20px;
+
+}
+.sidebar-title-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.sidebar-title-icon {
+    width: 25px;
+    height: 25px;
+    background-image: url('/images/generalImages/Vector.svg');
+    background-repeat:no-repeat;
+    background-size: contain;
+    background-position: center;
+    padding-left: 10px;
+}
+
+.button-box {
+    background-color: #000000;
+    width: 125px;  
+    height: 50px; 
+    display: flex; 
+    justify-content: center;  
+    align-items: center; 
+    margin: 0;
+}
+
+.button-box p {
+    color: #FFFFFF;
+    font-size: 1rem;
+}
+
+.double-box {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.box {
+    background-color: #EBEBEB;
+    width: 45%;
+    padding-left: 20px;
+}
+
+ul {
+    list-style: none;
+}
+
+.shift-list li {  
+    border-bottom: 1px solid #0000004D; 
+}
+
+.box li {  
+    border-bottom: 1px solid #0000004D; 
+}
+
+.task-box li {  
+    border-bottom: 1px solid #0000004D; 
+}
+
+li:last-child {
+    border-bottom: none; 
+}
+
+.task-box {
+    background-color: #EBEBEB;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px;
+    margin-left: 35px;
+    padding-top: 15px;
+    padding-left: 20px;
+}
+
+</style>
+
+@code {
+
+}
