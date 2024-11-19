@@ -5,7 +5,10 @@
 
 <div class="page-container">
     <div class="sidebar-container">
-        <h2>Front-Desk</h2>
+        <div class="title-box">
+            <div class="title-icon"></div>
+            <h2>Front-Desk</h2>
+        </div>
         <p id="sidebar-text">Dashboard</p>
         <p id="sidebar-text">Schedule</p>
         <p id="sidebar-text">Booking</p>
@@ -19,6 +22,7 @@
 
     <div class="main-container">
         <h2>Welcome back, User!</h2>
+
         <div class="main-buttons">
             <div class="button-box">
                 <p>Clock In/Out</p>
@@ -31,11 +35,12 @@
             </div>
         </div>
         <div class="double-box">
-            <div class="left-box">
-
+            <div class="box">
+                <h3>Upcoming Shifts</h3>
+                <p>Your schedule for the next 3 days</p>
             </div>
-            <div class="right-box">
-
+            <div class="box">
+                <h3>Announcements</h3>
             </div>
         </div>
     </div>
@@ -57,7 +62,7 @@
 }
 
 h2 {
-    padding-left: 30px;
+    padding-left: 10px;
     padding-right: 20px;
 }
 
@@ -73,10 +78,27 @@ h2 {
     margin: 20px 0;
 }
 
+.title-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.title-icon {
+    width: 25px;
+    height: 25px;
+    background-image: url('/images/generalImages/Vector.svg');
+    background-repeat:no-repeat;
+    background-size: contain;
+    background-position: center;
+    padding-left: 10px;
+}
+
 .button-box {
     background-color: #000000;
-    width: 100px;  
-    height: 75px; 
+    width: 125px;  
+    height: 50px; 
     display: flex; 
     justify-content: center;  
     align-items: center; 
@@ -87,6 +109,18 @@ h2 {
     font-family: 'Albert Sans';
     color: #FFFFFF;
     font-size: 1rem;
+}
+
+.double-box {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.box {
+    background-color: #EBEBEB;
+    width: 45%;
 }
 </style>
 
