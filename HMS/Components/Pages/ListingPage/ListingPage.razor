@@ -58,12 +58,16 @@
 				i_resultCount++;	
 			} else if (b_noFiltersChecked()) {
 				i_resultCount++;
+				if(i_resultCount == 10) {
+					stopping_filter = true;
+				} 
 			}
 		}
 		<h1 class="filter-heading-text" style="margin-left: 2rem; font-size: 2rem; margin-bottom: 2rem;">@i_resultCount Listings Found</h1>
 		@if(1 == 1) {
 			i_resultCount = 0;
-		}
+			stopping_filter = false;
+		} 
 		@foreach(var hotel in hotelInfo) {
 			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price)) {
 				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
@@ -97,7 +101,15 @@
 							<p>The price is $@hotel.d_price</p>
 						</div>
 				</div>
+				i_resultCount++;
+				if(i_resultCount == 10) {
+					stopping_filter = true;
+				} 
 			}
+		}
+		@if(1 == 1) {
+			i_resultCount = 0;
+			stopping_filter = false;
 		}
 	</div>
 </div>
@@ -111,6 +123,7 @@
 	public bool b_filter3 = false;
 	public bool b_filter4 = false;
 	public bool b_filter5 = false;
+	public bool stopping_filter = false;
 
 
 	public class c_hotelInfo {
@@ -215,7 +228,7 @@
 	}
 
 	public bool b_noFiltersChecked() {
-		if(b_filter1 == false && b_filter2 == false && b_filter3 == false && b_filter4 == false && b_filter5 == false) {
+		if(b_filter1 == false && b_filter2 == false && b_filter3 == false && b_filter4 == false && b_filter5 == false && stopping_filter == false) {
 			return true;
 		} else {
 			return false;
