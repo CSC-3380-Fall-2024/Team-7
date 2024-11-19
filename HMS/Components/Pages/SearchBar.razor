@@ -36,11 +36,6 @@
 		
 	</div>
 
-
-
-
-
-
 <br/>
 <br/>
 
@@ -72,10 +67,10 @@
 @code{
     public FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 	
-    [Parameter] public string query { get; set; }= "";
-	[Parameter] public string guests { get; set; }= "";
-	[Parameter] public DateOnly date1 = DateOnly.FromDateTime(DateTime.Now.AddDays(0));
-	[Parameter] public DateOnly date2 = DateOnly.FromDateTime(DateTime.Now.AddDays(4));
+    public string query { get; set; }= "";
+	public string guests { get; set; }= "";
+	public DateOnly date1 = DateOnly.FromDateTime(DateTime.Now.AddDays(0));
+	public DateOnly date2 = DateOnly.FromDateTime(DateTime.Now.AddDays(4));
 
 	public DateOnly strtestd { get; set; }
 	public DateOnly strtestd1 { get; set; }
