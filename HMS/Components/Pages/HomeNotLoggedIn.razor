@@ -1,4 +1,4 @@
-﻿@page "/homeloggedin"
+@page "/"
 @rendermode InteractiveServer
 @using BlazorBootstrap;
 @using Google.Cloud.Firestore;
@@ -125,20 +125,20 @@
     <br>
 
     <div class="trips">
-        <h2>Upcoming Trips</h2>
-        <h3>You have </h3> @*pull from user bookings*@ <h3> upcoming trips</h3>
-    </div>
-
-    <div class="trips">
-        <h2>Previous Trips</h2>
+        <h2>Choose your next vacation destination</h2>
+        <ul>
+            <li>
+                <div class="destination-mg"/>
+                <h4>Hotel Name</h4>
+                <p>Location</p>
+            </li>
+        </ul>
     </div>
 
     <div class="trips" id="resorts">
         <h2>Featured Resorts</h2>
     </div>
 </main>
-
-
 
 @code {
 	// Set up an instance of the firebase
@@ -292,9 +292,6 @@
     }
 }
 
-
-
-
 <style>
     body{
         font-family: 'Fraunces';
@@ -328,8 +325,7 @@
     .h2{
         font-weight: bold;
     }
-
-    
+   
     .center
 	{
 		margin:auto;
@@ -420,100 +416,100 @@
 	}
 
     .flex-container {
-  display: flex;
-  flex-direction: column;
-  /*background-color: #f1f1f1;*/
+        display: flex;
+        flex-direction: column;
+        /*background-color: #f1f1f1;*/
 }
 
 /* This is the container that modifies a div so that it can fit whatever information is needed. E.g: an image or a rating */
-.flex-container > div {
-  /*background-color: DodgerBlue;*/
-  color: black;
-  margin: 0.2rem;  
-}
+    .flex-container > div {
+    /*background-color: DodgerBlue;*/
+    color: black;
+    margin: 0.2rem;  
+    }
 
 /* Container that moves a section to the left */
-.left {
-	width: 100%;
-}
+    .left {
+        width: 100%;
+    }
 
-/* Container that moves a section to the right */
-.right {
-	width: 100%;
-}
+    /* Container that moves a section to the right */
+    .right {
+        width: 100%;
+    }
 
-.hotel-info-border {
-    width: 100%;
-height: 240px;
-top: 426px;
-left: 425px;
-gap: 0px;
-border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
-margin-left: auto;
-margin-right: auto;
-opacity: 0px;
-border: 1px solid #E0E0E0
-  }
+    .hotel-info-border {
+        width: 100%;
+    height: 240px;
+    top: 426px;
+    left: 425px;
+    gap: 0px;
+    border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0px;
+    border: 1px solid #E0E0E0
+    }
 
-.column {
-  float: left;
-  padding: 1%;
-  height: 100%;
-  width: 50%;
-}
+    .column {
+    float: left;
+    padding: 1%;
+    height: 100%;
+    width: 50%;
+    }
 
 
-/* The border that houses the filter information */
-.filter-box {
-width: 30rem;
-height: 293px;
-top: 466px;
-left: 111px;
-max-width: fit-content;
-margin-left: auto;
-margin-right: auto;
-margin-bottom: 2rem;
-gap: 0px;
-border-radius: 6px 6px 0px 0px;
-border: 0.1rem solid #E0E0E0;
-opacity: 0.1rem;
-}
+    /* The border that houses the filter information */
+    .filter-box {
+        width: 30rem;
+        height: 293px;
+        top: 466px;
+        left: 111px;
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2rem;
+        gap: 0px;
+        border-radius: 6px 6px 0px 0px;
+        border: 0.1rem solid #E0E0E0;
+        opacity: 0.1rem;
+    }
 
-.filter-box-top {
-width: 30rem;
-height: 3rem;
-top: 466px;
-left: 111px;
-padding: 18px 0px 0px 0px;
-gap: 10px;
-border-radius: 6px 6px 0px 0px;
-opacity: 0px;
-background-color: #E0E0E0;
-}
+    .filter-box-top {
+        width: 30rem;
+        height: 3rem;
+        top: 466px;
+        left: 111px;
+        padding: 18px 0px 0px 0px;
+        gap: 10px;
+        border-radius: 6px 6px 0px 0px;
+        opacity: 0px;
+        background-color: #E0E0E0;
+    }
 
-.filter-heading-text {
-width: 30rem;
-height: 20px;
-gap: 0px;
-opacity: 0px;
-font-family: Fraunces;
-font-size: 16px;
-font-style: italic;
-font-weight: 999;
-line-height: 19.73px;
-letter-spacing: 0.01em;
-text-align: center;
-text-underline-position: from-font;
-text-decoration-skip-ink: none;
-}
+    .filter-heading-text {
+        width: 30rem;
+        height: 20px;
+        gap: 0px;
+        opacity: 0px;
+        font-family: Fraunces;
+        font-size: 16px;
+        font-style: italic;
+        font-weight: 999;
+        line-height: 19.73px;
+        letter-spacing: 0.01em;
+        text-align: center;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+    }
 
-/* This modifies the img tag so that it scales with the size of the screen */ 
-img {
-	max-width: 100%;
-  max-height: 100%;
-	height: auto;
-	width: auto\9;
-}
+    /* This modifies the img tag so that it scales with the size of the screen */ 
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        height: auto;
+        width: auto\9;
+    }
 
 /* At a certain pixel width, makes the column layout into a row layout */
 
@@ -570,5 +566,8 @@ img {
     max-width: 100%;
     width: 100%;
   }
-}
+
+    ul {
+        list-style: none;
+    }
 </style>
