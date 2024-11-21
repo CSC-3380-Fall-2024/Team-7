@@ -121,18 +121,32 @@
         </div>
     }
 
-
     <br>
 
     <div class="trips">
         <h2>Choose your next vacation destination</h2>
-        <ul>
-            <li>
+        <div class="destination-wrapper">
+            <div class="destination">
+                <div class="destination-mg"/>
+                <h4>Florida</h4>
+                <p># properties</p>
+            </div>
+            <div class="destination">
                 <div class="destination-mg"/>
                 <h4>Hotel Name</h4>
-                <p>Location</p>
-            </li>
-        </ul>
+                <p># properties</p>
+            </div>
+            <div class="destination">
+                <div class="destination-mg"/>
+                <h4>Hotel Name</h4>
+                <p># properties</p>
+            </div>
+            <div class="destination">
+                <div class="destination-mg"/>
+                <h4>Hotel Name</h4>
+                <p># properties</p>
+            </div>
+        </div>
     </div>
 
     <div class="trips" id="resorts">
@@ -458,7 +472,6 @@
     width: 50%;
     }
 
-
     /* The border that houses the filter information */
     .filter-box {
         width: 30rem;
@@ -566,8 +579,18 @@
     max-width: 100%;
     width: 100%;
   }
+    
+    .destination-wrapper {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        flex-wrap: wrap;
+    }
 
-    ul {
-        list-style: none;
+    .destination {
+        align-items: center;
+        flex: 1;
+        
     }
 </style>
+ 
