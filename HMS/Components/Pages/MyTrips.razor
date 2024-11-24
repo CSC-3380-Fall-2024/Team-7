@@ -8,7 +8,7 @@
     
     <div class="upcoming-trips">
         <h5>Upcoming Trips</h5>
-        @foreach(var hotel in hotelInfo.Take(2)) {  <!-- Only display the first two hotels -->
+        @foreach(var hotel in hotelInfo.Take(2)) {  @*Only display the first two hotels, needed to pull from actual users*@
             <div class="hotel-info-border" style="margin-bottom: 1.5rem;">
                 <div class="column" style="width: 35%;">
                     <img src="@hotel.s_hotelImgPath" class="center" alt="Hotel Image" style="border-radius: 6px; height: 15rem;">
@@ -84,46 +84,46 @@
 
 /* The border that houses the filter information */
 .filter-box {
-width: 30rem;
-height: 293px;
-top: 466px;
-left: 111px;
-max-width: fit-content;
-margin-left: auto;
-margin-right: auto;
-margin-bottom: 2rem;
-gap: 0px;
-border-radius: 6px 6px 0px 0px;
-border: 0.1rem solid #E0E0E0;
-opacity: 0.1rem;
+    width: 30rem;
+    height: 293px;
+    top: 466px;
+    left: 111px;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    gap: 0px;
+    border-radius: 6px 6px 0px 0px;
+    border: 0.1rem solid #E0E0E0;
+    opacity: 0.1rem;
 }
 
 .filter-box-top {
-width: 30rem;
-height: 3rem;
-top: 466px;
-left: 111px;
-padding: 18px 0px 0px 0px;
-gap: 10px;
-border-radius: 6px 6px 0px 0px;
-opacity: 0px;
-background-color: #E0E0E0;
+  width: 30rem;
+  height: 3rem;
+  top: 466px;
+  left: 111px;
+  padding: 18px 0px 0px 0px;
+  gap: 10px;
+  border-radius: 6px 6px 0px 0px;
+  opacity: 0px;
+  background-color: #E0E0E0;
 }
 
 .filter-heading-text {
-width: 30rem;
-height: 20px;
-gap: 0px;
-opacity: 0px;
-font-family: Fraunces;
-font-size: 16px;
-font-style: italic;
-font-weight: 999;
-line-height: 19.73px;
-letter-spacing: 0.01em;
-text-align: center;
-text-underline-position: from-font;
-text-decoration-skip-ink: none;
+  width: 30rem;
+  height: 20px;
+  gap: 0px;
+  opacity: 0px;
+  font-family: Fraunces;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 999;
+  line-height: 19.73px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
 }
 
 /* This modifies the img tag so that it scales with the size of the screen */ 
@@ -194,7 +194,7 @@ img {
     max-width: 100%;
     width: 100%;
   }
-}
+
 
 </style>
 
