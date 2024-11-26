@@ -1,11 +1,14 @@
-@using Google.Cloud.Firestore;
+@inherits LP
 @rendermode InteractiveServer
 @page "/listings"
 @using BlazorBootstrap;
 
 <PageTitle>Listing Page</PageTitle>
 
-<SearchBar T="List<c_hotelInfo>" OnSearch="SearchUsed"></SearchBar>
+<SearchBar></SearchBar>
+<div>
+	<button class="sbutton tr" @onclick="rerender">Search</button>
+</div>
 
 <br/>
 <br/>
@@ -119,138 +122,8 @@
 	</div>
 </div>
 
-@code {
-	// Set up an instance of the firebase
-	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
-	public int i_resultCount;
-	public bool b_filter1 = false;
-	public bool b_filter2 = false;
-	public bool b_filter3 = false;
-	public bool b_filter4 = false;
-	public bool b_filter5 = false;
-	public bool stopping_filter = false;
-
-
-	public class c_hotelInfo {
-		public string s_id {get; set;} = string.Empty;
-		public string s_name {get; set;} = string.Empty;
-		public string s_hotelImgPath {get; set;} = string.Empty;
-		public double d_rating {get; set;} = 0.0;
-		public double d_price {get; set;} = 0.0;
-		public int i_reviewCount {get; set;} = 0;
-		public string s_slogan {get; set;} = string.Empty;
-		public string s_description {get; set;} = string.Empty;
-		public string s_startDate {get; set;} = string.Empty;
-		public string s_endDate {get; set;} = string.Empty;
-		public int i_maxGuests {get; set;} = 0;
-	}
-
-	private IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
-
-	protected override async Task OnInitializedAsync() {
-			await refreshList();
-	}
-
-	private async Task refreshList() {
-
-		// List of colection references to be able to access different parts of the database
-		CollectionReference cr_hotels =  db.Collection("Hotels");
-		QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
-
-		var lst = new List<c_hotelInfo>();
-			foreach (var doc in qs_hotelDocs.Documents)
-            {
-				DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
-				DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
-                lst.Add(new c_hotelInfo{s_id = doc.Id, 
-				s_name = doc.GetValue<string>("name"), 
-				s_hotelImgPath = hotelImgs.GetValue<string>("path"),
-				d_rating = doc.GetValue<double>("rating"),
-				d_price = doc.GetValue<double>("price"),
-				i_reviewCount = doc.GetValue<int>("review_count"),
-				s_slogan = doc.GetValue<string>("slogan"),
-				s_description = doc.GetValue<string>("description")
-				});
-            }
-        hotelInfo = lst;
-	}
-
-	public bool b_Filter1Function(double x) {
-		if(b_filter1 == true) {
-			if(x >= 0 && x < 200) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	public bool b_Filter2Function(double x) {
-		if(b_filter2 == true) {
-			if(x >= 200 && x < 400) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	public bool b_Filter3Function(double x) {
-		if(b_filter3) {
-			if(x >= 400 && x < 1000) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	public bool b_Filter4Function(double x) {
-		if(b_filter4) {
-			if(x >= 1000 && x < 2000) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	public bool b_Filter5Function(double x) {
-		if(b_filter5) {
-			if(x >= 2000 && x <= 5000) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	public bool b_noFiltersChecked() {
-		if(b_filter1 == false && b_filter2 == false && b_filter3 == false && b_filter4 == false && b_filter5 == false && stopping_filter == false) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	//Search Bar stuff
-	public void Searched(IEnumerable<c_hotelInfo> h_info)
-	{
-		hotelInfo = h_info ;
-	}
-
-	public void SearchUsed(List<c_hotelInfo> hinfo)
-	{
-		hotelInfo = hinfo;
+@code{
+	public void rerender(){
+		this.StateHasChanged();
 	}
 }

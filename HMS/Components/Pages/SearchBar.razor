@@ -1,9 +1,8 @@
 @page "/SearchBar"
-@using Google.Cloud.Firestore;
 @rendermode InteractiveServer
 @using System.Globalization;
 @using BlazorBootstrap;
-@typeparam List
+@inherits LP
 
 
 	<div class="searchbar">
@@ -27,9 +26,6 @@
 			<button class="sbutton tr" @onclick="() => search(query)">Search</button>
 		</div>
 		
-		<div class="center">
-			<button class="sbutton tr" @onclick="() => SearchUsed(tempList)">Search</button>
-		</div>
 
 	</div>
 
@@ -60,98 +56,9 @@
 
 -->
 
-
 @code{
-    public FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 	
-    public string query { get; set; }= "";
-	public string guests { get; set; }= "";
-	public DateOnly date1 = DateOnly.FromDateTime(DateTime.Now.AddDays(0));
-	public DateOnly date2 = DateOnly.FromDateTime(DateTime.Now.AddDays(4));
-
-	public DateOnly strtestd { get; set; }
-	public DateOnly strtestd1 { get; set; }
-
-    public class c_hotelInfo {
-		public string s_id {get; set;} = string.Empty;
-		public string s_name {get; set;} = string.Empty;
-		public string s_hotelImgPath {get; set;} = string.Empty;
-		public double d_rating {get; set;} = 0.0;
-		public double d_price {get; set;} = 0.0;
-		public int i_reviewCount {get; set;} = 0;
-		public string s_slogan {get; set;} = string.Empty;
-		public string s_description {get; set;} = string.Empty;
-		public string s_startDate {get; set;} = string.Empty;
-		public string s_endDate {get; set;} = string.Empty;
-		public int i_maxGuests {get; set;} = 0;
-	}
-
-	
-    public IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
-
-	[Parameter]
-	public EventCallback<List<c_hotelInfo>> OnSearch {get; set;}
-	public List<c_hotelInfo> tempList = new List<c_hotelInfo>();
-
-	public void SearchUsed(List<c_hotelInfo> hinfo)
-	{
-		OnSearch.InvokeAsync(hinfo);
-	}
-
-    public async void search(string qry)
-    {
-        CollectionReference cr_hotels = db.Collection("Hotels");
-        QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
-        
-        Query allHotels = db.Collection("Hotels");
-        QuerySnapshot qs_allHotels = await allHotels.GetSnapshotAsync();
-
-        List<c_hotelInfo> results = new List<c_hotelInfo>();
-
-        foreach (DocumentSnapshot doc in qs_allHotels.Documents)
-        {
-			DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
-			DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
-
-			string start = doc.GetValue<string>("start_date");
-			string end = doc.GetValue<string>("end_date");
-
-			strtestd = DateOnly.Parse(start);
-			strtestd1 = DateOnly.Parse(end);
-			//make a int, add to condtions, display guests
-			int mguests = doc.GetValue<int>("max_guests");
-			int inttmp = 0;
-
-			if(int.TryParse(guests, out inttmp))
-				{
-					if((doc.GetValue<string>("location").Contains(qry) || (date1 < strtestd && date2 >strtestd1)) && (inttmp < mguests))
-						{
-							results.Add(new c_hotelInfo{s_id = doc.Id, 
-								s_name = doc.GetValue<string>("name"),
-								s_hotelImgPath = hotelImgs.GetValue<string>("path"),
-								d_rating = doc.GetValue<double>("rating"),
-								d_price = doc.GetValue<double>("price"),
-								i_reviewCount = doc.GetValue<int>("review_count"),
-								s_slogan = doc.GetValue<string>("slogan"),
-								s_description = doc.GetValue<string>("description"),
-								s_startDate = start,
-								s_endDate = end,
-								i_maxGuests = mguests
-								});
-					}
-				}
-        }
-        hotelInfo = results;
-		tempList = results;
-		//StateHasChanged();
-    }
-
-
-    public string test = "AHHHHHHHH";
-
-
 }
-
 
 
 
