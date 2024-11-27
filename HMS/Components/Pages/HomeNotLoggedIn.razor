@@ -150,7 +150,18 @@
     </div>
 
     <div class="trips" id="resorts">
-        <h2>Featured Resorts</h2>
+        <h2 id="title-border">Featured Resorts</h2>
+        <div class="text-section">
+            <h2>Explore</h2>
+            <br>
+            <h3>Serenitas</h3>
+            <p>
+                Nestled along the stunning shores of Lake Tahoe, Serenitas 
+                offers an elegant retreat. Enjoy serene lake views, luxurious 
+                accommodations, and a tranquil atmosphere perfect for relaxation. Experience the beauty and tranquility of Lake Tahoe at Serenitas.
+            </p>
+        </div>
+        <div class="resort-image"></div>
     </div>
 </main>
 
@@ -326,34 +337,29 @@
         border-radius: 6px;
     }
 
-    .trips{
-        border: 1px solid #E0E0E0;
+    .trips {
         padding: 20px;
-        background-color: #f9f9f9;
         margin-bottom: 20px;
         border-radius: 6px 6px 0px 0px;
         margin-left: 5px;
         margin-right: 5px;
     }
 
-    .h2{
+    .h2 {
         font-weight: bold;
     }
    
-    .center
-	{
+    .center {
 		margin:auto;
 	}
 
-	.container
-	{
+	.container {
 		display: flex;
 		justify-content: center;
 		background: red;
 	}
 
-	.textbox
-	{
+	.textbox {
 		background-color: rgba(242, 242, 242, 1);
 		border: none;
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
@@ -454,22 +460,22 @@
 
     .hotel-info-border {
         width: 100%;
-    height: 240px;
-    top: 426px;
-    left: 425px;
-    gap: 0px;
-    border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
-    margin-left: auto;
-    margin-right: auto;
-    opacity: 0px;
-    border: 1px solid #E0E0E0
+        height: 240px;
+        top: 426px;
+        left: 425px;
+        gap: 0px;
+        border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 0px;
+        border: 1px solid #E0E0E0;
     }
 
     .column {
-    float: left;
-    padding: 1%;
-    height: 100%;
-    width: 50%;
+        float: left;
+        padding: 1%;
+        height: 100%;
+        width: 50%;
     }
 
     /* The border that houses the filter information */
@@ -591,6 +597,32 @@
         align-items: center;
         flex: 1;
         
+    }
+
+    #title-border {
+        border-bottom: 1px solid #0000004D; 
+    }
+
+    .text-section {
+        background-color: #BF5559;
+        max-width: 33%;
+        border-radius: 8px;
+        text-align: center;
+        color: #FFFFFF;
+        padding: 5% 5% 5% 5%;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .resort-image{
+        background-image: url('/images/generalImages/featured_resort.png');
+        width: 100%;
+        height: 300px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
     }
 </style>
  
