@@ -6,9 +6,9 @@
 
 
 @if(success == false){
-	<Modal @ref="modal" title="Modal title" IsVerticallyCentered="true">
+	<Modal @ref="modal" title="WARNING" IsVerticallyCentered="true">
 		<BodyTemplate>
-			Please Make Sure <strong>ALL</strong> Fields Are Filled! Thanks!
+			Please Make Sure <strong>ALL</strong> Fields Are Filled, Thank You!
 		</BodyTemplate>
 		<FooterTemplate>
 			<Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
@@ -17,87 +17,112 @@
 }
 
 
-<div class="fieldContainer">
-	<div class="searchbar tr">
-		<div class="center">
-			<InputText Type="text" placeholder="Hotel Name" @bind-Value="@s_name" />
+<div class="pageContainer">
+	<div class="fieldContainer">
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Hotel Name" @bind-Value="@s_name" />
+			</div>
 		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Description" @bind-Value="@s_description" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<NumberInput TValue="int?" placeholder="Maximum Number of Guests" @bind-Value="@i_maxGuests" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Location (City, State)" @bind-Value="@s_location" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Hotel Activities" @bind-Value="@s_activities" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputNumber TValue="double?" placeholder="Price" @bind-Value="@d_price" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Hotel Slogan" @bind-Value="@s_slogan" />
+			</div>
+		</div>
+
+		<div class="searchbar tr flx">
+			<div class="date">
+				<DateInput TValue="DateOnly" @bind-Value="@date1" Placeholder="Enter Date" />
+			</div>
+
+			<div class="date">
+				<DateInput TValue="DateOnly" @bind-Value="@date2" Placeholder="Enter Date" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText type="text" placeholder="Key Words" @bind-Value="@s_keywords" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="d-grid gap-2 btncntr">
+				<Button @ref="saveButton1" Color="ButtonColor.Primary" @onclick="() => addListing()">Add Listing to DB</Button>
+			</div>
+		</div>
+
+		<Alert Color="AlertColor.Primary" Dismissable="true"> 
+			<Icon Name="IconName.InfoCircleFill" class="me-2"></Icon>
+			<strong>
+				Hey There!
+			</strong> 
+				Don't forget to fill in 
+			<strong>
+				<u>every</u>
+			</strong>
+			field!
+		</Alert>
 	</div>
 
-	<div class="searchbar tr">
-		<div class="center">
-			<InputText Type="text" placeholder="Description" @bind-Value="@s_description" />
+	<div class="containerItems">
+
+		<div class="previewItem tr">
+			<Image Src="/images/generalImages/placeholder.png" Class="rounded float-start"/>
+			<div class="textHolder">
+				<h4><b>@s_name</b><span style="float:right; font-size: 22px">$@d_price/Night</span></h4>
+				<h6><i>@s_location</i></h6>
+
+				<div class="textHolderP">
+					<h6>@s_description</h6>
+				</div>
+
+				<div>
+					<h5><b>Rating:</b> @d_rating/5 Stars<b><span style="float:right;">Up To @i_maxGuests Guests</span></b></h5>
+				</div>
+			</div>
 		</div>
+		
+		<br>
+
+		<div>
+			<h5>Total Listings: @hotel_count</h5>
+		</div>
+		
 	</div>
-
-	<div class="searchbar tr">
-		<div class="center">
-			<NumberInput TValue="int?" placeholder="Maximum Number of Guests" @bind-Value="@i_maxGuests" />
-		</div>
-	</div>
-
-	<div class="searchbar tr">
-		<div class="center">
-			<InputText Type="text" placeholder="Location (City, State)" @bind-Value="@s_location" />
-		</div>
-	</div>
-
-	<div class="searchbar tr">
-		<div class="center">
-			<InputText Type="text" placeholder="Hotel Activities" @bind-Value="@s_activities" />
-		</div>
-	</div>
-
-	<div class="searchbar tr">
-		<div class="center">
-			<InputNumber TValue="double?" placeholder="Price" @bind-Value="@d_price" />
-		</div>
-	</div>
-
-	<div class="searchbar tr">
-		<div class="center">
-			<InputText Type="text" placeholder="Hotel Slogan" @bind-Value="@s_slogan" />
-		</div>
-	</div>
-
-	<div class="searchbar tr flx">
-		<div class="date">
-			<DateInput TValue="DateOnly" @bind-Value="@date1" Placeholder="Enter Date" />
-		</div>
-
-		<div class="date">
-			<DateInput TValue="DateOnly" @bind-Value="@date2" Placeholder="Enter Date" />
-		</div>
-	</div>
-
-	<div class="searchbar tr">
-		<div class="center">
-			<InputText type="text" placeholder="Key Words" @bind-Value="@s_keywords" />
-		</div>
-	</div>
-
-	<div class="searchbar tr">
-		<div class="d-grid gap-2 btncntr">
-			<Button @ref="saveButton1" Color="ButtonColor.Primary" @onclick="() => addListing()">Add Listing to DB</Button>
-		</div>
-	</div>
-
-	<Alert Color="AlertColor.Primary" Dismissable="true"> 
-		<Icon Name="IconName.InfoCircleFill" class="me-2"></Icon>
-		<strong>
-			Hey There!
-		</strong> 
-			Don't forget to fill in 
-		<strong>
-			<u>every</u>
-		</strong>
-		field!
-	</Alert>
 </div>
 
-<div>
-	<h3>Count: @hotel_count</h3>
-</div>
 
 @code {
 	// Set up an instance of the firebase
@@ -308,7 +333,9 @@
 	.fieldContainer
 	{
 		display: flex;
+		flex:auto;
 		max-width: 600px;
+		min-width: 355px;
 		border-radius:  8px;
 		flex-direction: column;
 
@@ -324,8 +351,74 @@
 	
 	}
 
+	.containerItems{
+		display: flex;
+		flex:auto;
+		max-width: 1000px;
+		min-width: 355px;
+		border-radius:  8px;
+		flex-direction: column;
+
+		margin:auto;
+		justify-content: center;
+		flex-wrap: wrap;
+		align-items: center;
+
+		row-gap: .6em;
+		column-gap: .6em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
+	.previewItem{
+		display: flex;
+		flex:auto;
+		max-width: 700px;
+		min-width: 355px;
+		border-radius:  8px;
+		flex-direction: row;
+
+		margin:auto;
+		justify-content: center;
+		flex-wrap: wrap;
+
+		row-gap: .6em;
+		column-gap: .6em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
 	::-webkit-input-placeholder{
 		color: #56595c;
+	}
+
+	.pageContainer{
+		display: flex;
+  		align-items: center;
+  		justify-content: center;
+		flex-wrap: wrap;
+		max-width: 1500px;
+		margin:  auto;
+
+		row-gap: .6em;
+		column-gap: .6em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
+	.textHolder{
+		max-width: 400px;
+	}
+
+	.textHolderP{
+		max-width: 400px;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px -1px 1px rgb(213, 213, 213) inset;
+		border-radius: 2px;
 	}
 
 </style>
