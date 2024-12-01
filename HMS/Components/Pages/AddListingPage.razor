@@ -3,6 +3,20 @@
 @page "/addlistings"
 @using BlazorBootstrap;
 
+
+
+@if(success == false){
+	<Modal @ref="modal" title="Modal title" IsVerticallyCentered="true">
+		<BodyTemplate>
+			Please Make Sure <strong>ALL</strong> Fields Are Filled! Thanks!
+		</BodyTemplate>
+		<FooterTemplate>
+			<Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+		</FooterTemplate>
+	</Modal>
+}
+
+
 <div class="fieldContainer">
 	<div class="searchbar tr">
 		<div class="center">
@@ -18,7 +32,7 @@
 
 	<div class="searchbar tr">
 		<div class="center">
-			<NumberInput TValue="int" placeholder="Maximum Number of Guests" @bind-Value="@i_maxGuests" />
+			<NumberInput TValue="int?" placeholder="Maximum Number of Guests" @bind-Value="@i_maxGuests" />
 		</div>
 	</div>
 
@@ -36,7 +50,7 @@
 
 	<div class="searchbar tr">
 		<div class="center">
-			<InputNumber TValue="double" placeholder="Price" @bind-Value="@d_price" />
+			<InputNumber TValue="double?" placeholder="Price" @bind-Value="@d_price" />
 		</div>
 	</div>
 
@@ -63,16 +77,27 @@
 	</div>
 
 	<div class="searchbar tr">
-		<div class="center">
-			<button class="sbutton" @onclick="() => addListing()">Add Listing to DB</button>
+		<div class="d-grid gap-2 btncntr">
+			<Button @ref="saveButton1" Color="ButtonColor.Primary" @onclick="() => addListing()">Add Listing to DB</Button>
 		</div>
 	</div>
+
+	<Alert Color="AlertColor.Primary" Dismissable="true"> 
+		<Icon Name="IconName.InfoCircleFill" class="me-2"></Icon>
+		<strong>
+			Hey There!
+		</strong> 
+			Don't forget to fill in 
+		<strong>
+			<u>every</u>
+		</strong>
+		field!
+	</Alert>
 </div>
 
 <div>
 	<h3>Count: @hotel_count</h3>
 </div>
-
 
 @code {
 	// Set up an instance of the firebase
@@ -83,51 +108,89 @@
 	public string s_keywords {get; set;} = string.Empty;
 	public string s_name {get; set;} = string.Empty; //
 	public double d_rating {get; set;} = 0.0;
-	public double d_price {get; set;} = 0.0;
+	public double? d_price {get; set;}
 	public int i_reviewCount {get; set;} = 0;
 	public string s_slogan {get; set;} = string.Empty;
 	public string s_description {get; set;} = string.Empty; //
-	public int i_maxGuests {get; set;} = 0; //
+	public int? i_maxGuests {get; set;} //
 	public string query { get; set; }= "";
 	public string guests { get; set; }= "";
 	public DateOnly date1 = DateOnly.FromDateTime(DateTime.Now.AddDays(0));
 	public DateOnly date2 = DateOnly.FromDateTime(DateTime.Now.AddDays(4));
 	public int hotel_count { get; set; } = 0;
 
+	private Button saveButton1 = default!;
+	private Modal modal = default!;
+	private bool success = false;
+
+	private async Task OnHideModalClick()
+    {
+		success = false;
+        await modal.HideAsync();
+    }
+
 	protected override async Task OnInitializedAsync() {
 		await setHotelCount();
 	}
 
 
+//TODO: THIS!
+	public void clearFields(){
+		s_activities = "";
+		s_location = "";
+		s_name = "";
+		s_description = "";
+		i_maxGuests = null;
+		d_price = null;
+		s_slogan = "";
+		s_keywords = "";
+	}
+
 	public async Task addListing()
 	{
-		CollectionReference cRef = db.Collection("Hotels");
-		Dictionary<string, object> addedHotel = new Dictionary<string, object>
-		{
-			{ "activities", s_activities }, //
-			{ "description", s_description }, //
-			{ "end_date", date2.ToString() }, //
-			{ "key_words", s_keywords }, //
-			{ "location", s_location }, //
-			{ "max_guests", i_maxGuests }, //
-			{ "name", s_name }, //
-			{ "price", d_price }, //
-			{ "rating", 0.0 }, //
-			{ "review_count", 0 }, //
-			{ "slogan", s_slogan }, //
-			{ "start_date", date1.ToString() }
-		};
-		await cRef.Document(hotel_count.ToString()).SetAsync(addedHotel);
+		saveButton1.ShowLoading("Loading...");
+		
+		if(s_activities!=""&&
+			s_description!=""&&
+			s_keywords!=""&&
+			s_location!=""&&
+			i_maxGuests!=0&&
+			i_maxGuests!=null&&
+			d_price!=null&&
+			s_name!=""&&
+			s_slogan!=""){
+				success = true;
+				CollectionReference cRef = db.Collection("Hotels");
+				Dictionary<string, object> addedHotel = new Dictionary<string, object>
+				{
+					{ "activities", s_activities }, //
+					{ "description", s_description }, //
+					{ "end_date", date2.ToString() }, //
+					{ "key_words", s_keywords }, //
+					{ "location", s_location }, //
+					{ "max_guests", i_maxGuests }, //
+					{ "name", s_name }, //
+					{ "price", d_price }, //
+					{ "rating", 0.0 }, //
+					{ "review_count", 0 }, //
+					{ "slogan", s_slogan }, //
+					{ "start_date", date1.ToString() }
+				};
+				await cRef.Document(hotel_count.ToString()).SetAsync(addedHotel);
 
-		Dictionary<string, object> addedHotelImgPath = new Dictionary<string, object>
-		{
-			{ "path", "/images/hotelImages/lebron.jpg" }
-		};
-		await cRef.Document(hotel_count.ToString()).Collection("images").Document("0")
-			.SetAsync(addedHotelImgPath);
+				Dictionary<string, object> addedHotelImgPath = new Dictionary<string, object>
+				{
+					{ "path", "/images/hotelImages/lebron.jpg" }
+				};
+				await cRef.Document(hotel_count.ToString()).Collection("images").Document("0")
+					.SetAsync(addedHotelImgPath);
 
-		await setHotelCount();
-
+				await setHotelCount();
+				clearFields();
+		}
+		saveButton1.HideLoading();
+		await modal.ShowAsync();
+		success = false;
 	}
 	
 	public async Task setHotelCount()
@@ -136,7 +199,6 @@
 		QuerySnapshot snapshot =  await cRef.GetSnapshotAsync();
 		hotel_count = snapshot.Count;
 	}
-	
 
 }
 
@@ -166,7 +228,7 @@
 	.date
 	{
 		width: 49%;
-		min-width: 145px;
+		min-width: 140px;
 	}
 
 	input[type=date] {
@@ -203,6 +265,11 @@
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
 		border-radius: 3px;
 		color: rgb(0, 0, 0);
+	}
+
+	.btncntr{
+		display: flex;
+		width: 100%;
 	}
 
 	input[type=text], input[type=number] {
@@ -255,6 +322,10 @@
 		padding: .6em;
 		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
 	
+	}
+
+	::-webkit-input-placeholder{
+		color: #56595c;
 	}
 
 </style>
