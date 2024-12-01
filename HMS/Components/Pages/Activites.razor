@@ -1,47 +1,62 @@
-@page "/activities"
 @rendermode InteractiveServer
+@page "/activities"
 
-<PageTitle>Activities</PageTitle>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Discover Our Activities</h1>
 
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Activities</h1>
-    <p class="lead text-center">Discover a variety of exciting activities you can enjoy during your stay with us. Whether you prefer to relax by the pool, pamper yourself at our spa, or try your luck at the casino, we have something for everyone.</p>
-    <hr>
-    
-    <!-- Navigation Links -->
-    <nav class="nav nav-pills nav-justified mb-4">
-        <a class="nav-link" href="#entertainment">Entertainment</a>
-        <a class="nav-link" href="#dining">Dining</a>
-        <a class="nav-link" href="#pools">Pools</a>
-        <a class="nav-link" href="#casino">Casino</a>
-        <a class="nav-link" href="#spa-salon">Spa & Salon</a>
-        <a class="nav-link" href="#nightlife">Nightlife</a>
-    </nav>
-    
-    <!-- Entertainment Section -->
-    <div id="entertainment" class="mb-5">
-        <h2>Entertainment</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <img src="https://via.placeholder.com/500" class="img-fluid mb-3" alt="Entertainment">
-            </div>
-            <div class="col-md-6">
-                <p>Enjoy live entertainment at our hotel, featuring talented performers, musicians, and comedians. Our entertainment program is curated to provide a variety of experiences for all ages, making your evenings truly unforgettable.</p>
-            </div>
-        </div>
-        <!-- Carousel Dropdown -->
-        
-    </div>
-
-    <!-- Other sections follow the same format as Entertainment -->
-
+    <BBTabs DefaultTab="Outdoor">
+        @foreach (var category in Activities)
+        {
+            <BBTab Key="@category.Category" Title="@category.Category">
+                <div class="row">
+                    @foreach (var activity in category.Items)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <BBCard>
+                                <BBCardHeader>
+                                    <h5 class="card-title">@activity.Name</h5>
+                                </BBCardHeader>
+                                <BBCardBody>
+                                    <img src="@activity.Image" alt="@activity.Name" class="img-fluid rounded mb-3" />
+                                    <p class="card-text">@activity.Description</p>
+                                </BBCardBody>
+                                <BBCardFooter>
+                                    <BBButton Class="btn btn-primary w-100">Book Now</BBButton>
+                                </BBCardFooter>
+                            </BBCard>
+                        </div>
+                    }
+                </div>
+            </BBTab>
+        }
+    </BBTabs>
 </div>
 
 @code {
-    private bool showEntertainmentCarousel = false;
-
-    private void ToggleEntertainmentCarousel()
+    public class ActivityCategory
     {
-        showEntertainmentCarousel = !showEntertainmentCarousel;
+        public string Category { get; set; }
+        public List<ActivityItem> Items { get; set; }
     }
+
+    public class ActivityItem
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
+    }
+
+    private List<ActivityCategory> Activities = new List<ActivityCategory>
+    {
+        new ActivityCategory
+        {
+            Category = "Outdoor",
+            Items = new List<ActivityItem>
+            {
+                new ActivityItem { Name = "Hiking Trail Adventure", Description = "Explore scenic mountain trails with experienced guides.", Image = "/placeholder.svg?height=200&width=300" },
+                new ActivityItem { Name = "Beach Yoga Sessions", Description = "Start your day with relaxing yoga classes by the ocean.", Image = "/placeholder.svg?height=200&width=300" },
+                new ActivityItem { Name = "Kayaking Excursion", Description = "Paddle through crystal-clear waters and hidden coves.", Image = "/placeholder.svg?height=200&width=300" },
+            }
+        }
+    };
 }
