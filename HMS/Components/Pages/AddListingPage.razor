@@ -3,49 +3,69 @@
 @page "/addlistings"
 @using BlazorBootstrap;
 
-<div>
-	<div class="center">
-		<InputText Type="text" class="tr" placeholder="Hotel Name" @bind-Value="@s_name" />
-	</div>
-	
-	<div class="center">
-		<InputText Type="text" class="tr" placeholder="Description" @bind-Value="@s_description" />
+<div class="fieldContainer">
+	<div class="searchbar tr">
+		<div class="center">
+			<InputText Type="text" placeholder="Hotel Name" @bind-Value="@s_name" />
+		</div>
 	</div>
 
-	<div class="center">
-		<NumberInput TValue="int" class="tr" placeholder="Maximum Number of Guests" @bind-Value="@i_maxGuests" />
+	<div class="searchbar tr">
+		<div class="center">
+			<InputText Type="text" placeholder="Description" @bind-Value="@s_description" />
+		</div>
 	</div>
 
-	<div class="center">
-		<InputText Type="text" class="tr" placeholder="Location (City, State)" @bind-Value="@s_location" />
+	<div class="searchbar tr">
+		<div class="center">
+			<NumberInput TValue="int" placeholder="Maximum Number of Guests" @bind-Value="@i_maxGuests" />
+		</div>
 	</div>
 
-	<div class="center">
-		<InputText Type="text" class="tr" placeholder="Hotel Activities" @bind-Value="@s_activities" />
+	<div class="searchbar tr">
+		<div class="center">
+			<InputText Type="text" placeholder="Location (City, State)" @bind-Value="@s_location" />
+		</div>
 	</div>
 
-	<div class="center">
-		<InputNumber TValue="double" class="tr" placeholder="Price" @bind-Value="@d_price" />
+	<div class="searchbar tr">
+		<div class="center">
+			<InputText Type="text" placeholder="Hotel Activities" @bind-Value="@s_activities" />
+		</div>
 	</div>
 
-	<div class="center">
-		<InputText Type="text" class="tr" placeholder="Hotel Slogan" @bind-Value="@s_slogan" />
+	<div class="searchbar tr">
+		<div class="center">
+			<InputNumber TValue="double" placeholder="Price" @bind-Value="@d_price" />
+		</div>
 	</div>
 
-	<div class="center">
-		<DateInput TValue="DateOnly" class="tr" @bind-Value="@date1" Placeholder="Enter Date" />
+	<div class="searchbar tr">
+		<div class="center">
+			<InputText Type="text" placeholder="Hotel Slogan" @bind-Value="@s_slogan" />
+		</div>
 	</div>
 
-	<div class="center">
-		<DateInput TValue="DateOnly" class="tr" @bind-Value="@date2" Placeholder="Enter Date" />
+	<div class="searchbar tr flx">
+		<div class="date">
+			<DateInput TValue="DateOnly" @bind-Value="@date1" Placeholder="Enter Date" />
+		</div>
+
+		<div class="date">
+			<DateInput TValue="DateOnly" @bind-Value="@date2" Placeholder="Enter Date" />
+		</div>
 	</div>
 
-	<div class="center">
-		<InputText type="text" class="tr" placeholder="Key Words" @bind-Value="@s_keywords" />
+	<div class="searchbar tr">
+		<div class="center">
+			<InputText type="text" placeholder="Key Words" @bind-Value="@s_keywords" />
+		</div>
 	</div>
 
-	<div class="center">
-		<button class="sbutton tr" @onclick="() => addListing()">Add Listing to DB</button>
+	<div class="searchbar tr">
+		<div class="center">
+			<button class="sbutton" @onclick="() => addListing()">Add Listing to DB</button>
+		</div>
 	</div>
 </div>
 
@@ -101,7 +121,7 @@
 
 		Dictionary<string, object> addedHotelImgPath = new Dictionary<string, object>
 		{
-			{ "activities", s_activities }
+			{ "path", "/images/hotelImages/lebron.jpg" }
 		};
 		await cRef.Document(hotel_count.ToString()).Collection("images").Document("0")
 			.SetAsync(addedHotelImgPath);
@@ -145,9 +165,8 @@
 
 	.date
 	{
-		width: 150px;
-		text-align: center;
-		color:rgba(255, 255, 255, 0);
+		width: 49%;
+		min-width: 145px;
 	}
 
 	input[type=date] {
@@ -156,7 +175,7 @@
 		text-align: center;
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
 		border-radius: 3px;
-		width: 170px;
+		width: 100%;
 		height: 44px;
 		color: rgb(72, 72, 72);
 	}
@@ -171,11 +190,12 @@
 	.tr:is(:hover, :focus)
 	{
 		
-		transform: scale(1.09);
+		transform: scale(1.05);
 	}
 
 	.sbutton
 	{
+		flex: 1;
 		background-color: rgba(47, 128, 237, 1);
 		width: 148px;
 		height:44px;
@@ -185,9 +205,11 @@
 		color: rgb(0, 0, 0);
 	}
 
-	input[type=text] {
+	input[type=text], input[type=number] {
 		background-color: rgba(242, 242, 242, 1);
-		width: 260px;
+		box-sizing: border-box;
+		display: block;
+		width: 100%;
 		text-align: center;
 		height:44px;
 		border: none;
@@ -195,10 +217,14 @@
 		border-radius: 3px;
 	}
 
+	.flx{
+		display:flex;
+	}
+
 	.searchbar
 	{
-		display: flex;
-		max-width: 1100px;
+		box-sizing: border-box;
+		width: 96%;
 		border-radius:  8px;
 
 		margin:auto;
@@ -207,6 +233,24 @@
 		align-content: space-evenly;
 		row-gap: .3em;
 		column-gap: .3em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
+	.fieldContainer
+	{
+		display: flex;
+		max-width: 600px;
+		border-radius:  8px;
+		flex-direction: column;
+
+		margin:auto;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		align-content: space-evenly;
+		row-gap: .6em;
+		column-gap: .6em;
 		background-color: rgb(255, 253, 250);
 		padding: .6em;
 		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
