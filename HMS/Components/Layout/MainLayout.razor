@@ -93,7 +93,7 @@
 @code {
     // Create a dictionary that will hold the NavBar pages
     string[] NavBarNames = {"Home", "Discover", "Activities", "Listing Page", "My Account", "Log In", "SignUp", "Add A Hotel"};
-    string[] NavBarPages = {"#", "todoapp", "todoapp", "listings", "userDashBoard", "signin", "login", "addlistings"};
+    string[] NavBarPages = {"#", "todoapp", "activities", "listings", "userDashBoard", "signin", "login", "addlistings"};
     string NavBarStyle, NavTextStyle;
     protected override void OnInitialized() {
         var currentPage = Navigation.ToBaseRelativePath(Navigation.Uri);
