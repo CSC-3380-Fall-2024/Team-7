@@ -35,6 +35,8 @@
         public string Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string MemberId {get; set;}
+        public int RewardsTracker {get; set;}
     }
 
     public class Employee {
@@ -50,9 +52,9 @@
     string newPassword = "";
     string EmployeeId = "";
     string LoginMessage = "";
+    string MemberId = "";
+    int RewardsTracker = 0;
     private bool IsEmployee { get; set; } = false;
-
-    
 
     private async Task HandleSubmit()
     {
