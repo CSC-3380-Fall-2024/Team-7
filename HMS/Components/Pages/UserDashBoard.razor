@@ -29,7 +29,7 @@
     <div class="user-section">
         <h2>Member Rewards</h2>
         <p>Earn qualifiying points or nights to unlock more tier benefits</p>
-        <div class="nights-tracker"> @user.d_rewards Night(s) earned</div>
+        <div class="nights-tracker"> @user.i_rewards Night(s) earned</div>
         <div class="tier-progress">
             <div class="progress-bar" style="width: @progressPercentage%;"></div>
             <div class="tier-line" style="left: 10%;"></div>  
@@ -200,7 +200,7 @@ p {
     private double progressPercentage = 0; //var that'll hold value pulled from database
     public class c_users {
         public string s_id { get; set;} = string.Empty;
-        public double d_rewards { get; set;} = 0;
+        public double i_rewards { get; set;} = 0;
         public int i_upcomingTrips {get; set;} = 0;
     }
 
@@ -220,9 +220,9 @@ p {
 
         user = new c_users {
             s_id = userSnapshot.GetValue<string>("MemberId"),
-            d_rewards = userSnapshot.GetValue<double>("Reward"),
+            i_rewards = userSnapshot.GetValue<double>("Reward"),
             i_upcomingTrips = userSnapshot.GetValue<int>("UpcomingTrips")
         };
-        progressPercentage = (user.d_rewards * 10); // temp value but this is what displays the progress
+        progressPercentage = (user.i_rewards * 10); // temp value but this is what displays the progress
     }
 }

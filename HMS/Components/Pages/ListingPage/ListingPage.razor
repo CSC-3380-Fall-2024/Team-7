@@ -298,7 +298,7 @@
 
 			if(int.TryParse(guests, out inttmp))
 				{
-					if((doc.GetValue<string>("location").Contains(qry) || (date1 < strtestd && date2 >strtestd1)) && (inttmp < mguests))
+					if((doc.GetValue<string>("location").Contains(qry) || (date1 <= strtestd && date2 >= strtestd1)) && (inttmp < mguests))
 						{
 							results.Add(new c_hotelInfo{s_id = doc.Id, 
 								s_name = doc.GetValue<string>("name"),

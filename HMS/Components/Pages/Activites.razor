@@ -1,0 +1,163 @@
+@rendermode InteractiveServer
+@page "/activities"
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Discover Our Activities</h1>
+
+    <div class="accordion" id="activitiesAccordion">
+        @foreach (var category in Activities)
+        {
+            var collapseId = $"collapse-{category.Category.Replace(" ", "")}";
+            var headingId = $"heading-{category.Category.Replace(" ", "")}";
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="@headingId">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="true" aria-controls="@collapseId">
+                        @category.Category
+                    </button>
+                </h2>
+                <div id="@collapseId" class="accordion-collapse collapse show" aria-labelledby="@headingId">
+                    <div class="accordion-body">
+                        <div class="row justify-content-center">
+                            @foreach (var activity in category.Items)
+                            {
+                                <div class="col-md-4 mb-4">
+                                    <div class="filter-box">
+                                        <div class="filter-box-top">
+                                            <p class="filter-heading-text" style="margin: auto;">@activity.Name</p>
+                                        </div>
+                                        <div class="filter-box-content">
+                                            <img src="@activity.Image" alt="@activity.Name" class="custom-image img-fluid rounded mb-3" />
+                                            <p class="filter-description">@activity.Description</p>
+                                            <div class="filter-buttons">
+                                                <BBButton Class="btn btn-primary w-100 mb-2" @onclick="NavigateToListing">Book Now</BBButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+
+    body {
+        background-color: #003c95;
+    }
+
+    .custom-image {
+        width: 422.4px;
+        height: 281.52px;
+        object-fit: cover;
+    }
+
+    .text-center{
+    color: rgb(254, 254, 254);
+    }
+
+    
+    .filter-heading-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center; 
+    margin: 0;
+    color: #000000; 
+    }
+
+</style>
+
+@code {
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    public class ActivityCategory
+    {
+        public string Category { get; set; }
+        public List<ActivityItem> Items { get; set; }
+    }
+
+    public class ActivityItem
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
+    }
+
+    private void NavigateToListing()
+    {
+        NavigationManager.NavigateTo("/listings");
+    }
+    private List<ActivityCategory> Activities = new List<ActivityCategory>
+    {
+        new ActivityCategory
+        {
+            Category = "Outdoor",
+            Items = new List<ActivityItem>
+            {
+                new ActivityItem { Name = "Hiking Trail Adventure", Description = "Explore scenic trails with experienced guides.", Image = "images/activities/hiking.jpg" },
+                new ActivityItem { Name = "Beach Yoga Sessions", Description = "Start your day with relaxing yoga classes by the ocean.", Image = "images/activities/yoga.jpg" },
+                new ActivityItem { Name = "Kayaking Excursion", Description = "Paddle through crystal-clear waters and hidden coves.", Image = "images/activities/kayaking.jpg" },
+            }
+        },
+        new ActivityCategory
+        {
+            Category = "Entertainment",
+            Items = new List<ActivityItem>
+            {
+                new ActivityItem { Name = "Live Concerts", Description = "Enjoy live performances by world-renowned artists.", Image = "images/activities/concert.jpg" },
+                new ActivityItem { Name = "Comedy Nights", Description = "Laugh out loud at our stand-up comedy shows.", Image = "images/activities/comedy.jpg" },
+            }
+        },
+        new ActivityCategory
+        {
+            Category = "Dining",
+            Items = new List<ActivityItem>
+            {
+                new ActivityItem { Name = "Gourmet Dining", Description = "Savor exquisite dishes prepared by our top chefs.", Image = "images/activities/dining.jpg" },
+                new ActivityItem { Name = "Buffet Feast", Description = "Indulge in a wide variety of dishes at our buffet.", Image = "images/activities/buffet.jpg" },
+            }
+        },
+        new ActivityCategory
+        {
+            Category = "Pools",
+            Items = new List<ActivityItem>
+            {
+                new ActivityItem { Name = "Scenic Pool", Description = "Relax in our many scenic pools with breathtaking views.", Image = "images/activities/pool.jpg" },
+                new ActivityItem { Name = "Kids' Splash Zone", Description = "Fun water activities for the little ones. (subject to set locations)", Image = "images/activities/kids_pool.jpg" },
+            }
+        },
+        new ActivityCategory
+        {
+            Category = "Casino",
+            Items = new List<ActivityItem>
+            {
+                new ActivityItem { Name = "Blackjack", Description = "Try your luck at our Blackjack tables.", Image = "images/activities/blackjack.jpg" },
+                new ActivityItem { Name = "Slot Machines", Description = "Play and win big at our state-of-the-art slot machines.", Image = "images/activities/slots.jpg" },
+            }
+        },
+        new ActivityCategory
+        {
+            Category = "Spa & Salon",
+            Items = new List<ActivityItem>
+            {
+                new ActivityItem { Name = "Luxury Spa", Description = "Experience relaxation with our spa treatments.", Image = "images/activities/spa.jpg" },
+                new ActivityItem { Name = "Beauty Salon", Description = "Get pampered with our professional beauty services.", Image = "images/activities/salon.jpg" },
+            }
+        },
+        new ActivityCategory
+        {
+            Category = "Nightlife",
+            Items = new List<ActivityItem>
+            {
+                new ActivityItem { Name = "Rooftop Bar", Description = "Enjoy cocktails with a stunning city view.", Image = "images/activities/rooftop.jpg" },
+                new ActivityItem { Name = "Nightclub", Description = "Dance the night away at our exclusive club.", Image = "images/activities/nightclub.jpg" },
+            }
+        }
+    };
+}
