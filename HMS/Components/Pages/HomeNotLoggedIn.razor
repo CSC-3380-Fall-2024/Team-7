@@ -1,9 +1,8 @@
 @page "/"
-@rendermode InteractiveServer
+@@rendermode InteractiveServer
 @using BlazorBootstrap;
 @using Google.Cloud.Firestore;
-
-
+*
 <main>
     <div class="img-header">
         <h2>Enjoy Your Dream Vacation</h2>
@@ -129,7 +128,7 @@
             @foreach (var hotel in randomHotel) {
                 <div class="destination">
                     <div class="destination-img">
-                        <img src="@hotel.ImagePath" alt="Hotel Image"/>
+                        <img src="@hotel.s_hotelImgPath" alt="Hotel Image"/>
                     </div>
                     <h4>@hotel.s_name</h4>
                     <p>@hotel.s_hotelLocation</p>
@@ -309,7 +308,7 @@
 		StateHasChanged();
     }
 
-    private async Task pullRandomHotels() {
+    public async Task pullRandomHotels() {
         try {
             CollectionReference hotelsRef = db.Collection("Hotels");
             QuerySnapshot allHotelsSnapshot = await hotelsRef.GetSnapshotAsync();
@@ -320,11 +319,11 @@
                 string location = doc.GetValue<string>("s_location");
                 string hotelImage = await pullRandomHotelImage(doc.Id);
 
-                hotels.Add(new Hotel {
+                hotels.Add(new c_hotelInfo {
                     s_name = name,
                     s_hotelImgPath = hotelImage,
                     s_hotelLocation = location
-                )}; 
+                }); 
             }
 
             Random random = new Random();
@@ -336,11 +335,11 @@
         }
     }
 
-    private aync Task<string> pullRandomHotelImage(string hotelId) {
+    public async Task<string> pullRandomHotelImage(string hotelId) {
         try {
             DocumentReference imageDocRef = db.Collection("Hotels").Document(hotelId).Collection("images").Document("0");
-            DocumentSnapshot imageDocRef = await imageDocRef.GetSnapshotAsync();
-            return image.Doc.GetValue<string>("path");
+            DocumentSnapshot imageDoc = await imageDocRef.GetSnapshotAsync();
+            return imageDoc.GetValue<string>("path");
         } catch {
             return "/images/hotelImages/Hotel0.jpg";
         }
