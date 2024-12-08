@@ -126,26 +126,15 @@
     <div class="trips">
         <h2>Choose your next vacation destination</h2>
         <div class="destination-wrapper">
-            <div class="destination">
-                <div class="destination-img"/>
-                <h4>Hotel Name</h4>
-                <p>Location</p>
-            </div>
-            <div class="destination">
-                <div class="destination-img"/>
-                <h4>Hotel Name</h4>
-                <p>Location</p>
-            </div>
-            <div class="destination">
-                <div class="destination-img"/>
-                <h4>Hotel Name</h4>
-                <p>Location</p>
-            </div>
-            <div class="destination">
-                <div class="destination-img"/>
-                <h4>Hotel Name</h4>
-                <p>Location</p>
-            </div>
+            @foreach (var hotel in randomHotel) {
+                <div class="destination">
+                    <div class="destination-img">
+                        <img src="@hotel.ImagePath" alt="Hotel Image"/>
+                    </div>
+                    <h4>@hotel.s_name</h4>
+                    <p>@hotel.s_hotelLocation</p>
+                </div>
+            }
         </div>
     </div>
 
@@ -198,9 +187,11 @@
 		public string s_startDate {get; set;} = string.Empty;
 		public string s_endDate {get; set;} = string.Empty;
 		public int i_maxGuests {get; set;} = 0;
+        public string s_hotelLocation {get; set;} = string.Empty;
 	}
 
 	private IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
+    private List<c_hotelInfo> randomHotel = new();
 
 	public bool b_Filter1Function(double x) {
 		if(b_filter1 == true) {
@@ -316,6 +307,43 @@
         }
         hotelInfo = results;
 		StateHasChanged();
+    }
+
+    private async Task pullRandomHotels() {
+        try {
+            CollectionReference hotelsRef = db.Collection("Hotels");
+            QuerySnapshot allHotelsSnapshot = await hotelsRef.GetSnapshotAsync();
+            var hotels = new List<c_hotelInfo>();
+
+            foreach (var doc in allHotelsSnapshot.Documents) {
+                string name = doc.GetValue<string>("s_name");
+                string location = doc.GetValue<string>("s_location");
+                string hotelImage = await pullRandomHotelImage(doc.Id);
+
+                hotels.Add(new Hotel {
+                    s_name = name,
+                    s_hotelImgPath = hotelImage,
+                    s_hotelLocation = location
+                )}; 
+            }
+
+            Random random = new Random();
+            randomHotel = hotels.OrderBy(XmlConfigurationExtensions => random.Next()).Take(4).ToList();
+
+            StateHasChanged();
+        } catch (Exception ex) {
+            Console.WriteLine($"Error fetching hotels");
+        }
+    }
+
+    private aync Task<string> pullRandomHotelImage(string hotelId) {
+        try {
+            DocumentReference imageDocRef = db.Collection("Hotels").Document(hotelId).Collection("images").Document("0");
+            DocumentSnapshot imageDocRef = await imageDocRef.GetSnapshotAsync();
+            return image.Doc.GetValue<string>("path");
+        } catch {
+            return "/images/hotelImages/Hotel0.jpg";
+        }
     }
 }
 
