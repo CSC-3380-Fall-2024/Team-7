@@ -1,12 +1,42 @@
 @page "/tester"
 @rendermode InteractiveServer
+@inject c_user cu
+@inject ProtectedSessionStorage PSS
 
-<input type="checkbox" @bind="checkedValue">
-
-@if(checkedValue == true) {
-    <p>Hello World</p>
-}
+<body>
+    <p>@(string.IsNullOrEmpty(email) ? "Loading..." : email)</p>
+</body>
 
 @code {
-    public bool checkedValue = false;
+    public string email { get; set; } = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadUserEmail();
+            StateHasChanged(); // Trigger a UI update after data is loaded
+        }
+    }
+
+    private async Task LoadUserEmail()
+    {
+        try
+        {
+            var usernameResult = await PSS.GetAsync<c_user>("currentUser");
+            if (usernameResult.Success)
+            {
+                var cu_user = usernameResult.Value;
+                email = cu_user?.s_email ?? "No email found";
+            }
+            else
+            {
+                email = "User not logged in.";
+            }
+        }
+        catch (Exception ex)
+        {
+            email = $"Error: {ex.Message}";
+        }
+    }
 }

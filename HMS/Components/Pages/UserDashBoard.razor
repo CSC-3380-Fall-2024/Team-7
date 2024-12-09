@@ -1,6 +1,8 @@
 @page "/userDashBoard"
 @using Google.Cloud.Firestore
 @inject NavigationManager NavigationManager
+@inject ProtectedSessionStorage PSS
+@inject c_user c_user
 
 <PageTitle>My Account</PageTitle>
 <body>
@@ -17,7 +19,7 @@
 
     <div class="userInfo">
         <h2>Hi, User</h2>
-        <p>Member # @user.s_id</p>
+        <p>Member # @cu_user.s_email awdaw</p>
     </div>
 
     <div class="user-section" id="upcoming-trips">
@@ -70,6 +72,7 @@ html, body, {
 }
 
 .page-header {
+    using System.Runtime.CompilerServices;
     background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);
     color: #FFFFFF;
     width: 100%; 
@@ -195,34 +198,62 @@ p {
 
 </style>
 
+
 @code {
-    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
-    private double progressPercentage = 0; //var that'll hold value pulled from database
-    public class c_users {
-        public string s_id { get; set;} = string.Empty;
-        public double i_rewards { get; set;} = 0;
-        public int i_upcomingTrips {get; set;} = 0;
+    private FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+    private double progressPercentage = 0;
+    public class c_users 
+    {
+        public string s_id { get; set; } = string.Empty;
+        public double i_rewards { get; set; } = 0;
+        public int i_upcomingTrips { get; set; } = 0;
     }
 
     private c_users user = new c_users();
 
-    protected override async Task OnInitializedAsync() {
-        await LoadUserRewardsProgress();
+    private bool isDataLoaded = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Load data on the first render
+            await LoadUserRewardsProgress();
+            isDataLoaded = true;
+
+            // Trigger a UI update
+            StateHasChanged();
+        }
     }
 
-    private async Task LoadUserRewardsProgress() {
-        // pull the user's rewards progress from the database
-        CollectionReference usersCollection = db.Collection("UserAccount");
+    private c_user? cu_user = null;
+    private async Task LoadUserRewardsProgress()
+    {
+        try
+        {
+            // Reference the "UserAccount" collection
+            CollectionReference usersCollection = db.Collection("UserAccount");
 
-        //figure out how to use Jp's constant user thing
-        DocumentReference userDoc = usersCollection.Document("AEtES443hJlarMtsFI0o");
-        DocumentSnapshot userSnapshot = await userDoc.GetSnapshotAsync();
+            // Replace with dynamic user ID retrieval if possible
+            DocumentReference userDoc = usersCollection.Document("AEtES443hJlarMtsFI0o");
+            DocumentSnapshot userSnapshot = await userDoc.GetSnapshotAsync();
 
-        user = new c_users {
-            s_id = userSnapshot.GetValue<string>("MemberId"),
-            i_rewards = userSnapshot.GetValue<double>("Reward"),
-            i_upcomingTrips = userSnapshot.GetValue<int>("UpcomingTrips")
-        };
-        progressPercentage = (user.i_rewards * 10); // temp value but this is what displays the progress
+
+             var usernameResult = await PSS.GetAsync<c_user>("currentUser");
+                if (usernameResult.Success)
+                {
+                    cu_user = usernameResult.Value;
+                }
+                else
+                {
+                    Console.WriteLine("Username not found in ProtectedBrowserStorage.");
+                    user.s_id = string.Empty; // Assign default or handle appropriately
+                }
+            
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading user rewards progress: {ex.Message}");
+        }
     }
 }
