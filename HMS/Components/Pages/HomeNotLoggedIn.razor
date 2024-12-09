@@ -1,8 +1,7 @@
-﻿@page "/homeloggedin"
+@page "/"
 @rendermode InteractiveServer
 @using BlazorBootstrap;
 @using Google.Cloud.Firestore;
-
 
 <main>
     <div class="img-header">
@@ -121,24 +120,41 @@
         </div>
     }
 
-
     <br>
 
     <div class="trips">
-        <h2>Upcoming Trips</h2>
-        <h3>You have </h3> @*pull from user bookings*@ <h3> upcoming trips</h3>
+        <h2>Choose your next vacation destination</h2>
+        <div class="destination-wrapper">
+            @*should display 4 randomly picked hotels: image, name, and location*@
+            @foreach (var hotel in randomHotel) { 
+                <div class="destination">
+                    <div class="destination-img">
+                        <img src="@hotel.s_hotelImgPath" alt="Hotel Image"/>
+                    </div>
+                    <h4>@hotel.s_name</h4>
+                    <p>@hotel.s_hotelLocation</p>
+                </div>
+            }
+        </div>
     </div>
 
     <div class="trips">
-        <h2>Previous Trips</h2>
-    </div>
-
-    <div class="trips" id="resorts">
-        <h2>Featured Resorts</h2>
+        <h2 class="title-border">Featured Resort</h2>
+        <div class="resort-section">
+            <div class="text-section">
+                <h2>Explore</h2>
+                <br>
+                <h3>Serenitas</h3>
+                <p>
+                    Nestled along the stunning shores of Lake Tahoe, Serenitas 
+                    offers an elegant retreat. Enjoy serene lake views, luxurious 
+                    accommodations, and a tranquil atmosphere perfect for relaxation. Experience the beauty and tranquility of Lake Tahoe at Serenitas.
+                </p>
+            </div>
+            <div class="resort-image"></div>
+        </div>
     </div>
 </main>
-
-
 
 @code {
 	// Set up an instance of the firebase
@@ -158,7 +174,6 @@
 	public DateOnly strtestd1 { get; set; }
     public bool searched = false;
 
-
 	public class c_hotelInfo {
 		public string s_id {get; set;} = string.Empty;
 		public string s_name {get; set;} = string.Empty;
@@ -171,9 +186,15 @@
 		public string s_startDate {get; set;} = string.Empty;
 		public string s_endDate {get; set;} = string.Empty;
 		public int i_maxGuests {get; set;} = 0;
+        public string s_hotelLocation {get; set;} = string.Empty;
 	}
 
 	private IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
+    private List<c_hotelInfo> randomHotel = new();
+
+    protected override async Task OnInitializedAsync(){
+        await pullRandomHotels();
+    }
 
 	public bool b_Filter1Function(double x) {
 		if(b_filter1 == true) {
@@ -290,18 +311,52 @@
         hotelInfo = results;
 		StateHasChanged();
     }
+
+    public async Task pullRandomHotels() {
+        try {
+            CollectionReference hotelsRef = db.Collection("Hotels");
+            QuerySnapshot allHotelsSnapshot = await hotelsRef.GetSnapshotAsync();
+            var hotels = new List<c_hotelInfo>();
+
+            foreach (var doc in allHotelsSnapshot.Documents) {
+                string name = doc.GetValue<string>("name");
+                string location = doc.GetValue<string>("location");
+                string hotelImage = await pullRandomHotelImage(doc.Id);
+
+                hotels.Add(new c_hotelInfo {
+                    s_name = name,
+                    s_hotelImgPath = hotelImage,
+                    s_hotelLocation = location
+                }); 
+            }
+
+            Random random = new Random();
+            randomHotel = hotels.OrderBy(_ => random.Next()).Take(4).ToList();
+
+            StateHasChanged();
+        } catch (Exception ex) {
+            Console.WriteLine($"Error fetching hotels");
+        }
+    }
+
+    public async Task<string> pullRandomHotelImage(string hotelId) {
+        try {
+            DocumentReference imageDocRef = db.Collection("Hotels").Document(hotelId).Collection("images").Document("0");
+            DocumentSnapshot imageDoc = await imageDocRef.GetSnapshotAsync();
+            return imageDoc.GetValue<string>("path");
+        } catch {
+            return "/images/hotelImages/Hotel0.jpg";
+        }
+    }
 }
 
-
-
-
 <style>
-    body{
+    body {
         font-family: 'Fraunces';
         font-size: 24px;
     }
 
-    .img-header{
+    .img-header {
         background-image: url('/images/generalImages/background_header.png');
         background-size: cover;
         background-position: center;
@@ -315,43 +370,36 @@
         border-radius: 6px;
     }
 
-    .trips{
-        border: 1px solid #E0E0E0;
+    .trips {
         padding: 20px;
-        background-color: #f9f9f9;
         margin-bottom: 20px;
         border-radius: 6px 6px 0px 0px;
         margin-left: 5px;
         margin-right: 5px;
     }
 
-    .h2{
+    .h2 {
         font-weight: bold;
     }
-
-    
-    .center
-	{
+   
+    .center {
 		margin:auto;
 	}
 
-	.container
-	{
+	.container {
 		display: flex;
 		justify-content: center;
 		background: red;
 	}
 
-	.textbox
-	{
+	.textbox {
 		background-color: rgba(242, 242, 242, 1);
 		border: none;
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
 		border-radius: 3px;
 	}
 
-	.date
-	{
+	.date {
 		width: 150px;
 		text-align: center;
 		color:rgba(255, 255, 255, 0);
@@ -368,8 +416,7 @@
 		color: rgb(72, 72, 72);
 	}
 
-	.tr
-	{
+	.tr {
 		transition-duration: 300ms;
 		transition-timing-function: ease-in-out;
 		transition-property: transform;
@@ -420,100 +467,99 @@
 	}
 
     .flex-container {
-  display: flex;
-  flex-direction: column;
-  /*background-color: #f1f1f1;*/
+        display: flex;
+        flex-direction: column;
+        /*background-color: #f1f1f1;*/
 }
 
 /* This is the container that modifies a div so that it can fit whatever information is needed. E.g: an image or a rating */
-.flex-container > div {
-  /*background-color: DodgerBlue;*/
-  color: black;
-  margin: 0.2rem;  
-}
+    .flex-container > div {
+    /*background-color: DodgerBlue;*/
+    color: black;
+    margin: 0.2rem;  
+    }
 
 /* Container that moves a section to the left */
-.left {
-	width: 100%;
-}
+    .left {
+        width: 100%;
+    }
 
-/* Container that moves a section to the right */
-.right {
-	width: 100%;
-}
+    /* Container that moves a section to the right */
+    .right {
+        width: 100%;
+    }
 
-.hotel-info-border {
-    width: 100%;
-height: 240px;
-top: 426px;
-left: 425px;
-gap: 0px;
-border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
-margin-left: auto;
-margin-right: auto;
-opacity: 0px;
-border: 1px solid #E0E0E0
-  }
+    .hotel-info-border {
+        width: 100%;
+        height: 240px;
+        top: 426px;
+        left: 425px;
+        gap: 0px;
+        border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 0px;
+        border: 1px solid #E0E0E0;
+    }
 
-.column {
-  float: left;
-  padding: 1%;
-  height: 100%;
-  width: 50%;
-}
+    .column {
+        float: left;
+        padding: 1%;
+        height: 100%;
+        width: 50%;
+    }
 
+    /* The border that houses the filter information */
+    .filter-box {
+        width: 30rem;
+        height: 293px;
+        top: 466px;
+        left: 111px;
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2rem;
+        gap: 0px;
+        border-radius: 6px 6px 0px 0px;
+        border: 0.1rem solid #E0E0E0;
+        opacity: 0.1rem;
+    }
 
-/* The border that houses the filter information */
-.filter-box {
-width: 30rem;
-height: 293px;
-top: 466px;
-left: 111px;
-max-width: fit-content;
-margin-left: auto;
-margin-right: auto;
-margin-bottom: 2rem;
-gap: 0px;
-border-radius: 6px 6px 0px 0px;
-border: 0.1rem solid #E0E0E0;
-opacity: 0.1rem;
-}
+    .filter-box-top {
+        width: 30rem;
+        height: 3rem;
+        top: 466px;
+        left: 111px;
+        padding: 18px 0px 0px 0px;
+        gap: 10px;
+        border-radius: 6px 6px 0px 0px;
+        opacity: 0px;
+        background-color: #E0E0E0;
+    }
 
-.filter-box-top {
-width: 30rem;
-height: 3rem;
-top: 466px;
-left: 111px;
-padding: 18px 0px 0px 0px;
-gap: 10px;
-border-radius: 6px 6px 0px 0px;
-opacity: 0px;
-background-color: #E0E0E0;
-}
+    .filter-heading-text {
+        width: 30rem;
+        height: 20px;
+        gap: 0px;
+        opacity: 0px;
+        font-family: Fraunces;
+        font-size: 16px;
+        font-style: italic;
+        font-weight: 999;
+        line-height: 19.73px;
+        letter-spacing: 0.01em;
+        text-align: center;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+    }
 
-.filter-heading-text {
-width: 30rem;
-height: 20px;
-gap: 0px;
-opacity: 0px;
-font-family: Fraunces;
-font-size: 16px;
-font-style: italic;
-font-weight: 999;
-line-height: 19.73px;
-letter-spacing: 0.01em;
-text-align: center;
-text-underline-position: from-font;
-text-decoration-skip-ink: none;
-}
-
-/* This modifies the img tag so that it scales with the size of the screen */ 
-img {
-	max-width: 100%;
-  max-height: 100%;
-	height: auto;
-	width: auto\9;
-}
+    /* This modifies the img tag so that it scales with the size of the screen */ 
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        height: auto;
+        width: auto;
+    }
 
 /* At a certain pixel width, makes the column layout into a row layout */
 
@@ -570,5 +616,63 @@ img {
     max-width: 100%;
     width: 100%;
   }
-}
+    
+    .destination-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .destination {
+        align-items: center;
+        flex: 1 1 calc(25% - 30px);
+        max-width: calc(25% - 30px);
+        padding: 10px;
+    }
+
+    .destination-img img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .title-border {
+        border-bottom: 1px solid #0000004D; 
+    }
+
+    .text-section {
+        background-color: #BF5559;
+        border-radius: 8px;
+        text-align: center;
+        color: #FFFFFF;
+        max-width: 35%;
+        padding: 20px 20px 0px 20px;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .resort-section {
+        display: flex;
+        align-items: stretch; 
+        justify-content: space-between;  
+        gap: 5px;
+    }
+
+    .resort-image {
+        background-image: url('/images/generalImages/featured_resort.png');
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
+        display: flex;
+        height: 415px;
+        width: 60%;
+        float: right;
+        padding: 5% 5%;
+    }
 </style>
+ 
