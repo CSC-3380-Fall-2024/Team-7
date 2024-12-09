@@ -1,8 +1,8 @@
 @page "/"
-@@rendermode InteractiveServer
+@rendermode InteractiveServer
 @using BlazorBootstrap;
 @using Google.Cloud.Firestore;
-*
+
 <main>
     <div class="img-header">
         <h2>Enjoy Your Dream Vacation</h2>
@@ -125,7 +125,8 @@
     <div class="trips">
         <h2>Choose your next vacation destination</h2>
         <div class="destination-wrapper">
-            @foreach (var hotel in randomHotel) {
+            @*should display 4 randomly picked hotels: image, name, and location*@
+            @foreach (var hotel in randomHotel) { 
                 <div class="destination">
                     <div class="destination-img">
                         <img src="@hotel.s_hotelImgPath" alt="Hotel Image"/>
@@ -173,7 +174,6 @@
 	public DateOnly strtestd1 { get; set; }
     public bool searched = false;
 
-
 	public class c_hotelInfo {
 		public string s_id {get; set;} = string.Empty;
 		public string s_name {get; set;} = string.Empty;
@@ -191,6 +191,10 @@
 
 	private IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
     private List<c_hotelInfo> randomHotel = new();
+
+    protected override async Task OnInitializedAsync(){
+        await pullRandomHotels();
+    }
 
 	public bool b_Filter1Function(double x) {
 		if(b_filter1 == true) {
@@ -315,8 +319,8 @@
             var hotels = new List<c_hotelInfo>();
 
             foreach (var doc in allHotelsSnapshot.Documents) {
-                string name = doc.GetValue<string>("s_name");
-                string location = doc.GetValue<string>("s_location");
+                string name = doc.GetValue<string>("name");
+                string location = doc.GetValue<string>("location");
                 string hotelImage = await pullRandomHotelImage(doc.Id);
 
                 hotels.Add(new c_hotelInfo {
@@ -327,7 +331,7 @@
             }
 
             Random random = new Random();
-            randomHotel = hotels.OrderBy(XmlConfigurationExtensions => random.Next()).Take(4).ToList();
+            randomHotel = hotels.OrderBy(_ => random.Next()).Take(4).ToList();
 
             StateHasChanged();
         } catch (Exception ex) {
@@ -347,12 +351,12 @@
 }
 
 <style>
-    body{
+    body {
         font-family: 'Fraunces';
         font-size: 24px;
     }
 
-    .img-header{
+    .img-header {
         background-image: url('/images/generalImages/background_header.png');
         background-size: cover;
         background-position: center;
@@ -412,8 +416,7 @@
 		color: rgb(72, 72, 72);
 	}
 
-	.tr
-	{
+	.tr {
 		transition-duration: 300ms;
 		transition-timing-function: ease-in-out;
 		transition-property: transform;
@@ -616,14 +619,24 @@
     
     .destination-wrapper {
         display: flex;
-        justify-content: space-around;
-        width: 100%;
+        justify-content: center;
+        gap: 15px;
         flex-wrap: wrap;
+        margin-top: 20px;
     }
 
     .destination {
         align-items: center;
-        flex: 1; 
+        flex: 1 1 calc(25% - 30px);
+        max-width: calc(25% - 30px);
+        padding: 10px;
+    }
+
+    .destination-img img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
     }
 
     .title-border {
