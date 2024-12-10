@@ -41,7 +41,7 @@
         <div class="double-box">
             <div class="box">
                 <h3>Upcoming Shifts</h3>
-                <p>Your schedule for the next 3 days</p>
+                <p>Your schedule for the next 3 shifts</p>
                 <div class="shift-list">
                     <ul>
                         <li>
@@ -207,8 +207,37 @@
         padding-top: 15px;
         padding-left: 20px;
     }
+
+    a {
+        text-decoration: none;
+        color: #000000;
+    }
 </style>
 
 @code {
+    // Sets up an instance of the firebase
+	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 
+    public class c_employees {
+        public string s_date { get; set;} = string.Empty;
+        public string s_time { get; set;} = string.Empty;
+    }
+    // creates an instance so we can pull from emmployee information
+    private c_employees employee = new c_employees();
+
+    protected override async Task OnInitializedAsync() {
+        await PullEmployeeShifts();
+    }
+
+    private async Task PullEmployeeShifts(){
+        CollectionReference employeesCollection = db.Collection("Employees");
+
+        // need to insert constant user tracker
+        DocumentReference employeeDoc = employeesCollection.Document("0");
+        DocumentSnapshot employeeSnapshot = await employeeDoc.GetSnapshotAsync();
+
+        employee = new c_employees {
+            s_date =
+        }
+    }
 }
