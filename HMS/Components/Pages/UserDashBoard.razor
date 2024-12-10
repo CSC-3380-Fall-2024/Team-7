@@ -22,8 +22,26 @@
 
     <div class="user-section" id="upcoming-trips">
         <h3>Upcoming Trips</h3>
-        <h3 class="trip-number">You have @user.i_upcomingTrips upcoming trip(s)</h3>
-        <div class="img-header"></div>
+            @if (upcomingReservations.Count == 0)
+            {
+                <h3 class="trip-nothing">No upcoming trips found.</h3>
+                <div class="img-header"></div>
+            }
+            else
+            {
+                @foreach (var reservation in upcomingReservations)
+                {
+                    <h3 class="trip-number">You have @user.i_upcomingTrips upcoming trip(s)</h3>
+                    <div class="trip-item">
+                        <p><strong>Hotel:</strong> @reservation["Hotel"]</p>
+                        <p><strong>Room Type:</strong> @reservation["RoomType"]</p>
+                        <p><strong>Check-In:</strong> @reservation["CheckIn"]</p>
+                        <p><strong>Check-Out:</strong> @reservation["CheckOut"]</p>
+                        <p><strong>Guests:</strong> @reservation["Guests"]</p>
+                        <p><strong>Total:</strong> $@reservation["TotalAmount"]</p>
+                    </div>
+                }
+            }
     </div>
 
     <div class="user-section">
@@ -129,6 +147,36 @@ ul {
     margin-bottom: 10px;
 }
 
+.trip-nothing {
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 650px;
+    height : 50px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.trip-item {
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 650px;
+    height : 50px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .img-header {
     background-image: url('/images/generalImages/upcoming_trips.svg');
     background-size: cover;
@@ -203,11 +251,13 @@ p {
         public double i_rewards { get; set;} = 0;
         public int i_upcomingTrips {get; set;} = 0;
     }
+    private List<Dictionary<string, object>> upcomingReservations = new List<Dictionary<string, object>>();
 
     private c_users user = new c_users();
 
     protected override async Task OnInitializedAsync() {
         await LoadUserRewardsProgress();
+        await LoadReservations();
     }
 
     private async Task LoadUserRewardsProgress() {
@@ -224,5 +274,22 @@ p {
             i_upcomingTrips = userSnapshot.GetValue<int>("UpcomingTrips")
         };
         progressPercentage = (user.i_rewards * 10); // temp value but this is what displays the progress
+    }
+     private async Task LoadReservations()
+    {
+        try
+        {
+            string userId = "AEtES443hJlarMtsFI0o"; // Replace when we are able to have user state and this diff user ID
+            CollectionReference reservations = db.Collection("UserAccount").Document(userId).Collection("Reservations");
+            QuerySnapshot snapshot = await reservations.GetSnapshotAsync();
+
+            upcomingReservations = snapshot.Documents
+                .Select(doc => doc.ToDictionary())
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading reservations: {ex.Message}");
+        }
     }
 }
