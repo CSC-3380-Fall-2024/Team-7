@@ -45,8 +45,8 @@
                 <div class="shift-list">
                     <ul>
                         <li>
-                            <h4>Mon, Jun 5</h4>
-                            <p>9:00AM - 5:00PM</p>
+                            <h4>@employee.s_date</h4>
+                            <p>@employee.s_time</p>
                         </li>
                         <li>
                             <h4>Tuesday, Jun 6</h4>
@@ -229,15 +229,22 @@
         await PullEmployeeShifts();
     }
 
-    private async Task PullEmployeeShifts(){
+    private async Task<c_employees> PullEmployeeShifts(){
         CollectionReference employeesCollection = db.Collection("Employees");
 
         // need to insert constant user tracker
         DocumentReference employeeDoc = employeesCollection.Document("0");
         DocumentSnapshot employeeSnapshot = await employeeDoc.GetSnapshotAsync();
 
+        // retrieves shift data
+        DocumentReference dr_employeeShift = employeesCollection.Document("0").Collection("shifts").Document("0");
+        DocumentSnapshot ds_employeeShiftData = await dr_employeeShift.GetSnapshotAsync();
+
         employee = new c_employees {
-            s_date =
-        }
+            s_date = ds_employeeShiftData.GetValue<string>("date"),
+            s_time = ds_employeeShiftData.GetValue<string>("time")
+        };
+    
+        return employee;
     }
 }
