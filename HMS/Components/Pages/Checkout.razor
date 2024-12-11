@@ -208,10 +208,14 @@
                 FirstName,
                 LastName,
                 Email,
+                PhoneNumber,
                 CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow)
             };
 
         // Add the reservation to Firestore
         await reservationsCollection.AddAsync(reservation);
+
+        NavManager.NavigateTo("/");
+
     }
 }
