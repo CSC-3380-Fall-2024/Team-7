@@ -78,7 +78,7 @@ download vscode here
 https://code.visualstudio.com/
 
 ### How to Run
-Put both API keys that JP sent you in the same directory/folder as the Team-7 folder. That means that if you're in the HMS directory, the API keys should be two directories above that. `../../HMS`
+Put both API keys that JP sent you in the same directory/folder as the Team-7 folder. That means that if you're in the HMS directory, the API keys should be two directories above that. It will be in whatever directory you're in when you run `cd ../..` from the HMS directory.
 
 In your terminal, you must be in the HMS directory to run the project. You can either run the `dotnet watch` or `dotnet run` commands from the HMS directory and the web page will load.
 
