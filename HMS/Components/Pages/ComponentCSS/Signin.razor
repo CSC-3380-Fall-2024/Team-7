@@ -1,7 +1,7 @@
 @using Google.Cloud.Firestore
 @rendermode InteractiveServer
 @inject NavigationManager NavManager
-@page "/login"
+@page "/signin"
 
 <PageTitle>Login</PageTitle>
 
@@ -75,7 +75,7 @@
                 await docRef.UpdateAsync(updateData);
 
                 CollectionReference collection = db.Collection("UserAccount");
-                await collection.AddAsync(new { Email = newEmail, Password = newPassword, IsEmployee = IsEmployee});
+                await collection.AddAsync(new { Email = newEmail, Password = newPassword, IsEmployee = IsEmployee, MemberId = "", Reward = 0, UpcomingTrips = 0 });
                 LoginMessage = "Account created successfully!";
             }
             else
@@ -86,7 +86,7 @@
         else
         {
             CollectionReference collection = db.Collection("UserAccount");
-            await collection.AddAsync(new { Email = newEmail, Password = newPassword, IsEmployee = IsEmployee });
+            await collection.AddAsync(new { Email = newEmail, Password = newPassword, IsEmployee = IsEmployee, MemberId = "", Reward = 0, UpcomingTrips = 0 });
             LoginMessage = "Account created successfully!";
         }
 

@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @page "/listings"
 @using BlazorBootstrap;
+@inject NavigationManager NavManager
 
 <PageTitle>Listing Page</PageTitle>
 
@@ -141,7 +142,7 @@
 							<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
 							<b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
 							<p style="font-size: 0.9rem;">@hotel.s_description</p>
-							<button class="button-to-book">See Rooms</button>
+							<button class="button-to-book" @onclick="() => NavigateToCheckout(hotel)" >Checkout</button>
 						</div>
 						<div class="column" style="width: 20%">
 							<p>The price is $@hotel.d_price</p>
@@ -157,7 +158,7 @@
 							<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
 							<b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
 							<p style="font-size: 0.9rem;">@hotel.s_description</p>
-							<button class="button-to-book">See Rooms</button>
+							<button class="button-to-book" @onclick="() => NavigateToCheckout(hotel)" >Checkout</button>
 						</div>
 						<div class="column" style="width: 20%">
 							<p>The price is $@hotel.d_price</p>
@@ -221,20 +222,29 @@
 
 		var lst = new List<c_hotelInfo>();
 
-		// Populating the hotel data with all of the relevent information for the listings
-		foreach (var doc in qs_hotelDocs.Documents)
-		{
-			DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
-			DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
-			lst.Add(new c_hotelInfo{s_id = doc.Id, 
-			s_name = doc.GetValue<string>("name"), 
-			s_hotelImgPath = hotelImgs.GetValue<string>("path"),
-			d_rating = doc.GetValue<double>("rating"),
-			d_price = doc.GetValue<double>("price"),
-			i_reviewCount = doc.GetValue<int>("review_count"),
-			s_slogan = doc.GetValue<string>("slogan"),
-			s_description = doc.GetValue<string>("description")
-			});
+	 private void NavigateToCheckout(c_hotelInfo hotel)
+    {
+        // Construct the query string with the selected hotel's details
+        var url = $"/checkout?hotelName={Uri.EscapeDataString(hotel.s_name)}" +
+                  $"&roomType={Uri.EscapeDataString(hotel.s_slogan)}" +
+                  $"&checkInDate={Uri.EscapeDataString(date1.ToString("yyyy-MM-dd"))}" +
+                  $"&checkOutDate={Uri.EscapeDataString(date2.ToString("yyyy-MM-dd"))}" +
+                  $"&guests={Uri.EscapeDataString(guests)}" +
+                  $"&totalPrice={Uri.EscapeDataString(hotel.d_price.ToString("F2"))}";
+
+        // Navigate to the Checkout page
+        NavManager.NavigateTo(url);
+    }
+
+	public bool b_Filter1Function(double x) {
+		if(b_filter1 == true) {
+			if(x >= 0 && x < 200) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
 		}
         hotelInfo = lst;
 	}
