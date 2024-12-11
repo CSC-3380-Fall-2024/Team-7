@@ -61,15 +61,17 @@
 				<label for="price-range-3">$2000 - $4999</label><br>
 			</div>
 			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter5">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter6">
 				<label for="price-range-3">$5000+</label><br>
 			</div>
 		</div>
+		@*
 		<div class="filter-box">
 			<div class="filter-box-top">
 				<p class="filter-heading-text" style="margin: auto;">Rating</p>
 			</div>
 		</div>
+		*@
 		<div class="filter-box">
 			<div class="filter-box-top">
 				<p class="filter-heading-text" style="margin: auto;">Popular Filters</p>
@@ -131,8 +133,16 @@
 		
 	</div>
 	<div class="right">
+		@*
 		@foreach(var hotel in hotelInfo) {
-			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price)) {
+			if(b_someFiltersChecked(hotel)) {
+				<h1>@hotel.s_name</h1>
+			}
+		}
+		*@
+	
+		@foreach(var hotel in hotelInfo) {
+			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price) || b_Filter6Function(@hotel.d_price)) {
 				i_resultCount++;	
 			} else if (b_noFiltersChecked()) {
 				i_resultCount++;
@@ -147,7 +157,7 @@
 			stopping_filter = false;
 		} 
 		@foreach(var hotel in hotelInfo) {
-			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price)) {
+			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price) || b_Filter6Function(@hotel.d_price)) {
 				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
 					<div class="column" style="width: 35%;">
 						<img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
@@ -196,6 +206,8 @@
 	// Set up an instance of the firebase
 	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 	public int i_resultCount;
+
+	// The below variables act as an on and off button for each filter toggle
 	public bool b_filter1 = false;
 	public bool b_filter2 = false;
 	public bool b_filter3 = false;
@@ -212,7 +224,7 @@
 	public DateOnly strtestd { get; set; }
 	public DateOnly strtestd1 { get; set; }
 
-
+	// These variables represent all of the data about a hotel listing that a listing needs to show to the user
 	public class c_hotelInfo {
 		public string s_id {get; set;} = string.Empty;
 		public string s_name {get; set;} = string.Empty;
@@ -240,22 +252,29 @@
 		QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
 
 		var lst = new List<c_hotelInfo>();
-			foreach (var doc in qs_hotelDocs.Documents)
-            {
-				DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
-				DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
-                lst.Add(new c_hotelInfo{s_id = doc.Id, 
-				s_name = doc.GetValue<string>("name"), 
-				s_hotelImgPath = hotelImgs.GetValue<string>("path"),
-				d_rating = doc.GetValue<double>("rating"),
-				d_price = doc.GetValue<double>("price"),
-				i_reviewCount = doc.GetValue<int>("review_count"),
-				s_slogan = doc.GetValue<string>("slogan"),
-				s_description = doc.GetValue<string>("description")
-				});
-            }
+
+		// Populating the hotel data with all of the relevent information for the listings
+		foreach (var doc in qs_hotelDocs.Documents)
+		{
+			DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
+			DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
+			lst.Add(new c_hotelInfo{s_id = doc.Id, 
+			s_name = doc.GetValue<string>("name"), 
+			s_hotelImgPath = hotelImgs.GetValue<string>("path"),
+			d_rating = doc.GetValue<double>("rating"),
+			d_price = doc.GetValue<double>("price"),
+			i_reviewCount = doc.GetValue<int>("review_count"),
+			s_slogan = doc.GetValue<string>("slogan"),
+			s_description = doc.GetValue<string>("description")
+			});
+		}
         hotelInfo = lst;
 	}
+
+	/*
+	* The below bool Filter functions are keeping track of if a filter is turned on or off
+	* If it is turned on, they are returning true under certain conditions and false under other conditions
+	*/
 
 	public bool b_Filter1Function(double x) {
 		if(b_filter1 == true) {
@@ -318,7 +337,7 @@
 	}
 
 	public bool b_Filter6Function(double x) {
-		if(b_filter5) {
+		if(b_filter6) {
 			if(x >= 5000) {
 				return true;
 			} else {
@@ -329,12 +348,18 @@
 		}
 	}
 
+	// Makes sure that no filters at all are checked
 	public bool b_noFiltersChecked() {
 		if(b_filter1 == false && b_filter2 == false && b_filter3 == false && b_filter4 == false && b_filter5 == false && stopping_filter == false && b_filter6 == false) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public bool b_someFiltersChecked(c_hotelInfo hotel) {
+		Console.WriteLine("Hotel do be hotelling at the name of {0}", hotel.s_name);
+		return true;
 	}
 
 	public async void search(string qry)
