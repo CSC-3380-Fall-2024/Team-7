@@ -26,17 +26,17 @@
 }
 
 .hotel-info-border {
-    width: 100%;
-height: 240px;
-top: 426px;
-left: 425px;
-gap: 0px;
-border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
-margin-left: auto;
-margin-right: auto;
-opacity: 0px;
-border: 1px solid #E0E0E0
-  }
+  width: 100%;
+  height: 240px;
+  top: 426px;
+  left: 425px;
+  gap: 0px;
+  border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0px;
+  border: 1px solid #E0E0E0
+}
 
 .column {
   float: left;

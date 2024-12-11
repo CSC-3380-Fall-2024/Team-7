@@ -1,0 +1,424 @@
+@using Google.Cloud.Firestore;
+@rendermode InteractiveServer
+@page "/addlistings"
+@using BlazorBootstrap;
+
+
+
+@if(success == false){
+	<Modal @ref="modal" title="WARNING" IsVerticallyCentered="true">
+		<BodyTemplate>
+			Please Make Sure <strong>ALL</strong> Fields Are Filled, Thank You!
+		</BodyTemplate>
+		<FooterTemplate>
+			<Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+		</FooterTemplate>
+	</Modal>
+}
+
+
+<div class="pageContainer">
+	<div class="fieldContainer">
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Hotel Name" @bind-Value="@s_name" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Description" @bind-Value="@s_description" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<NumberInput TValue="int?" placeholder="Maximum Number of Guests" @bind-Value="@i_maxGuests" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Location (City, State)" @bind-Value="@s_location" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Hotel Activities" @bind-Value="@s_activities" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputNumber TValue="double?" placeholder="Price" @bind-Value="@d_price" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText Type="text" placeholder="Hotel Slogan" @bind-Value="@s_slogan" />
+			</div>
+		</div>
+
+		<div class="searchbar tr flx">
+			<div class="date">
+				<DateInput TValue="DateOnly" @bind-Value="@date1" Placeholder="Enter Date" />
+			</div>
+
+			<div class="date">
+				<DateInput TValue="DateOnly" @bind-Value="@date2" Placeholder="Enter Date" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="center">
+				<InputText type="text" placeholder="Key Words" @bind-Value="@s_keywords" />
+			</div>
+		</div>
+
+		<div class="searchbar tr">
+			<div class="d-grid gap-2 btncntr">
+				<Button @ref="saveButton1" Color="ButtonColor.Primary" @onclick="() => addListing()">Add Listing to DB</Button>
+			</div>
+		</div>
+
+		<Alert Color="AlertColor.Primary" Dismissable="true"> 
+			<Icon Name="IconName.InfoCircleFill" class="me-2"></Icon>
+			<strong>
+				Hey There!
+			</strong> 
+				Don't forget to fill in 
+			<strong>
+				<u>every</u>
+			</strong>
+			field!
+		</Alert>
+	</div>
+
+	<div class="containerItems">
+
+		<div class="previewItem tr">
+			<Image Src="/images/generalImages/placeholder.png" Class="rounded float-start"/>
+			<div class="textHolder">
+				<h4><b>@s_name</b><span style="float:right; font-size: 22px">$@d_price/Night</span></h4>
+				<h6><i>@s_location</i></h6>
+
+				<div class="textHolderP">
+					<h6>@s_description</h6>
+				</div>
+
+				<div>
+					<h5><b>Rating:</b> @d_rating/5 Stars<b><span style="float:right;">Up To @i_maxGuests Guests</span></b></h5>
+				</div>
+			</div>
+		</div>
+		
+		<br>
+
+		<div>
+			<h5>Total Listings: @hotel_count</h5>
+		</div>
+		
+	</div>
+</div>
+
+
+@code {
+	// Set up an instance of the firebase
+	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+	
+	public string s_location {get; set;} = string.Empty; //
+	public string s_activities {get; set;} = string.Empty;
+	public string s_keywords {get; set;} = string.Empty;
+	public string s_name {get; set;} = string.Empty; //
+	public double d_rating {get; set;} = 0.0;
+	public double? d_price {get; set;}
+	public int i_reviewCount {get; set;} = 0;
+	public string s_slogan {get; set;} = string.Empty;
+	public string s_description {get; set;} = string.Empty; //
+	public int? i_maxGuests {get; set;} //
+	public string query { get; set; }= "";
+	public string guests { get; set; }= "";
+	public DateOnly date1 = DateOnly.FromDateTime(DateTime.Now.AddDays(0));
+	public DateOnly date2 = DateOnly.FromDateTime(DateTime.Now.AddDays(4));
+	public int hotel_count { get; set; } = 0;
+
+	private Button saveButton1 = default!;
+	private Modal modal = default!;
+	private bool success = false;
+
+	private async Task OnHideModalClick()
+    {
+		success = false;
+        await modal.HideAsync();
+    }
+
+	protected override async Task OnInitializedAsync() {
+		await setHotelCount();
+	}
+
+
+//TODO: THIS!
+	public void clearFields(){
+		s_activities = "";
+		s_location = "";
+		s_name = "";
+		s_description = "";
+		i_maxGuests = null;
+		d_price = null;
+		s_slogan = "";
+		s_keywords = "";
+	}
+
+	public async Task addListing()
+	{
+		saveButton1.ShowLoading("Loading...");
+		
+		if(s_activities!=""&&
+			s_description!=""&&
+			s_keywords!=""&&
+			s_location!=""&&
+			i_maxGuests!=0&&
+			i_maxGuests!=null&&
+			d_price!=null&&
+			s_name!=""&&
+			s_slogan!=""){
+				success = true;
+				CollectionReference cRef = db.Collection("Hotels");
+				Dictionary<string, object> addedHotel = new Dictionary<string, object>
+				{
+					{ "activities", s_activities }, //
+					{ "description", s_description }, //
+					{ "end_date", date2.ToString() }, //
+					{ "key_words", s_keywords }, //
+					{ "location", s_location }, //
+					{ "max_guests", i_maxGuests }, //
+					{ "name", s_name }, //
+					{ "price", d_price }, //
+					{ "rating", 0.0 }, //
+					{ "review_count", 0 }, //
+					{ "slogan", s_slogan }, //
+					{ "start_date", date1.ToString() }
+				};
+				await cRef.Document(hotel_count.ToString()).SetAsync(addedHotel);
+
+				Dictionary<string, object> addedHotelImgPath = new Dictionary<string, object>
+				{
+					{ "path", "/images/hotelImages/lebron.jpg" }
+				};
+				await cRef.Document(hotel_count.ToString()).Collection("images").Document("0")
+					.SetAsync(addedHotelImgPath);
+
+				await setHotelCount();
+				clearFields();
+		}
+		saveButton1.HideLoading();
+		await modal.ShowAsync();
+		success = false;
+	}
+	
+	public async Task setHotelCount()
+	{
+		CollectionReference cRef = db.Collection("Hotels");
+		QuerySnapshot snapshot =  await cRef.GetSnapshotAsync();
+		hotel_count = snapshot.Count;
+	}
+
+}
+
+
+<style>
+
+	.center
+	{
+		margin:auto;
+	}
+
+	.container
+	{
+		display: flex;
+		justify-content: center;
+		background: red;
+	}
+
+	.textbox
+	{
+		background-color: rgba(242, 242, 242, 1);
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+	}
+
+	.date
+	{
+		width: 49%;
+		min-width: 140px;
+	}
+
+	input[type=date] {
+		background-color: rgba(242, 242, 242, 1);
+		border: none;
+		text-align: center;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+		width: 100%;
+		height: 44px;
+		color: rgb(72, 72, 72);
+	}
+
+	.tr
+	{
+		transition-duration: 300ms;
+		transition-timing-function: ease-in-out;
+		transition-property: transform;
+	}
+
+	.tr:is(:hover, :focus)
+	{
+		
+		transform: scale(1.05);
+	}
+
+	.sbutton
+	{
+		flex: 1;
+		background-color: rgba(47, 128, 237, 1);
+		width: 148px;
+		height:44px;
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+		color: rgb(0, 0, 0);
+	}
+
+	.btncntr{
+		display: flex;
+		width: 100%;
+	}
+
+	input[type=text], input[type=number] {
+		background-color: rgba(242, 242, 242, 1);
+		box-sizing: border-box;
+		display: block;
+		width: 100%;
+		text-align: center;
+		height:44px;
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+	}
+
+	.flx{
+		display:flex;
+	}
+
+	.searchbar
+	{
+		box-sizing: border-box;
+		width: 96%;
+		border-radius:  8px;
+
+		margin:auto;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		align-content: space-evenly;
+		row-gap: .3em;
+		column-gap: .3em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
+	.fieldContainer
+	{
+		display: flex;
+		flex:auto;
+		max-width: 600px;
+		min-width: 355px;
+		border-radius:  8px;
+		flex-direction: column;
+
+		margin:auto;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		align-content: space-evenly;
+		row-gap: .6em;
+		column-gap: .6em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	
+	}
+
+	.containerItems{
+		display: flex;
+		flex:auto;
+		max-width: 1000px;
+		min-width: 355px;
+		border-radius:  8px;
+		flex-direction: column;
+
+		margin:auto;
+		justify-content: center;
+		flex-wrap: wrap;
+		align-items: center;
+
+		row-gap: .6em;
+		column-gap: .6em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
+	.previewItem{
+		display: flex;
+		flex:auto;
+		max-width: 700px;
+		min-width: 355px;
+		border-radius:  8px;
+		flex-direction: row;
+
+		margin:auto;
+		justify-content: center;
+		flex-wrap: wrap;
+
+		row-gap: .6em;
+		column-gap: .6em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
+	::-webkit-input-placeholder{
+		color: #56595c;
+	}
+
+	.pageContainer{
+		display: flex;
+  		align-items: center;
+  		justify-content: center;
+		flex-wrap: wrap;
+		max-width: 1500px;
+		margin:  auto;
+
+		row-gap: .6em;
+		column-gap: .6em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
+	.textHolder{
+		max-width: 400px;
+	}
+
+	.textHolderP{
+		max-width: 400px;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px -1px 1px rgb(213, 213, 213) inset;
+		border-radius: 2px;
+	}
+
+</style>
