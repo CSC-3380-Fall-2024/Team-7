@@ -12,13 +12,12 @@
         <ul>
           @foreach(var reservation in reservations) {  
             <li>
-              <p>@reservation.s_hotelName</p>
-              <p>@reservation.s_roomType</p>
-              <p>@reservation.s_checkInDate</p>
-              <p>@reservation.s_checkOutDate</p>
-              <p>@reservation.s_checkOutDate</p>
-              <p>@reservation.s_guests</p>
-              <p>@reservation.s_email</p>
+              <p>Hotel Name: @reservation.s_hotelName</p>
+              <p>Room Type: @reservation.s_roomType</p>
+              <p>Check In Date: @reservation.s_checkInDate</p>
+              <p>Check Out Date:# @reservation.s_checkOutDate</p>
+              <p>Guests: @reservation.s_guests</p>
+              <p>Email: @reservation.s_email</p>
             </li>
           }
         </ul>
@@ -233,6 +232,10 @@ h4 {
   flex: 1;
 }
 
+ul, li {
+  text-decoration: none;
+}
+
 </style>
 
 @code {
@@ -269,7 +272,7 @@ h4 {
       if (reservationDoc.Exists) {
         reservations.Add(new c_users {
           s_hotelName = reservationDoc.GetValue<string>("HotelName"),
-          s_roomType = reservationDoc.GetValue<string>("LastName"),
+          s_roomType = reservationDoc.GetValue<string>("RoomType"),
           s_checkInDate = reservationDoc.GetValue<string>("CheckInDate"),
           s_checkOutDate = reservationDoc.GetValue<string>("CheckOutDate"),
           s_guests = reservationDoc.GetValue<string>("Guests"),
