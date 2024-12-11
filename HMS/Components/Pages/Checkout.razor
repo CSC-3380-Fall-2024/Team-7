@@ -1,5 +1,8 @@
 @page "/checkout"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavManager
+
 
 <PageTitle>Checkout</PageTitle>
 
@@ -21,23 +24,23 @@
                     <div class="mb-4">
                     <div class="d-flex justify-content-between">
                             <span>Hotel:</span>
-                            <span class="fw-semibold">Luxury Resort & Spa</span>
+                            <span class="fw-semibold"> @HotelName </span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Room Type:</span>
-                            <span class="fw-semibold">Deluxe Ocean View</span>
+                            <span class="fw-semibold"> @RoomType </span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Check-in:</span>
-                            <span class="fw-semibold">July 15, 2023</span>
+                            <span class="fw-semibold">@CheckInDate</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Check-out:</span>
-                            <span class="fw-semibold">July 20, 2023</span>
+                            <span class="fw-semibold">@CheckOutDate</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Guests:</span>
-                            <span class="fw-semibold">2 Adults, 1 Child</span>
+                            <span class="fw-semibold">@Guests</span>
                     </div>
                     </div>
                 </CardBody>
@@ -45,8 +48,8 @@
                     <CardBody>
                         <div class="mb-4">
                             <div class="d-flex justify-content-between fs-5 fw-semibold">
-                                <span>Total:</span>
-                                <span>$1,250.00</span>
+                                <span>Total: $</span>
+                                <span>@TotalPrice</span>
                         </div>
                         </div>
                     </CardBody>
@@ -151,3 +154,27 @@
         </div>
 </div>
 
+
+@code {
+    private string HotelName;
+    private string RoomType;
+    private string CheckInDate;
+    private string CheckOutDate;
+    private string Guests;
+    private string TotalPrice;
+
+    protected override void OnInitialized()
+    {
+        // Parse the query parameters
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        var queryParams = QueryHelpers.ParseQuery(uri.Query);
+
+        // Assign values from query parameters
+        HotelName = queryParams["hotelName"];
+        RoomType = queryParams["roomType"];
+        CheckInDate = queryParams["checkInDate"];
+        CheckOutDate = queryParams["checkOutDate"];
+        Guests = queryParams["guests"];
+        TotalPrice = queryParams["totalPrice"];
+    }
+}
