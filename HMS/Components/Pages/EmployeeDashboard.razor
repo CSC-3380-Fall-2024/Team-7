@@ -41,21 +41,15 @@
         <div class="double-box">
             <div class="box">
                 <h3>Upcoming Shifts</h3>
-                <p>Your schedule for the next 3 days</p>
+                <p>Your schedule for the next week</p>
                 <div class="shift-list">
                     <ul>
-                        <li>
-                            <h4>Mon, Jun 5</h4>
-                            <p>9:00AM - 5:00PM</p>
-                        </li>
-                        <li>
-                            <h4>Tuesday, Jun 6</h4>
-                            <p>2:00PM - 10:00PM</p>
-                        </li>
-                        <li>
-                            <h4>Mon, Jun 7</h4>
-                            <p>5:00PM - 10:00PM</p>
-                        </li>
+                        @foreach (var shift in shifts) {
+                            <li>
+                                <h4>@shift.s_date</h4>
+                                <p>@shift.s_time</p>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -76,18 +70,11 @@
             <div class="task-box">
                 <h3>Upcoming tasks</h3>
                 <ul>
-                    <li>
-                        <p>Send a welcome email to new arrivals.</p>
-                    </li>
-                    <li>
-                        <p>Arrangge transportation for a VIP guest at 6 PM.</p>
-                    </li>
-                    <li>
-                        <p>Update room availability in the system.</p>
-                    </li>
-                    <li>
-                        <p>Follow Upcoming on room service requests.</p>
-                    </li>
+                    @foreach (var task in tasks) {
+                        <li>
+                            <p>@task.s_task</p>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -207,8 +194,74 @@
         padding-top: 15px;
         padding-left: 20px;
     }
+
+    a {
+        text-decoration: none;
+        color: #000000;
+    }
 </style>
 
 @code {
+    // Sets up an instance of the firebase
+	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 
+    // creates an instance so we can pull from emmployee shifts
+    public class c_shift {
+        public string s_date { get; set;} = string.Empty;
+        public string s_time { get; set;} = string.Empty;
+    }
+
+    // creates an instance so we can pull from employee tasks
+    public class c_task {
+        public string s_task { get; set;} = string.Empty;
+    }
+
+    private List<c_shift> shifts = new List<c_shift>();
+    private List<c_task> tasks = new List<c_task>();
+
+    protected override async Task OnInitializedAsync() {
+        await PullEmployeeShifts();
+        await PullEmployeeTasks();
+    }
+
+    private async Task PullEmployeeShifts(){
+        CollectionReference employeesCollection = db.Collection("Employees");
+
+        // need to insert constant user tracker
+        DocumentReference employeeDoc = employeesCollection.Document("0");
+        CollectionReference cr_shiftsCollection = employeeDoc.Collection("shifts");
+
+        // retrieves shift data
+        QuerySnapshot shiftSnapshot = await cr_shiftsCollection.GetSnapshotAsync();
+
+        shifts.Clear();
+        foreach (DocumentSnapshot shiftDoc in shiftSnapshot.Documents) {
+            if (shiftDoc.Exists) {
+                shifts.Add(new c_shift {
+                    s_date = shiftDoc.GetValue<string>("date"),
+                    s_time  = shiftDoc.GetValue<string>("time")
+                });
+            }
+        }
+    }
+
+    private async Task PullEmployeeTasks(){
+        CollectionReference employeesCollection = db.Collection("Employees");
+
+        // need to insert constant user tracker
+        DocumentReference employeeDoc = employeesCollection.Document("0");
+        CollectionReference cr_taskCollection = employeeDoc.Collection("tasks");
+
+        // retrieves shift data
+        QuerySnapshot taskSnapshot = await cr_taskCollection.GetSnapshotAsync();
+
+        tasks.Clear();
+        foreach (DocumentSnapshot taskDoc in taskSnapshot.Documents) {
+            if (taskDoc.Exists) {
+                tasks.Add(new c_task {
+                    s_task = taskDoc.GetValue<string>("task")
+                });
+            }
+        }
+    }
 }
