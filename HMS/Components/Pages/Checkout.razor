@@ -21,7 +21,7 @@
                     <CardSubTitle Class="mb-2 text-muted">Review your booking details</CardSubTitle>
                     <hr class="my-4" />
                     <CardText>
-                        Some quick example text to build on the card title and make up the bulk of the card's content.
+                        Below are the details of your reservation.
                     </CardText>
                     <div class="mb-4">
                     <div class="d-flex justify-content-between">
@@ -70,27 +70,42 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="firstName" class="form-label">First Name</label>
-                                    <input type="text" id="firstName" class="form-control" placeholder="John" />
+                                    <input type="text" id="firstName" class="form-control" @bind="FirstName" placeholder="Enter your first name" />
+                                    @if (string.IsNullOrWhiteSpace(FirstName))
+                                    {
+                                        <small class="text-danger">First Name is required.</small>
+                                    }                                
                                 </div>
                             </div>
                             <!-- Last Name -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" id="lastName" class="form-control" placeholder="Doe" />
+                                    <input type="text" id="lastName" class="form-control" @bind="LastName" placeholder="Enter your last name" />
+                                    @if (string.IsNullOrWhiteSpace(LastName))
+                                    {
+                                        <small class="text-danger">Last Name is required.</small>
+                                    }                                
                                 </div>
                             </div>
                         </div>
                         <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" id="email" class="form-control" placeholder="john.doe@example.com" />
+                            <input type="email" id="email" class="form-control" @bind="Email" placeholder="Enter your email address" />
+                            @if (string.IsNullOrWhiteSpace(Email))
+                            {
+                                <small class="text-danger">Email is required.</small>
+                            }                        
                         </div>
                         <!-- Phone Number -->
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" id="phone" class="form-control" placeholder="+1 (555) 123-4567" />
-                        </div>
+                            <input type="tel" id="phone" class="form-control" @bind="PhoneNumber" placeholder="Enter your phone number" />
+                                @if (string.IsNullOrWhiteSpace(PhoneNumber))
+                                {
+                                    <small class="text-danger">Phone Number is required.</small>
+                                }                        </div>
                     </div>
                 </CardBody>
             </Card>
@@ -105,7 +120,11 @@
                         <!-- Card Number -->
                         <div class="mb-3">
                             <label for="cardNumber" class="form-label">Card Number</label>
-                            <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" />
+                            <input type="text" id="cardNumber" @bind=CardNumber class="form-control" placeholder="1234 5678 9012 3456" />
+                                @if (string.IsNullOrWhiteSpace(CardNumber))
+                                {
+                                    <small class="text-danger">Card Number is required.</small>
+                                }                        
                         </div>
 
                         <!-- Expiry Date and CVV -->
@@ -114,14 +133,22 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="expiryDate" class="form-label">Expiry Date</label>
-                                    <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY" />
+                                    <input type="text" id="expiryDate" @bind=ED class="form-control" placeholder="MM/YY" />
+                                    @if (string.IsNullOrWhiteSpace(ED))
+                                {
+                                    <small class="text-danger">Expiry Date is required.</small>
+                                }                        
                                 </div>
                             </div>
                             <!-- CVV -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="cvv" class="form-label">CVV</label>
-                                    <input type="text" id="cvv" class="form-control" placeholder="123" />
+                                    <input type="text" id="cvv" @@bind=CVV class="form-control" placeholder="123" />
+                                    @if (string.IsNullOrWhiteSpace(CVV))
+                                {
+                                    <small class="text-danger">CVV is required.</small>
+                                }                        
                                 </div>
                             </div>
                         </div>
@@ -129,13 +156,17 @@
                         <!-- Cardholder Name -->
                         <div class="mb-3">
                             <label for="cardholderName" class="form-label">Cardholder Name</label>
-                            <input type="text" id="cardholderName" class="form-control" placeholder="John Doe" />
+                            <input type="text" id="cardholderName" @bind=CardName class="form-control" placeholder="Enter the Cardholder name" />
+                                     @if (string.IsNullOrWhiteSpace(CardName))
+                                {
+                                    <small class="text-danger">CVV is required.</small>
+                                }      
                         </div>
 
                         <!-- Country -->
                         <div class="mb-3">
                             <label for="country" class="form-label">Country</label>
-                            <select id="country" class="form-select">
+                            <select id="country" class="form-select"  required>
                                 <option value="" disabled selected>Select a country</option>
                                 <option value="us">United States</option>
                                 <option value="ca">Canada</option>
@@ -164,15 +195,21 @@
     private string CheckOutDate;
     private string Guests;
     private string TotalPrice;
-    private string FirstName;
-    private string LastName;
-    private string Email;
-    private string PhoneNumber;
+    private string FirstName = string.Empty;
+    private string LastName = string.Empty;
+    private string Email = string.Empty;
+    private string PhoneNumber = string.Empty;
 
+    private string CardNumber;
+
+    private string CVV;
+
+    private string ED;
+
+    private string CardName;
     FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() {
         // Parse the query parameters
         var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
         var queryParams = QueryHelpers.ParseQuery(uri.Query);
@@ -187,31 +224,30 @@
     }
 
     private async Task HandleCheckout() {
-
-        //if we are able to make it user state
         string userId = "AEtES443hJlarMtsFI0o";
- 
-
-         CollectionReference reservationsCollection = db
-                .Collection("UserAccount")
-                .Document(userId)
-                .Collection("Reservations");
 
         var reservation = new
-            {
-                HotelName,
-                RoomType,
-                CheckInDate,
-                CheckOutDate,
-                Guests,
-                TotalPrice,
-                FirstName,
-                LastName,
-                Email,
-                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow)
-            };
+        {
+            HotelName,
+            RoomType,
+            CheckInDate,
+            CheckOutDate,
+            Guests,
+            TotalPrice,
+            FirstName,
+            LastName,
+            Email,
+            PhoneNumber,
+            CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow)
+        };
 
-        // Add the reservation to Firestore
+        CollectionReference reservationsCollection = db
+            .Collection("UserAccount")
+            .Document(userId)
+            .Collection("Reservations");
+
         await reservationsCollection.AddAsync(reservation);
+
+        NavManager.NavigateTo("/mytrips");
     }
 }
