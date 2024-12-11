@@ -2,6 +2,8 @@
 @rendermode InteractiveServer
 @using Microsoft.AspNetCore.WebUtilities
 @inject NavigationManager NavManager
+@using Google.Cloud.Firestore;
+
 
 
 <PageTitle>Checkout</PageTitle>
@@ -143,7 +145,7 @@
                         </div>
                     </div>
                     <hr class="my-4" />
-                    <Button Color="ButtonColor.Dark" To="#" Type="ButtonType.Link"> Confirm Reservation </Button>
+                    <Button Color="ButtonColor.Dark"  @onclick="HandleCheckout" Type="ButtonType.Link"> Confirm Reservation </Button>
                 </CardBody>
             </Card>
 
@@ -162,6 +164,12 @@
     private string CheckOutDate;
     private string Guests;
     private string TotalPrice;
+    private string FirstName;
+    private string LastName;
+    private string Email;
+    private string PhoneNumber;
+
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 
     protected override void OnInitialized()
     {
@@ -176,5 +184,34 @@
         CheckOutDate = queryParams["checkOutDate"];
         Guests = queryParams["guests"];
         TotalPrice = queryParams["totalPrice"];
+    }
+
+    private async Task HandleCheckout() {
+
+        //if we are able to make it user state
+        string userId = "AEtES443hJlarMtsFI0o";
+ 
+
+         CollectionReference reservationsCollection = db
+                .Collection("UserAccount")
+                .Document(userId)
+                .Collection("Reservations");
+
+        var reservation = new
+            {
+                HotelName,
+                RoomType,
+                CheckInDate,
+                CheckOutDate,
+                Guests,
+                TotalPrice,
+                FirstName,
+                LastName,
+                Email,
+                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow)
+            };
+
+        // Add the reservation to Firestore
+        await reservationsCollection.AddAsync(reservation);
     }
 }
