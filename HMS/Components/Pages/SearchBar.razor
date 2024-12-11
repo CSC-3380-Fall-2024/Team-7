@@ -1,0 +1,245 @@
+@page "/SearchBar"
+@using Google.Cloud.Firestore;
+@rendermode InteractiveServer
+@using System.Globalization;
+@using BlazorBootstrap;
+
+
+
+
+
+
+
+
+
+
+	<div class="searchbar">
+		<div class="center">
+			<InputText Type="text" id="Location" class="tr" placeholder="Destination" @bind-Value="@query" />
+		</div>
+
+		<div class="center">
+    		<DateInput TValue="DateOnly" class="tr" @bind-Value="@date1" Placeholder="Enter Date" />
+		</div>
+
+		<div class="center">
+    		<DateInput TValue="DateOnly" class="tr" @bind-Value="@date2" Placeholder="Enter Date" />
+		</div>
+
+		<div class="center">
+			<InputText type="text" class="tr" placeholder="How Many Guests?" @bind-Value="@guests" />
+		</div>
+
+		<div class="center">
+			<button class="sbutton tr" @onclick="() => search(query)">Search</button>
+		</div>
+		
+	</div>
+
+<br/>
+<br/>
+
+<!--
+
+@foreach(var hotel in hotelInfo) {
+			<div style="margin-bottom: 1.5rem;">
+				<div style="width: 45%">
+						<h1 style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
+						<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a (@hotel.d_rating)</p>
+						<b style="font-size: 0.9rem;">Slogan: @hotel.s_slogan</b>
+						<p style="font-size: 0.9rem;">Description: @hotel.s_description</p>
+						<p style="font-size: 0.9rem;">Review Count: @hotel.i_reviewCount</p>
+						<p style="font-size: 0.9rem;">Price: @hotel.d_price</p>
+						<p style="font-size: 0.9rem;">Start: @hotel.s_startDate</p>
+						<p style="font-size: 0.9rem;">End: @hotel.s_endDate</p>
+						<p style="font-size: 0.9rem;">MaxGuests: @hotel.i_maxGuests</p>
+						<button>See Rooms</button>
+					</div>
+					<div style="width: 20%">
+						<p>The price is $money</p>
+					</div>
+			</div>
+}
+
+-->
+
+
+@code{
+    public FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+	
+    public string query { get; set; }= "";
+	public string guests { get; set; }= "";
+	public DateOnly date1 = DateOnly.FromDateTime(DateTime.Now.AddDays(0));
+	public DateOnly date2 = DateOnly.FromDateTime(DateTime.Now.AddDays(4));
+
+	public DateOnly strtestd { get; set; }
+	public DateOnly strtestd1 { get; set; }
+
+    public class c_hotelInfo {
+		public string s_id {get; set;} = string.Empty;
+		public string s_name {get; set;} = string.Empty;
+		public string s_hotelImgPath {get; set;} = string.Empty;
+		public double d_rating {get; set;} = 0.0;
+		public double d_price {get; set;} = 0.0;
+		public int i_reviewCount {get; set;} = 0;
+		public string s_slogan {get; set;} = string.Empty;
+		public string s_description {get; set;} = string.Empty;
+		public string s_startDate {get; set;} = string.Empty;
+		public string s_endDate {get; set;} = string.Empty;
+		public int i_maxGuests {get; set;} = 0;
+	}
+
+
+    public IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
+
+    public async void search(string qry)
+    {
+        CollectionReference cr_hotels = db.Collection("Hotels");
+        QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+        
+        Query allHotels = db.Collection("Hotels");
+        QuerySnapshot qs_allHotels = await allHotels.GetSnapshotAsync();
+
+        List<c_hotelInfo> results = new List<c_hotelInfo>();
+
+        foreach (DocumentSnapshot doc in qs_allHotels.Documents)
+        {
+			DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
+			DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
+
+			string start = doc.GetValue<string>("start_date");
+			string end = doc.GetValue<string>("end_date");
+
+			strtestd = DateOnly.Parse(start);
+			strtestd1 = DateOnly.Parse(end);
+			//make a int, add to condtions, display guests
+			int mguests = doc.GetValue<int>("max_guests");
+			int inttmp = 0;
+
+			if(int.TryParse(guests, out inttmp))
+				{
+					if((doc.GetValue<string>("location").Contains(qry) || (date1 < strtestd && date2 >strtestd1)) && (inttmp < mguests))
+						{
+							results.Add(new c_hotelInfo{s_id = doc.Id, 
+								s_name = doc.GetValue<string>("name"),
+								s_hotelImgPath = hotelImgs.GetValue<string>("path"),
+								d_rating = doc.GetValue<double>("rating"),
+								d_price = doc.GetValue<double>("price"),
+								i_reviewCount = doc.GetValue<int>("review_count"),
+								s_slogan = doc.GetValue<string>("slogan"),
+								s_description = doc.GetValue<string>("description"),
+								s_startDate = start,
+								s_endDate = end,
+								i_maxGuests = mguests
+								});
+					}
+				}
+        }
+        hotelInfo = results;
+		StateHasChanged();
+    }
+
+
+    public string test = "AHHHHHHHH";
+
+
+}
+
+
+
+
+
+
+<style>
+
+	.center
+	{
+		margin:auto;
+	}
+
+	.container
+	{
+		display: flex;
+		justify-content: center;
+		background: red;
+	}
+
+	.textbox
+	{
+		background-color: rgba(242, 242, 242, 1);
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+	}
+
+	.date
+	{
+		width: 150px;
+		text-align: center;
+		color:rgba(255, 255, 255, 0);
+	}
+
+	input[type=date] {
+		background-color: rgba(242, 242, 242, 1);
+		border: none;
+		text-align: center;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+		width: 170px;
+		height: 44px;
+		color: rgb(72, 72, 72);
+	}
+
+	.tr
+	{
+		transition-duration: 300ms;
+		transition-timing-function: ease-in-out;
+		transition-property: transform;
+	}
+
+	.tr:is(:hover, :focus)
+	{
+		
+		transform: scale(1.09);
+	}
+
+	.sbutton
+	{
+		background-color: rgba(47, 128, 237, 1);
+		width: 148px;
+		height:44px;
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+		color: rgb(0, 0, 0);
+	}
+
+	input[type=text] {
+		background-color: rgba(242, 242, 242, 1);
+		width: 260px;
+		text-align: center;
+		height:44px;
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+	}
+
+	.searchbar
+	{
+		display: flex;
+		max-width: 1100px;
+		border-radius:  8px;
+
+		margin:auto;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		align-content: space-evenly;
+		row-gap: .3em;
+		column-gap: .3em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	
+	}
+
+</style>

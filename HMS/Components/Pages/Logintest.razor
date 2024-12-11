@@ -1,86 +1,100 @@
-@using Google.Cloud.Firestore
+@using Google.Cloud.Firestore;
+@inject NavigationManager NavManager
+
 @rendermode InteractiveServer
+
 @page "/login"
 
-<PageTitle>Login</PageTitle>
+@inject c_user c_user
 
-<p>
-     Email: 
-    <input @bind="newEmail"/>&nbsp;
-</p>
-<p>
-    Password: 
-    <input @bind="newPassword"/>&nbsp;
-</p>
+<PageTitle>Sign in</PageTitle>
 
-<p>
-    Employee Id (If Applicable):  
-    <input @bind="EmployeeId"/>&nbsp;
-</p>
-<button @onclick="addNewUser">Sign Up</button>
-@LoginMessage
-
-
-
-
-@code{
-    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
-    public class Users 
-    {
-        public string Id {get; set;}
-        public string Email { get; set;}
-        public string Password { get; set;}
-    }
-
-    public class Employee
-    {
-        public string Id {get; set;}
-        public bool HasAccount {get; set;}
-
-        public string Name {get; set;}
-    }
-
-    private IEnumerable<Users> users = Array.Empty<Users>();
-    private IEnumerable<Employee> employees =Array.Empty<Employee>();
-
-    string newEmail = "";
-    string newPassword = "";
-    string EmployeeId = "";
-    string LoginMessage = "";
-
-
- 
-private async Task addNewUser()
-{         
-        CollectionReference Employees = db.Collection("Employees");
-        DocumentReference docRef;
-        if (EmployeeId != "")
+<form @onsubmit="HandleSubmit">
+    <p>
+        <input type="email" @bind="s_Email" placeholder="Enter your email" id="email" size="30" maxlength="69" minlength="3" required />
+    </p>
+    <p>
+        <input type="password" @bind="s_Password" placeholder="Enter your password" id="password" size="30" maxlength="69" minlength="10" required />
+    </p>
+    <p>
+       <button type="submit" disabled="@isLoading">Sign In</button>
+        @if (isLoading)
         {
-            docRef = Employees.Document(EmployeeId);
-            DocumentSnapshot docSnapshot = await docRef.GetSnapshotAsync();
-            bool hasAccount = docSnapshot.GetValue<bool>("HasAccount");
-            if(!hasAccount)
-            {
-                 var updateData = new Dictionary<string, object>
-                {
-                    { "HasAccount", true }
-                };
-                await docRef.UpdateAsync(updateData);
+            <span>Loading...</span> <!-- You can replace this with a spinner icon -->
+        }
+    </p>
+    @if (!string.IsNullOrEmpty(LoginMessage))
+    {
+        <p>@LoginMessage</p>
+    }
+</form>
 
-                CollectionReference collection = db.Collection("UserAccount");
-                await collection.AddAsync(new {Email = newEmail, Password = newPassword});
+@code
+{
+    string s_Email = string.Empty;
+    string s_Password = string.Empty;
+    string LoginMessage = "";
+    private bool isLoading = false; // Track loading state
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+
+    public class Users
+    {
+        public string s_id {get; set;}
+        public string s_email {get; set;}
+        public string s_password {get; set;}
+        public Boolean s_IsEmployee { get; set;}
+    }
+
+    private IEnumerable<Users> iE_users = Array.Empty<Users>();
+
+    private async Task HandleSubmit()
+    {
+        isLoading = true; // Set loading state to true
+        await retrieveData();
+        isLoading = false; // Reset loading state
+    }
+
+    private async Task retrieveData()
+    {
+        CollectionReference cr_userCollection = db.Collection("UserAccount");
+        QuerySnapshot qs_userData = await cr_userCollection.GetSnapshotAsync();
+        var lst = new List<Users>();
+            foreach(var doc in qs_userData.Documents)
+            {
+                lst.Add(new Users {s_id = doc.Id, s_email = doc.GetValue<string>("Email"), s_password = doc.GetValue<string>("Password"), s_IsEmployee = doc.GetValue<Boolean>("IsEmployee")});
+            }
+        iE_users = lst;
+        
+        int successSignin = -1;
+        foreach(var user in iE_users)
+        {
+            if(user.s_email == s_Email && user.s_password == s_Password)
+            {
+                LoginMessage = "Succesfully Logged In!";
+                successSignin = 1;
+                c_user.SetUser(s_Email,s_Password);
+                LoginMessage = c_user.s_email;
+
+                if(user.s_IsEmployee == true)
+                {
+                   NavManager.NavigateTo("/employeedashboard"); 
+                }
+                else
+                {
+                   NavManager.NavigateTo("/homeloggedin"); 
+                }
+                break;
             }
             else
             {
-                LoginMessage = "Sorry, this employee Id already has an account";
-            }   
+                successSignin = 0;
+            }
+        }
 
-        }
-        else
+        if(successSignin == 0)
         {
-        CollectionReference collection = db.Collection("UserAccount");
-        await collection.AddAsync(new {Email = newEmail, Password = newPassword});
+            LoginMessage = "Invalid Email or Password";
         }
-}
-    
+    }
+
 }

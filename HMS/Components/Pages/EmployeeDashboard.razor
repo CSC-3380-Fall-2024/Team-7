@@ -1,0 +1,267 @@
+@page "/employeedashboard"
+@using Google.Cloud.Firestore
+@using BlazorBootstrap;
+
+<PageTitle>Employee Dashboard</PageTitle>
+
+<div class="page-container">
+    <div class="sidebar-container">
+        <div class="sidebar-title-box">
+            <div class="sidebar-title-icon"></div>
+            <h2>Front-Desk</h2>
+        </div>
+        <p id="sidebar-text">Dashboard</p>
+        <p id="sidebar-text">Schedule</p>
+        <p id="sidebar-text">Booking</p>
+        <p id="sidebar-text">Room Access</p>
+        <p id="sidebar-text">Edit Listings</p>
+        <p id="sidebar-text">Request Leave</p>
+        <p id="sidebar-text">Payroll History</p>
+        <p id="sidebar-text">Tank List</p>
+        <p id="sidebar-text">Report an Issue</p>
+        <p id="sidebar-text">
+            <a href="/addlistings">Add Listings</a>
+        </p>
+    </div>
+
+    <div class="main-container">
+        <h2>Welcome back, User!</h2>
+
+        <div class="main-buttons">
+            <div class="button-box">
+                <p>Clock In/Out</p>
+            </div>
+            <div class="button-box">
+                <p>View Schedule</p>
+            </div>
+            <div class="button-box">
+                <p>Manage Guests</p>
+            </div>
+        </div>
+        <div class="double-box">
+            <div class="box">
+                <h3>Upcoming Shifts</h3>
+                <p>Your schedule for the next week</p>
+                <div class="shift-list">
+                    <ul>
+                        @foreach (var shift in shifts) {
+                            <li>
+                                <h4>@shift.s_date</h4>
+                                <p>@shift.s_time</p>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="box">
+                <h3>Announcements</h3>
+                <ul>
+                    <li>
+                        <p>Team Meeting at 3pm</p>
+                    </li>
+                    <li>
+                        <p>Upcoming Maintenence at 11/26/24 at 10:00am CST</p>
+                    </li>
+                    <li>
+                        <p>New parking policy effect from Dec. 1</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="task-box">
+                <h3>Upcoming tasks</h3>
+                <ul>
+                    @foreach (var task in tasks) {
+                        <li>
+                            <p>@task.s_task</p>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .page-container {
+        display: flex;
+        height: 100vh;
+        width: 100%;
+        font-family: 'Albert Sans';
+    }
+
+    .sidebar-container {
+        max-width: 33%;
+        background-color: #EBEBEB;
+    }
+
+    .main-container {
+        flex-grow: 1;
+    }
+
+    h2 {
+        padding-left: 10px;
+        padding-right: 20px;
+    }
+
+    #sidebar-text {
+        padding-left: 45px;
+    }
+
+    .main-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        max-width: 600px;
+        gap: 30px;
+        margin: 0 auto;
+        padding: 20px;
+
+    }
+
+    .sidebar-title-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .sidebar-title-icon {
+        width: 25px;
+        height: 25px;
+        background-image: url('/images/generalImages/Vector.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        padding-left: 10px;
+    }
+
+    .button-box {
+        background-color: #000000;
+        width: 125px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+    }
+
+    .button-box p {
+        color: #FFFFFF;
+        font-size: 1rem;
+    }
+
+    .double-box {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .box {
+        background-color: #EBEBEB;
+        width: 45%;
+        padding-left: 20px;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    .shift-list li {
+        border-bottom: 1px solid #0000004D;
+    }
+
+    .box li {
+        border-bottom: 1px solid #0000004D;
+    }
+
+    .task-box li {
+        border-bottom: 1px solid #0000004D;
+    }
+
+    li:last-child {
+        border-bottom: none;
+    }
+
+    .task-box {
+        background-color: #EBEBEB;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 20px;
+        margin-left: 35px;
+        padding-top: 15px;
+        padding-left: 20px;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000000;
+    }
+</style>
+
+@code {
+    // Sets up an instance of the firebase
+	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+
+    // creates an instance so we can pull from emmployee shifts
+    public class c_shift {
+        public string s_date { get; set;} = string.Empty;
+        public string s_time { get; set;} = string.Empty;
+    }
+
+    // creates an instance so we can pull from employee tasks
+    public class c_task {
+        public string s_task { get; set;} = string.Empty;
+    }
+
+    private List<c_shift> shifts = new List<c_shift>();
+    private List<c_task> tasks = new List<c_task>();
+
+    protected override async Task OnInitializedAsync() {
+        await PullEmployeeShifts();
+        await PullEmployeeTasks();
+    }
+
+    private async Task PullEmployeeShifts(){
+        CollectionReference employeesCollection = db.Collection("Employees");
+
+        // need to insert constant user tracker
+        DocumentReference employeeDoc = employeesCollection.Document("0");
+        CollectionReference cr_shiftsCollection = employeeDoc.Collection("shifts");
+
+        // retrieves shift data
+        QuerySnapshot shiftSnapshot = await cr_shiftsCollection.GetSnapshotAsync();
+
+        shifts.Clear();
+        foreach (DocumentSnapshot shiftDoc in shiftSnapshot.Documents) {
+            if (shiftDoc.Exists) {
+                shifts.Add(new c_shift {
+                    s_date = shiftDoc.GetValue<string>("date"),
+                    s_time  = shiftDoc.GetValue<string>("time")
+                });
+            }
+        }
+    }
+
+    private async Task PullEmployeeTasks(){
+        CollectionReference employeesCollection = db.Collection("Employees");
+
+        // need to insert constant user tracker
+        DocumentReference employeeDoc = employeesCollection.Document("0");
+        CollectionReference cr_taskCollection = employeeDoc.Collection("tasks");
+
+        // retrieves shift data
+        QuerySnapshot taskSnapshot = await cr_taskCollection.GetSnapshotAsync();
+
+        tasks.Clear();
+        foreach (DocumentSnapshot taskDoc in taskSnapshot.Documents) {
+            if (taskDoc.Exists) {
+                tasks.Add(new c_task {
+                    s_task = taskDoc.GetValue<string>("task")
+                });
+            }
+        }
+    }
+}

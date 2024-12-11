@@ -1,0 +1,445 @@
+@using Google.Cloud.Firestore;
+@rendermode InteractiveServer
+@page "/listings"
+@using BlazorBootstrap;
+@inject NavigationManager NavManager
+
+<PageTitle>Listing Page</PageTitle>
+
+<div class="searchbar">
+	<div class="center">
+		<InputText Type="text" id="Location" class="tr" placeholder="Destination" @bind-Value="@query" />
+	</div>
+
+	<div class="center">
+		<DateInput TValue="DateOnly" class="tr" @bind-Value="@date1" Placeholder="Enter Date" />
+	</div>
+
+	<div class="center">
+		<DateInput TValue="DateOnly" class="tr" @bind-Value="@date2" Placeholder="Enter Date" />
+	</div>
+
+	<div class="center">
+		<InputText type="text" class="tr" placeholder="How Many Guests?" @bind-Value="@guests" />
+	</div>
+
+	<div class="center">
+		<button class="sbutton tr" @onclick="() => search(query)">Search</button>
+	</div>
+	
+</div>
+
+<br/>
+<br/>
+
+<div class="flex-container">
+	<div class="left">
+		<h5 class="filter-heading-text" style="text-align: left; margin-left: 5.5rem; font-size: 1.2rem;">
+			<p>Filter by:</p>
+		</h5>
+		<div class="filter-box">
+			<div class="filter-box-top">
+				<p class="filter-heading-text" style="margin: auto;">Your Budget Per Day</p>
+			</div>
+			@foreach (var (filter, index) in l_PriceFilters.Select((f, i) => (f, i))) {
+				<div style="margin-bottom: 0.3rem; padding-left: 0.9rem; padding-top: 0.5rem;">
+					<input class="filter-button" type="checkbox" id="price-range-@index" name="price-range-@index" @bind="l_PriceFilters[index].b_isActive">
+					<label for="price-range-@index">$@filter.d_min - $@(filter.d_max - 1)</label><br>
+				</div>
+			}
+		</div>
+		@*
+		<div class="filter-box">
+			<div class="filter-box-top">
+				<p class="filter-heading-text" style="margin: auto;">Rating</p>
+			</div>
+		</div>
+		*@
+		<div class="filter-box">
+			<div class="filter-box-top">
+				<p class="filter-heading-text" style="margin: auto;">Popular Filters</p>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem; padding-top: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1">
+				<label for="price-range-1">Free Cancellation</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2">
+				<label for="price-range-2">Spa</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">Beach Front</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">Hot Tub / Jacuzzi</label><br>
+			</div>
+			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">Airport Shuttle</label><br>
+			</div>
+			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">Free Parking</label><br>
+			</div>
+		</div>
+		<div class="filter-box">
+			<div class="filter-box-top">
+				<p class="filter-heading-text" style="margin: auto;">Activities</p>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem; padding-top: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1">
+				<label for="price-range-1">Fishing</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2">
+				<label for="price-range-2">Hiking</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">Paintball</label><br>
+			</div>
+			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" >
+				<label for="price-range-3">Cycling</label><br>
+			</div>
+			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" >
+				<label for="price-range-3">Sauna</label><br>
+			</div>
+			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
+				<label for="price-range-3">Night Lights</label><br>
+			</div>
+		</div>
+		
+	</div>
+	<div class="right">
+		@foreach(var hotel in hotelInfo) {
+			@if(b_ApplyPriceFilters(hotel.d_price)) {
+				i_resultCount++;	
+			} else if (b_PriceFiltersTurnedOff()) {
+				i_resultCount++;
+				if(i_resultCount == 10) {
+					stopping_filter = true;
+				} 
+			}
+		}
+		<h1 class="filter-heading-text" style="margin-left: 2rem; font-size: 2rem; margin-bottom: 2rem;">@i_resultCount Listings Found</h1>
+		@if(1 == 1) {
+			i_resultCount = 0;
+			stopping_filter = false;
+		} 
+		@foreach(var hotel in hotelInfo) {
+			@if(b_ApplyPriceFilters(hotel.d_price)) {
+				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
+					<div class="column" style="width: 35%;">
+						<img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
+					</div>
+					<div class="column" style="width: 45%">
+							<h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
+							<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
+							<b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
+							<p style="font-size: 0.9rem;">@hotel.s_description</p>
+							<button class="button-to-book" @onclick="() => NavigateToCheckout(hotel)" >Checkout</button>
+						</div>
+						<div class="column" style="width: 20%">
+							<p>The price is $@hotel.d_price</p>
+						</div>
+				</div>
+			} else if (b_PriceFiltersTurnedOff()) {
+				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
+					<div class="column" style="width: 35%;">
+						<img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
+					</div>
+					<div class="column" style="width: 45%">
+							<h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
+							<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
+							<b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
+							<p style="font-size: 0.9rem;">@hotel.s_description</p>
+							<button class="button-to-book" @onclick="() => NavigateToCheckout(hotel)" >Checkout</button>
+						</div>
+						<div class="column" style="width: 20%">
+							<p>The price is $@hotel.d_price</p>
+						</div>
+				</div>
+				i_resultCount++;
+				if(i_resultCount == 10) {
+					stopping_filter = true;
+				} 
+			}
+		}
+		@if(1 == 1) {
+			i_resultCount = 0;
+			stopping_filter = false;
+		}
+	</div>
+</div>
+
+@code {
+	// Set up an instance of the firebase
+	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+	public int i_resultCount;
+
+	// The below variables act as an on and off button for each filter toggle
+	public bool stopping_filter = false;
+
+	public string query { get; set; }= "";
+	public string guests { get; set; }= "";
+	public DateOnly date1 = DateOnly.FromDateTime(DateTime.Now.AddDays(0));
+	public DateOnly date2 = DateOnly.FromDateTime(DateTime.Now.AddDays(4));
+
+	public DateOnly strtestd { get; set; }
+	public DateOnly strtestd1 { get; set; }
+
+	// These variables represent all of the data about a hotel listing that a listing needs to show to the user
+	public class c_hotelInfo {
+		public string s_id {get; set;} = string.Empty;
+		public string s_name {get; set;} = string.Empty;
+		public string s_hotelImgPath {get; set;} = string.Empty;
+		public double d_rating {get; set;} = 0.0;
+		public double d_price {get; set;} = 0.0;
+		public int i_reviewCount {get; set;} = 0;
+		public string s_slogan {get; set;} = string.Empty;
+		public string s_description {get; set;} = string.Empty;
+		public string s_startDate {get; set;} = string.Empty;
+		public string s_endDate {get; set;} = string.Empty;
+		public int i_maxGuests {get; set;} = 0;
+	}
+
+	private IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
+
+	protected override async Task OnInitializedAsync() {
+			await refreshList();
+	}
+
+	private async Task refreshList() {
+
+		// List of colection references to be able to access different parts of the database
+		CollectionReference cr_hotels =  db.Collection("Hotels");
+		QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+
+		var lst = new List<c_hotelInfo>();
+
+	// Populating the hotel data with all of the relevent information for the listings
+		foreach (var doc in qs_hotelDocs.Documents)
+		{
+			DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
+			DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
+			lst.Add(new c_hotelInfo{s_id = doc.Id, 
+			s_name = doc.GetValue<string>("name"), 
+			s_hotelImgPath = hotelImgs.GetValue<string>("path"),
+			d_rating = doc.GetValue<double>("rating"),
+			d_price = doc.GetValue<double>("price"),
+			i_reviewCount = doc.GetValue<int>("review_count"),
+			s_slogan = doc.GetValue<string>("slogan"),
+			s_description = doc.GetValue<string>("description")
+			});
+		}
+        	hotelInfo = lst;
+	}
+
+	private void NavigateToCheckout(c_hotelInfo hotel)
+    {
+        // Construct the query string with the selected hotel's details
+        var url = $"/checkout?hotelName={Uri.EscapeDataString(hotel.s_name)}" +
+                  $"&roomType={Uri.EscapeDataString(hotel.s_slogan)}" +
+                  $"&checkInDate={Uri.EscapeDataString(date1.ToString("yyyy-MM-dd"))}" +
+                  $"&checkOutDate={Uri.EscapeDataString(date2.ToString("yyyy-MM-dd"))}" +
+                  $"&guests={Uri.EscapeDataString(guests)}" +
+                  $"&totalPrice={Uri.EscapeDataString(hotel.d_price.ToString("F2"))}";
+
+        // Navigate to the Checkout page
+        NavManager.NavigateTo(url);
+    }
+
+	public class c_PriceFilter {
+		public bool b_isActive {get; set;}
+		public double d_min { get; set; }
+		public double d_max { get; set; }
+
+		// The 'p' appended on to every variavle name means 'parameter'
+		public c_PriceFilter(bool bp_isActive, double dp_min, double dp_max) {
+			b_isActive = bp_isActive;
+			d_min = dp_min;
+			d_max = dp_max;
+		}
+	}
+
+	public List<c_PriceFilter> l_PriceFilters = new() {
+		new c_PriceFilter(false, 0, 200),
+		new c_PriceFilter(false, 200, 400),
+		new c_PriceFilter(false, 400, 1000),
+		new c_PriceFilter(false, 1000, 2000),
+		new c_PriceFilter(false, 2000, 5000),
+		new c_PriceFilter(false, 5000, 10000),
+	};
+
+	public bool b_ApplyPriceFilters(double price) {
+		bool b_matchFound = false;
+		foreach(var filter in l_PriceFilters) {
+			if(filter.b_isActive == true) {
+				if(price >= filter.d_min && price < filter.d_max) {
+					b_matchFound = true;
+				} 
+			}
+		}
+		return b_matchFound;
+	}	
+
+	public bool b_PriceFiltersTurnedOff() {
+		foreach(var filter in l_PriceFilters) {
+			if(filter.b_isActive) {
+				return false;
+			}
+		}
+		if(!stopping_filter) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public async void search(string qry)
+    {
+        CollectionReference cr_hotels = db.Collection("Hotels");
+        QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+        
+        Query allHotels = db.Collection("Hotels");
+        QuerySnapshot qs_allHotels = await allHotels.GetSnapshotAsync();
+
+        List<c_hotelInfo> results = new List<c_hotelInfo>();
+
+        foreach (DocumentSnapshot doc in qs_allHotels.Documents)
+        {
+			DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
+			DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
+
+			string start = doc.GetValue<string>("start_date");
+			string end = doc.GetValue<string>("end_date");
+
+			strtestd = DateOnly.Parse(start);
+			strtestd1 = DateOnly.Parse(end);
+			//make a int, add to condtions, display guests
+			int mguests = doc.GetValue<int>("max_guests");
+			int inttmp = 0;
+
+			if(int.TryParse(guests, out inttmp))
+				{
+					if((doc.GetValue<string>("location").Contains(qry) || (date1 <= strtestd && date2 >= strtestd1)) && (inttmp < mguests))
+						{
+							results.Add(new c_hotelInfo{s_id = doc.Id, 
+								s_name = doc.GetValue<string>("name"),
+								s_hotelImgPath = hotelImgs.GetValue<string>("path"),
+								d_rating = doc.GetValue<double>("rating"),
+								d_price = doc.GetValue<double>("price"),
+								i_reviewCount = doc.GetValue<int>("review_count"),
+								s_slogan = doc.GetValue<string>("slogan"),
+								s_description = doc.GetValue<string>("description"),
+								s_startDate = start,
+								s_endDate = end,
+								i_maxGuests = mguests
+								});
+					}
+				}
+        }
+        hotelInfo = results;
+		StateHasChanged();
+    }
+}
+
+
+<style>
+
+	.center
+	{
+		margin:auto;
+	}
+
+	.container
+	{
+		display: flex;
+		justify-content: center;
+		background: red;
+	}
+
+	.textbox
+	{
+		background-color: rgba(242, 242, 242, 1);
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+	}
+
+	.date
+	{
+		width: 150px;
+		text-align: center;
+		color:rgba(255, 255, 255, 0);
+	}
+
+	input[type=date] {
+		background-color: rgba(242, 242, 242, 1);
+		border: none;
+		text-align: center;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+		width: 170px;
+		height: 44px;
+		color: rgb(72, 72, 72);
+	}
+
+	.tr
+	{
+		transition-duration: 300ms;
+		transition-timing-function: ease-in-out;
+		transition-property: transform;
+	}
+
+	.tr:is(:hover, :focus)
+	{
+		
+		transform: scale(1.09);
+	}
+
+	.sbutton
+	{
+		background-color: rgba(47, 128, 237, 1);
+		width: 148px;
+		height:44px;
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+		color: rgb(0, 0, 0);
+	}
+
+	input[type=text] {
+		background-color: rgba(242, 242, 242, 1);
+		width: 260px;
+		text-align: center;
+		height:44px;
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+	}
+
+	.searchbar
+	{
+		display: flex;
+		max-width: 1100px;
+		border-radius:  8px;
+
+		margin:auto;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		align-content: space-evenly;
+		row-gap: .3em;
+		column-gap: .3em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	
+	}
+
+</style>

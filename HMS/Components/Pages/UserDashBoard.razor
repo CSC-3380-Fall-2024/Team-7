@@ -1,11 +1,229 @@
-@page "/UserDashBoard"
+@page "/userDashBoard"
+@using Google.Cloud.Firestore
+@inject NavigationManager NavigationManager
+@inject c_user cu
 
-<PageTitle>User Dashboard</PageTitle>
+<PageTitle>My Account</PageTitle>
+<body>
+    <div class="page-header"> @*navbar specific to user dashboard, need to figure out how to align with nav bar to look seemless*@
+        <h1>My Account</h1>
+        <div class="action-items">
+            <ul>
+                <li><a href="mytrips">My Trips</a></li>
+                <li>Reward and Wallet</li>
+                <li>Profile</li>
+            </ul>
+        </div>
+    </div>
 
-<h1>Account Details</h1>
-<p>
-    Name: @*pulls user's name from database*@
-    Payment Method: @*pull users's payment methods from database*@
-    Future Bookings: @*pulls user's future bookings from database*@
-    Previous Bookings: @*pull user's previous bookings from database*@
-</p>
+    <div class="userInfo">
+        <h2>Hi, User</h2>
+        <p>Member # @user.s_id</p>
+    </div>
+
+    <div class="user-section" id="upcoming-trips">
+        <h3>Upcoming Trips</h3>
+        <h3 class="trip-number">You have @user.i_upcomingTrips upcoming trip(s)</h3>
+        <div class="img-header"></div>
+    </div>
+
+    <div class="user-section">
+        <h2>Member Rewards</h2>
+        <p>Earn qualifiying points or nights to unlock more tier benefits</p>
+        <div class="nights-tracker"> @user.i_rewards Night(s) earned</div>
+        <div class="tier-progress">
+            <div class="progress-bar" style="width: @progressPercentage%;"></div>
+            <div class="tier-line" style="left: 10%;"></div>  
+            <div class="tier-line" style="left: 20%;"></div>  
+            <div class="tier-line" style="left: 40%;"></div> 
+            <div class="tier-line" style="left: 60%;"></div> 
+            <div class="tier-line" style="left: 80%;"></div>  
+            <div class="tier-line" style="left: 100%;"></div>
+        </div>
+        <div class="tier-progress" id="tier-labels">
+            @*this next part is for the labeling over the tiers*@ 
+            <div class="label-container" style="left: 10%;">
+                <p class="tier-level">10</p>
+            </div>
+            <div class="label-container" style="left: 20%;">
+                <p class="tier-level">20</p>
+            </div>
+            <div class="label-container" style="left: 40%;">
+                <p class="tier-level">40</p>
+            </div>
+            <div class="label-container" style="left: 60%;">
+                <p class="tier-level">60</p>
+            </div>
+            <div class="label-container" style="left: 80%;">
+                <p class="tier-level">80</p>
+            </div>
+            <div class="label-container" style="left: 100%;">
+                <p class="tier-level">100</p>
+            </div>
+        </div>  
+    </div>
+</body>
+
+<style>
+html, body, {
+    margin: 0;
+    padding 0;
+}
+
+.page-header {
+    background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);
+    color: #FFFFFF;
+    width: 100%; 
+    margin-top: 0;
+    padding-top: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.action-items {
+    margin-left: auto;
+    margin-right: 20px;
+    padding-top: 10px;
+}
+
+.action-items a {
+    text-decoration: none;
+    color:#FFFFFF;
+}
+
+ul {
+    display: flex; 
+    gap: 20px;  
+    list-style-type: none; 
+}  
+
+.user-info {
+    padding-top: 30px;
+    padding-left: 25px;
+    max-width: 70%;
+}
+
+.user-section {
+    border: 1px solid #E0E0E0;
+    padding: 20px;
+    background-color: #F2F2F2;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 6px 6px 0px 0px;
+}
+
+.trip-number {
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 650px;
+    height : 50px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.img-header {
+    background-image: url('/images/generalImages/upcoming_trips.svg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
+    flex-direction: column;
+}
+
+p {
+   size: 1rem; 
+}
+
+.tier-progress {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+    height: 25px;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);
+    width: 0%; 
+    transition: width 0.5s ease-in-out; 
+}
+
+.tier-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #00000080;
+    height: 100%;
+}
+
+.tier-level {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    font-size: 0.9rem;
+    height: 100%;
+}
+
+.label-container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    transform: translateX(-50%); 
+}
+
+#tier-labels {
+    background-color: transparent;
+    margin-top: 0;
+}
+
+</style>
+
+@code {
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+    private double progressPercentage = 0; //var that'll hold value pulled from database
+    public class c_users {
+        public string s_id { get; set;} = string.Empty;
+        public double i_rewards { get; set;} = 0;
+        public int i_upcomingTrips {get; set;} = 0;
+    }
+
+    private c_users user = new c_users();
+
+    protected override async Task OnInitializedAsync() {
+        await LoadUserRewardsProgress();
+    }
+
+    private async Task LoadUserRewardsProgress() {
+        // pull the user's rewards progress from the database
+        CollectionReference usersCollection = db.Collection("UserAccount");
+
+        //figure out how to use Jp's constant user thing
+        DocumentReference userDoc = usersCollection.Document("AEtES443hJlarMtsFI0o");
+        DocumentSnapshot userSnapshot = await userDoc.GetSnapshotAsync();
+
+        user = new c_users {
+            s_id = userSnapshot.GetValue<string>("MemberId"),
+            i_rewards = userSnapshot.GetValue<double>("Reward"),
+            i_upcomingTrips = userSnapshot.GetValue<int>("UpcomingTrips")
+        };
+        progressPercentage = (user.i_rewards * 10); // temp value but this is what displays the progress
+    }
+}

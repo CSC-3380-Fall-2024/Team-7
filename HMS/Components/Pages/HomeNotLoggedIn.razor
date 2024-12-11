@@ -1,0 +1,678 @@
+@page "/"
+@rendermode InteractiveServer
+@using BlazorBootstrap;
+@using Google.Cloud.Firestore;
+
+<main>
+    <div class="img-header">
+        <h2>Enjoy Your Dream Vacation</h2>
+        <p>Book your Bliss</p>
+    </div>
+
+    <div class="searchbar">
+        <div class="center">
+            <InputText Type="text" id="Location" class="tr" placeholder="Destination" @bind-Value="@query" />
+        </div>
+
+        <div class="center">
+            <DateInput TValue="DateOnly" class="tr" @bind-Value="@date1" Placeholder="Enter Date" />
+        </div>
+
+        <div class="center">
+            <DateInput TValue="DateOnly" class="tr" @bind-Value="@date2" Placeholder="Enter Date" />
+        </div>
+
+        <div class="center">
+            <InputText type="text" class="tr" placeholder="How Many Guests?" @bind-Value="@guests" />
+        </div>
+
+        <div class="center">
+            <button class="sbutton tr" @onclick="() => search(query)">Search</button>
+        </div>
+    </div>
+
+    <br/>
+    
+    @if(searched == true)
+    {
+        <br/>
+        <div class="flex-container">
+
+        <div class="left">
+            <h5 class="filter-heading-text" style="text-align: left; margin-left: 5.5rem; font-size: 1.2rem;">
+                <p>Filter by:</p>
+            </h5>
+            <div class="filter-box">
+                <div class="filter-box-top">
+                    <p class="filter-heading-text" style="margin: auto;">Your Budget Per Day</p>
+                </div>
+                <div style="margin-bottom: 0.8rem; padding-left: 0.9rem; padding-top: 0.9rem;">
+                    <input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1" @bind="b_filter1">
+                    <label for="price-range-1">$0 - $199</label><br>
+                </div>
+                <div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+                    <input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2" @bind="b_filter2">
+                    <label for="price-range-2">$200 - $399</label><br>
+                </div>
+                <div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+                    <input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter3">
+                    <label for="price-range-3">$400 - $999</label><br>
+                </div>
+                <div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
+                    <input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter4">
+                    <label for="price-range-3">$1000 - $1999</label><br>
+                </div>
+                <div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
+                    <input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter5">
+                    <label for="price-range-3">$2000 - $4999</label><br>
+                </div>
+            </div>
+        </div>
+
+            <div class="right">
+                @foreach(var hotel in hotelInfo) {
+                    @if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price)) {
+                        i_resultCount++;	
+                    } else if (b_noFiltersChecked()) {
+                        i_resultCount++;
+                    }
+                }
+                <h1 class="filter-heading-text" style="margin-left: 2rem; font-size: 2rem; margin-bottom: 2rem;">@i_resultCount Listings Found</h1>
+                @if(1 == 1) {
+                    i_resultCount = 0;
+                }
+                @foreach(var hotel in hotelInfo) {
+                    @if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price)) {
+                        <div class="hotel-info-border" style="margin-bottom: 1.5rem;">
+                            <div class="column" style="width: 35%;">
+                                <img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
+                            </div>
+                            <div class="column" style="width: 45%">
+                                    <h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
+                                    <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
+                                    <b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
+                                    <p style="font-size: 0.9rem;">@hotel.s_description</p>
+                                    <button class="button-to-book">Checkout</button>
+                                </div>
+                                <div class="column" style="width: 20%">
+                                    <p>The price is $@hotel.d_price</p>
+                                </div>
+                        </div>
+                    } else if (b_noFiltersChecked()) {
+                        <div class="hotel-info-border" style="margin-bottom: 1.5rem;">
+                            <div class="column" style="width: 35%;">
+                                <img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
+                            </div>
+                            <div class="column" style="width: 45%">
+                                    <h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
+                                    <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
+                                    <b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
+                                    <p style="font-size: 0.9rem;">@hotel.s_description</p>
+                                    <button class="button-to-book">Checkout</button>
+                                </div>
+                                <div class="column" style="width: 20%">
+                                    <p>The price is $@hotel.d_price</p>
+                                </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+
+    <br>
+
+    <div class="trips">
+        <h2>Choose your next vacation destination</h2>
+        <div class="destination-wrapper">
+            @*should display 4 randomly picked hotels: image, name, and location*@
+            @foreach (var hotel in randomHotel) { 
+                <div class="destination">
+                    <div class="destination-img">
+                        <img src="@hotel.s_hotelImgPath" alt="Hotel Image"/>
+                    </div>
+                    <h4>@hotel.s_name</h4>
+                    <p>@hotel.s_hotelLocation</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="trips">
+        <h2 class="title-border">Featured Resort</h2>
+        <div class="resort-section">
+            <div class="text-section">
+                <h2>Explore</h2>
+                <br>
+                <h3>Serenitas</h3>
+                <p>
+                    Nestled along the stunning shores of Lake Tahoe, Serenitas 
+                    offers an elegant retreat. Enjoy serene lake views, luxurious 
+                    accommodations, and a tranquil atmosphere perfect for relaxation. Experience the beauty and tranquility of Lake Tahoe at Serenitas.
+                </p>
+            </div>
+            <div class="resort-image"></div>
+        </div>
+    </div>
+</main>
+
+@code {
+	// Set up an instance of the firebase
+	FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+	public int i_resultCount;
+	public bool b_filter1 = false;
+	public bool b_filter2 = false;
+	public bool b_filter3 = false;
+	public bool b_filter4 = false;
+	public bool b_filter5 = false;
+
+	public string query { get; set; }= "";
+	public string guests { get; set; }= "";
+	public DateOnly date1 = DateOnly.FromDateTime(DateTime.Now.AddDays(0));
+	public DateOnly date2 = DateOnly.FromDateTime(DateTime.Now.AddDays(4));
+	public DateOnly strtestd { get; set; }
+	public DateOnly strtestd1 { get; set; }
+    public bool searched = false;
+
+	public class c_hotelInfo {
+		public string s_id {get; set;} = string.Empty;
+		public string s_name {get; set;} = string.Empty;
+		public string s_hotelImgPath {get; set;} = string.Empty;
+		public double d_rating {get; set;} = 0.0;
+		public double d_price {get; set;} = 0.0;
+		public int i_reviewCount {get; set;} = 0;
+		public string s_slogan {get; set;} = string.Empty;
+		public string s_description {get; set;} = string.Empty;
+		public string s_startDate {get; set;} = string.Empty;
+		public string s_endDate {get; set;} = string.Empty;
+		public int i_maxGuests {get; set;} = 0;
+        public string s_hotelLocation {get; set;} = string.Empty;
+	}
+
+	private IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
+    private List<c_hotelInfo> randomHotel = new();
+
+    protected override async Task OnInitializedAsync(){
+        await pullRandomHotels();
+    }
+
+	public bool b_Filter1Function(double x) {
+		if(b_filter1 == true) {
+			if(x >= 0 && x < 200) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public bool b_Filter2Function(double x) {
+		if(b_filter2 == true) {
+			if(x >= 200 && x < 400) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public bool b_Filter3Function(double x) {
+		if(b_filter3) {
+			if(x >= 400 && x < 1000) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public bool b_Filter4Function(double x) {
+		if(b_filter4) {
+			if(x >= 1000 && x < 2000) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public bool b_Filter5Function(double x) {
+		if(b_filter5) {
+			if(x >= 2000 && x <= 5000) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public bool b_noFiltersChecked() {
+		if(b_filter1 == false && b_filter2 == false && b_filter3 == false && b_filter4 == false && b_filter5 == false) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public async void search(string qry)
+    {
+        searched = true;
+        CollectionReference cr_hotels = db.Collection("Hotels");
+        QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
+        
+        Query allHotels = db.Collection("Hotels");
+        QuerySnapshot qs_allHotels = await allHotels.GetSnapshotAsync();
+
+        List<c_hotelInfo> results = new List<c_hotelInfo>();
+
+        foreach (DocumentSnapshot doc in qs_allHotels.Documents)
+        {
+			DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
+			DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
+
+			string start = doc.GetValue<string>("start_date");
+			string end = doc.GetValue<string>("end_date");
+
+			strtestd = DateOnly.Parse(start);
+			strtestd1 = DateOnly.Parse(end);
+			//make a int, add to condtions, display guests
+			int mguests = doc.GetValue<int>("max_guests");
+			int inttmp = 0;
+
+			if(int.TryParse(guests, out inttmp))
+				{
+					if((doc.GetValue<string>("location").Contains(qry) || (date1 < strtestd && date2 >strtestd1)) && (inttmp < mguests))
+						{
+							results.Add(new c_hotelInfo{s_id = doc.Id, 
+								s_name = doc.GetValue<string>("name"),
+								s_hotelImgPath = hotelImgs.GetValue<string>("path"),
+								d_rating = doc.GetValue<double>("rating"),
+								d_price = doc.GetValue<double>("price"),
+								i_reviewCount = doc.GetValue<int>("review_count"),
+								s_slogan = doc.GetValue<string>("slogan"),
+								s_description = doc.GetValue<string>("description"),
+								s_startDate = start,
+								s_endDate = end,
+								i_maxGuests = mguests
+								});
+					}
+				}
+        }
+        hotelInfo = results;
+		StateHasChanged();
+    }
+
+    public async Task pullRandomHotels() {
+        try {
+            CollectionReference hotelsRef = db.Collection("Hotels");
+            QuerySnapshot allHotelsSnapshot = await hotelsRef.GetSnapshotAsync();
+            var hotels = new List<c_hotelInfo>();
+
+            foreach (var doc in allHotelsSnapshot.Documents) {
+                string name = doc.GetValue<string>("name");
+                string location = doc.GetValue<string>("location");
+                string hotelImage = await pullRandomHotelImage(doc.Id);
+
+                hotels.Add(new c_hotelInfo {
+                    s_name = name,
+                    s_hotelImgPath = hotelImage,
+                    s_hotelLocation = location
+                }); 
+            }
+
+            Random random = new Random();
+            randomHotel = hotels.OrderBy(_ => random.Next()).Take(4).ToList();
+
+            StateHasChanged();
+        } catch (Exception ex) {
+            Console.WriteLine($"Error fetching hotels");
+        }
+    }
+
+    public async Task<string> pullRandomHotelImage(string hotelId) {
+        try {
+            DocumentReference imageDocRef = db.Collection("Hotels").Document(hotelId).Collection("images").Document("0");
+            DocumentSnapshot imageDoc = await imageDocRef.GetSnapshotAsync();
+            return imageDoc.GetValue<string>("path");
+        } catch {
+            return "/images/hotelImages/Hotel0.jpg";
+        }
+    }
+}
+
+<style>
+    body {
+        font-family: 'Fraunces';
+        font-size: 24px;
+    }
+
+    .img-header {
+        background-image: url('/images/generalImages/background_header.png');
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #FFFFFF;
+        flex-direction: column;
+        border-radius: 6px;
+    }
+
+    .trips {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 6px 6px 0px 0px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .h2 {
+        font-weight: bold;
+    }
+   
+    .center {
+		margin:auto;
+	}
+
+	.container {
+		display: flex;
+		justify-content: center;
+		background: red;
+	}
+
+	.textbox {
+		background-color: rgba(242, 242, 242, 1);
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+	}
+
+	.date {
+		width: 150px;
+		text-align: center;
+		color:rgba(255, 255, 255, 0);
+	}
+
+	input[type=date] {
+		background-color: rgba(242, 242, 242, 1);
+		border: none;
+		text-align: center;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+		width: 170px;
+		height: 44px;
+		color: rgb(72, 72, 72);
+	}
+
+	.tr {
+		transition-duration: 300ms;
+		transition-timing-function: ease-in-out;
+		transition-property: transform;
+	}
+
+	.tr:is(:hover, :focus)
+	{
+		
+		transform: scale(1.09);
+	}
+
+	.sbutton
+	{
+		background-color: rgba(47, 128, 237, 1);
+		width: 148px;
+		height:44px;
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+		color: rgb(0, 0, 0);
+	}
+
+	input[type=text] {
+		background-color: rgba(242, 242, 242, 1);
+		width: 260px;
+		text-align: center;
+		height:44px;
+		border: none;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.315);
+		border-radius: 3px;
+	}
+
+	.searchbar
+	{
+		display: flex;
+		max-width: 1100px;
+		border-radius:  8px;
+
+		margin:auto;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		align-content: space-evenly;
+		row-gap: .3em;
+		column-gap: .3em;
+		background-color: rgb(255, 253, 250);
+		padding: .6em;
+		box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.315);
+	}
+
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        /*background-color: #f1f1f1;*/
+}
+
+/* This is the container that modifies a div so that it can fit whatever information is needed. E.g: an image or a rating */
+    .flex-container > div {
+    /*background-color: DodgerBlue;*/
+    color: black;
+    margin: 0.2rem;  
+    }
+
+/* Container that moves a section to the left */
+    .left {
+        width: 100%;
+    }
+
+    /* Container that moves a section to the right */
+    .right {
+        width: 100%;
+    }
+
+    .hotel-info-border {
+        width: 100%;
+        height: 240px;
+        top: 426px;
+        left: 425px;
+        gap: 0px;
+        border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 0px;
+        border: 1px solid #E0E0E0;
+    }
+
+    .column {
+        float: left;
+        padding: 1%;
+        height: 100%;
+        width: 50%;
+    }
+
+    /* The border that houses the filter information */
+    .filter-box {
+        width: 30rem;
+        height: 293px;
+        top: 466px;
+        left: 111px;
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2rem;
+        gap: 0px;
+        border-radius: 6px 6px 0px 0px;
+        border: 0.1rem solid #E0E0E0;
+        opacity: 0.1rem;
+    }
+
+    .filter-box-top {
+        width: 30rem;
+        height: 3rem;
+        top: 466px;
+        left: 111px;
+        padding: 18px 0px 0px 0px;
+        gap: 10px;
+        border-radius: 6px 6px 0px 0px;
+        opacity: 0px;
+        background-color: #E0E0E0;
+    }
+
+    .filter-heading-text {
+        width: 30rem;
+        height: 20px;
+        gap: 0px;
+        opacity: 0px;
+        font-family: Fraunces;
+        font-size: 16px;
+        font-style: italic;
+        font-weight: 999;
+        line-height: 19.73px;
+        letter-spacing: 0.01em;
+        text-align: center;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+    }
+
+    /* This modifies the img tag so that it scales with the size of the screen */ 
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        height: auto;
+        width: auto;
+    }
+
+/* At a certain pixel width, makes the column layout into a row layout */
+
+  .flex-container > div {
+	height: 10%;
+  }
+
+  .left {
+	width: 35%;
+	height: 80%;
+  }
+
+  .filter-box {
+    width: 20.1rem;
+  }
+
+  .filter-button {
+    width: 20px;
+    height: 20px;
+    top: 539px;
+    left: 129px;
+    gap: 0px;
+    border-radius: 5px 0px 0px 0px;
+    border: 1px 0px 0px 0px;
+    opacity: 0px;
+
+  }
+
+  .filter-box-top {
+   width: 20rem;
+  }
+
+  .filter-heading-text {
+    width: 20rem;
+  }
+
+  .right {
+	width: 65%;
+	height: 80%;
+  }
+
+  .hotel-info-border {
+    width: 90%;
+    height: 240px;
+    top: 426px;
+    left: 425px;
+    gap: 0px;
+    border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
+    opacity: 0px;
+    border: 1px solid #E0E0E0
+  }
+
+  img {
+    max-width: 100%;
+    width: 100%;
+  }
+    
+    .destination-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .destination {
+        align-items: center;
+        flex: 1 1 calc(25% - 30px);
+        max-width: calc(25% - 30px);
+        padding: 10px;
+    }
+
+    .destination-img img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .title-border {
+        border-bottom: 1px solid #0000004D; 
+    }
+
+    .text-section {
+        background-color: #BF5559;
+        border-radius: 8px;
+        text-align: center;
+        color: #FFFFFF;
+        max-width: 35%;
+        padding: 20px 20px 0px 20px;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .resort-section {
+        display: flex;
+        align-items: stretch; 
+        justify-content: space-between;  
+        gap: 5px;
+    }
+
+    .resort-image {
+        background-image: url('/images/generalImages/featured_resort.png');
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
+        display: flex;
+        height: 415px;
+        width: 60%;
+        float: right;
+        padding: 5% 5%;
+    }
+</style>
+ 

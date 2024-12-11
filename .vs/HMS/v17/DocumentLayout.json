@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|c:\\users\\cleveland\\desktop\\3380\\team-7\\hms\\components\\pages\\razorcomponents\\listingsbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|solutionrelative:hms\\components\\pages\\razorcomponents\\listingsbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|c:\\users\\cleveland\\desktop\\3380\\team-7\\hms\\components\\pages\\razorcomponents\\listinglist.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|solutionrelative:hms\\components\\pages\\razorcomponents\\listinglist.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|c:\\users\\cleveland\\desktop\\3380\\team-7\\hms\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|solutionrelative:hms\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|c:\\users\\cleveland\\desktop\\3380\\team-7\\hms\\components\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|solutionrelative:hms\\components\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|c:\\users\\cleveland\\desktop\\3380\\team-7\\hms\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09BF8D26-3135-421D-965F-5E99AA78A36A}|HMS\\HMS.csproj|solutionrelative:hms\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Counter.razor",
+              "DocumentMoniker": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Pages\\Counter.razor",
+              "RelativeDocumentMoniker": "HMS\\Components\\Pages\\Counter.razor",
+              "ToolTip": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Pages\\Counter.razor",
+              "RelativeToolTip": "HMS\\Components\\Pages\\Counter.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-03T00:18:39.83Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "HMS\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "HMS\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAMAAAAAAAAAAIBJwCgAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-02T23:09:01.897Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "HMS\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "HMS\\Components\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAAAkAAAAAAAAAAIBJwCwAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-02T23:07:27.003Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ListingList.razor",
+              "DocumentMoniker": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Pages\\razorComponents\\ListingList.razor",
+              "RelativeDocumentMoniker": "HMS\\Components\\Pages\\razorComponents\\ListingList.razor",
+              "ToolTip": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Pages\\razorComponents\\ListingList.razor",
+              "RelativeToolTip": "HMS\\Components\\Pages\\razorComponents\\ListingList.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-02T23:06:58.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ListingsBase.cs",
+              "DocumentMoniker": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Pages\\razorComponents\\ListingsBase.cs",
+              "RelativeDocumentMoniker": "HMS\\Components\\Pages\\razorComponents\\ListingsBase.cs",
+              "ToolTip": "C:\\Users\\Cleveland\\Desktop\\3380\\Team-7\\HMS\\Components\\Pages\\razorComponents\\ListingsBase.cs",
+              "RelativeToolTip": "HMS\\Components\\Pages\\razorComponents\\ListingsBase.cs",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAqwGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T23:06:35.504Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
