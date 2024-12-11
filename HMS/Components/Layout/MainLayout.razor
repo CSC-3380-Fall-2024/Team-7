@@ -2,6 +2,7 @@
 @using System;
 @using System.Collections.Generic;
 @inject NavigationManager Navigation
+@inject c_user c_user
 @using BlazorBootstrap
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -90,20 +91,48 @@
     </main>
 </div>
 </body>
-
 @code {
-    // Create a dictionary that will hold the NavBar pages
-    string[] NavBarNames = {"Home", "Discover", "Activities", "Listing Page", "My Account", "Log In", "SignUp", "Add A Hotel", "Checkout"};
-    string[] NavBarPages = {"#", "todoapp", "activities", "listings", "userDashBoard", "signin", "login", "addlistings", "checkout"};
+    string[] NavBarNames;
+    string[] NavBarPages;
+
     string NavBarStyle, NavTextStyle;
-    protected override void OnInitialized() {
+
+    protected override void OnInitialized()
+    {
+        UpdateNavBar();
+    }
+
+    // Use this to ensure navbar updates after page render
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(1); // Allow time for navigation to complete
+            UpdateNavBar(); // Update navbar after render
+            StateHasChanged(); // Force a re-render to apply updates
+        }
+    }
+
+    private void UpdateNavBar()
+    {
+        if (c_user.b_isLoggedIn)
+        {
+            NavBarNames = new string[] { "Home", "Discover", "Activities", "Listing Page", "My Account", "Add A Hotel", "Checkout" };
+            NavBarPages = new string[] { "#", "todoapp", "activities", "listings", "userDashBoard", "addlistings", "checkout" };
+        }
+        else
+        {
+            NavBarNames = new string[] { "Home", "Discover", "Activities", "Listing Page", "My Account", "Log In", "Sign Up", "Add A Hotel", "Checkout" };
+            NavBarPages = new string[] { "#", "todoapp", "activities", "listings", "userDashBoard", "signin", "login", "addlistings", "checkout" };
+        }
+
         var currentPage = Navigation.ToBaseRelativePath(Navigation.Uri);
-        
-        // changes the color of the navbar based on the page it's on
-        (NavBarStyle, NavTextStyle) = currentPage switch {
+
+        (NavBarStyle, NavTextStyle) = currentPage switch
+        {
             "userDashBoard" => ("background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);", "color: #FFFFFF;"),
             "listings" => ("background: linear-gradient(180deg, #2969BF 0%, #144E9D 100%);", "color: #FFFFFF;"),
-            _ => ("background-color: #f7f7f7;", "color: #333333;") // default style that pages not listed go to 
+            _ => ("background-color: #f7f7f7;", "color: #333333;") // default style
         };
     }
 }

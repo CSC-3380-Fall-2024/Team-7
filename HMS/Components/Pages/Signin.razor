@@ -71,6 +71,7 @@
         {
             if(user.s_email == s_Email && user.s_password == s_Password)
             {
+                c_user.SetUser(s_Email,s_Password);
                 await PSS.SetAsync("currentUser", user);
                 LoginMessage = "Succesfully Logged In!";
                 successSignin = 1;
@@ -79,7 +80,7 @@
 
                 if(user.s_IsEmployee == true)
                 {
-                   NavManager.NavigateTo("/tester"); 
+                   NavManager.NavigateTo("/employeedashboard"); 
                 }
                 else
                 {

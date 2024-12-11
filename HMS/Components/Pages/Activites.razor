@@ -1,8 +1,9 @@
 @rendermode InteractiveServer
 @page "/activities"
+@inject c_user cu
 
 <div class="container mt-4">
-    <h1 class="text-center mb-4">Discover Our Activities</h1>
+    <h1 class="text-center mb-4">Discover Our Activities @cu.s_email @cu.b_isLoggedIn</h1>
 
     <div class="accordion" id="activitiesAccordion">
         @foreach (var category in Activities)

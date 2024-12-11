@@ -235,20 +235,20 @@ p {
             CollectionReference usersCollection = db.Collection("UserAccount");
 
             // Replace with dynamic user ID retrieval if possible
-            DocumentReference userDoc = usersCollection.Document("AEtES443hJlarMtsFI0o");
-            DocumentSnapshot userSnapshot = await userDoc.GetSnapshotAsync();
+            //DocumentReference userDoc = usersCollection.Document("AEtES443hJlarMtsFI0o");
+           // DocumentSnapshot userSnapshot = await userDoc.GetSnapshotAsync();
 
 
-             var usernameResult = await PSS.GetAsync<c_user>("currentUser");
-                if (usernameResult.Success)
-                {
-                    cu_user = usernameResult.Value;
-                }
-                else
-                {
-                    Console.WriteLine("Username not found in ProtectedBrowserStorage.");
-                    user.s_id = string.Empty; // Assign default or handle appropriately
-                }
+            // var usernameResult = await PSS.GetAsync<c_user>("currentUser");
+             //   if (usernameResult.Success)
+             //   {
+              //      cu_user = usernameResult.Value;
+             //   }
+               // else
+              //  {
+               //     Console.WriteLine("Username not found in ProtectedBrowserStorage.");
+              //      user.s_id = string.Empty; // Assign default or handle appropriately
+              //  }
             
         }
         catch (Exception ex)
