@@ -2,6 +2,8 @@
 @rendermode InteractiveServer
 @page "/listings"
 @using BlazorBootstrap;
+@inject NavigationManager NavManager
+@inject BookingService BookingService
 
 <PageTitle>Listing Page</PageTitle>
 
@@ -105,7 +107,7 @@
 							<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
 							<b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
 							<p style="font-size: 0.9rem;">@hotel.s_description</p>
-							<button class="button-to-book">See Rooms</button>
+							<button class="button-to-book" @onclick="() => SelectHotel(hotel)" >See Rooms</button>
 						</div>
 						<div class="column" style="width: 20%">
 							<p>The price is $@hotel.d_price</p>
@@ -121,7 +123,7 @@
 							<p style="margin-bottom: 0.5rem; font-size: 0.9rem;">The rating is a @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
 							<b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
 							<p style="font-size: 0.9rem;">@hotel.s_description</p>
-							<button class="button-to-book">See Rooms</button>
+							<button class="button-to-book" @onclick="() => SelectHotel(hotel)" >See Rooms</button>
 						</div>
 						<div class="column" style="width: 20%">
 							<p>The price is $@hotel.d_price</p>
@@ -318,6 +320,26 @@
         hotelInfo = results;
 		StateHasChanged();
     }
+
+	private void SelectHotel(c_hotelInfo hotel)
+	{
+		try 
+		{
+			BookingService.HotelName = hotel.s_name;
+			BookingService.CheckInDate = date1.ToString("yyyy-MM-dd");
+			BookingService.CheckOutDate = date2.ToString("yyyy-MM-dd");
+			BookingService.Guests = guests;
+
+			Console.WriteLine($"Selected Hotel: {BookingService.HotelName}");
+			
+			NavManager.NavigateTo("/hotelselection");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error selecting hotel: {ex.Message}");
+		}
+	}
+	
 }
 
 

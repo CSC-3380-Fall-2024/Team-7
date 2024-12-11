@@ -1,5 +1,7 @@
 @page "/checkout"
+@using Google.Cloud.Firestore;
 @rendermode InteractiveServer
+@inject BookingService BookingService
 
 <PageTitle>Checkout</PageTitle>
 
@@ -15,29 +17,26 @@
                     <CardTitle>Reservation Summary</CardTitle>
                     <CardSubTitle Class="mb-2 text-muted">Review your booking details</CardSubTitle>
                     <hr class="my-4" />
-                    <CardText>
-                        Some quick example text to build on the card title and make up the bulk of the card's content.
-                    </CardText>
                     <div class="mb-4">
                     <div class="d-flex justify-content-between">
                             <span>Hotel:</span>
-                            <span class="fw-semibold">Luxury Resort & Spa</span>
+                            <span class="fw-semibold">@BookingService.HotelName</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Room Type:</span>
-                            <span class="fw-semibold">Deluxe Ocean View</span>
+                            <span class="fw-semibold">@BookingService.RoomType</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Check-in:</span>
-                            <span class="fw-semibold">July 15, 2023</span>
+                            <span class="fw-semibold">@BookingService.CheckInDate</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Check-out:</span>
-                            <span class="fw-semibold">July 20, 2023</span>
+                            <span class="fw-semibold">@BookingService.CheckOutDate</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span>Guests:</span>
-                            <span class="fw-semibold">2 Adults, 1 Child</span>
+                            <span class="fw-semibold">@BookingService.Guests</span>
                     </div>
                     </div>
                 </CardBody>
@@ -46,7 +45,7 @@
                         <div class="mb-4">
                             <div class="d-flex justify-content-between fs-5 fw-semibold">
                                 <span>Total:</span>
-                                <span>$1,250.00</span>
+                                <span>@BookingService.TotalPrice</span>
                         </div>
                         </div>
                     </CardBody>
@@ -65,26 +64,26 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="firstName" class="form-label">First Name</label>
-                                    <input type="text" id="firstName" class="form-control" placeholder="John" />
+                                    <input type="text" @bind="FirstName" id="firstName" class="form-control" placeholder="John" />
                                 </div>
                             </div>
                             <!-- Last Name -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" id="lastName" class="form-control" placeholder="Doe" />
+                                    <input type="text" @bind="LastName" id="lastName" class="form-control" placeholder="Doe" />
                                 </div>
                             </div>
                         </div>
                         <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" id="email" class="form-control" placeholder="john.doe@example.com" />
+                            <input type="email" id="email"  @bind="Email"  class="form-control" placeholder="john.doe@example.com" />
                         </div>
                         <!-- Phone Number -->
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" id="phone" class="form-control" placeholder="+1 (555) 123-4567" />
+                            <input type="tel" id="phone" @bind="PhoneNumber" class="form-control" placeholder="+1 (555) 123-4567" />
                         </div>
                     </div>
                 </CardBody>
@@ -140,7 +139,7 @@
                         </div>
                     </div>
                     <hr class="my-4" />
-                    <Button Color="ButtonColor.Dark" To="#" Type="ButtonType.Link"> Confirm Reservation </Button>
+                    <Button Color="ButtonColor.Dark" button @onclick="SubmitBooking" Type="ButtonType.Link"> Confirm Reservation </Button>
                 </CardBody>
             </Card>
 
@@ -150,4 +149,36 @@
             </div>
         </div>
 </div>
+
+@code {
+    private string FirstName;
+    private string LastName;
+    private string Email;
+    private string PhoneNumber;
+
+
+    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+
+    private async Task SubmitBooking()
+    {
+        // Add Firestore logic here to save booking data
+        var bookingDetails = new
+        {
+            BookingService.HotelName,
+            BookingService.RoomType,
+            BookingService.CheckInDate,
+            BookingService.CheckOutDate,
+            BookingService.Guests,
+            BookingService.TotalPrice,
+            FirstName,
+            LastName,
+            Email,
+            PhoneNumber
+        };
+        DocumentReference docRef = db.Collection("Reservations").Document();
+        await docRef.SetAsync(bookingDetails);
+
+        Console.WriteLine($"Booking confirmed for {FirstName} {LastName}");
+    }
+}
 

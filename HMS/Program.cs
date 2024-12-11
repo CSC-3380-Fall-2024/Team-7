@@ -34,6 +34,8 @@ builder.Services.AddSingleton<GoogleSheetsService>(sp =>
 
 
 builder.Services.AddScoped<c_user>();
+// Register BookingService
+builder.Services.AddScoped<BookingService>();
 
 var app = builder.Build();
 
@@ -44,6 +46,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 
