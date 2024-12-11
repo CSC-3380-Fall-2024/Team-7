@@ -60,27 +60,27 @@
 				<p class="filter-heading-text" style="margin: auto;">Popular Filters</p>
 			</div>
 			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem; padding-top: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1" @bind="b_filter1">
+				<input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1">
 				<label for="price-range-1">Free Cancellation</label><br>
 			</div>
 			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2" @bind="b_filter2">
+				<input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2">
 				<label for="price-range-2">Spa</label><br>
 			</div>
 			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter3">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
 				<label for="price-range-3">Beach Front</label><br>
 			</div>
 			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter4">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
 				<label for="price-range-3">Hot Tub / Jacuzzi</label><br>
 			</div>
 			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter5">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
 				<label for="price-range-3">Airport Shuttle</label><br>
 			</div>
 			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter5">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
 				<label for="price-range-3">Free Parking</label><br>
 			</div>
 		</div>
@@ -89,27 +89,27 @@
 				<p class="filter-heading-text" style="margin: auto;">Activities</p>
 			</div>
 			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem; padding-top: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1" @bind="b_filter1">
+				<input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1">
 				<label for="price-range-1">Fishing</label><br>
 			</div>
 			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2" @bind="b_filter2">
+				<input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2">
 				<label for="price-range-2">Hiking</label><br>
 			</div>
 			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter3">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
 				<label for="price-range-3">Paintball</label><br>
 			</div>
 			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter4">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" >
 				<label for="price-range-3">Cycling</label><br>
 			</div>
 			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter5">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" >
 				<label for="price-range-3">Sauna</label><br>
 			</div>
 			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter5">
+				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3">
 				<label for="price-range-3">Night Lights</label><br>
 			</div>
 		</div>
@@ -222,7 +222,25 @@
 
 		var lst = new List<c_hotelInfo>();
 
-	 private void NavigateToCheckout(c_hotelInfo hotel)
+	// Populating the hotel data with all of the relevent information for the listings
+		foreach (var doc in qs_hotelDocs.Documents)
+		{
+			DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
+			DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
+			lst.Add(new c_hotelInfo{s_id = doc.Id, 
+			s_name = doc.GetValue<string>("name"), 
+			s_hotelImgPath = hotelImgs.GetValue<string>("path"),
+			d_rating = doc.GetValue<double>("rating"),
+			d_price = doc.GetValue<double>("price"),
+			i_reviewCount = doc.GetValue<int>("review_count"),
+			s_slogan = doc.GetValue<string>("slogan"),
+			s_description = doc.GetValue<string>("description")
+			});
+		}
+        	hotelInfo = lst;
+	}
+
+	private void NavigateToCheckout(c_hotelInfo hotel)
     {
         // Construct the query string with the selected hotel's details
         var url = $"/checkout?hotelName={Uri.EscapeDataString(hotel.s_name)}" +
@@ -235,19 +253,6 @@
         // Navigate to the Checkout page
         NavManager.NavigateTo(url);
     }
-
-	public bool b_Filter1Function(double x) {
-		if(b_filter1 == true) {
-			if(x >= 0 && x < 200) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-        hotelInfo = lst;
-	}
 
 	public class c_PriceFilter {
 		public bool b_isActive {get; set;}
@@ -276,8 +281,6 @@
 		foreach(var filter in l_PriceFilters) {
 			if(filter.b_isActive == true) {
 				if(price >= filter.d_min && price < filter.d_max) {
-					Console.WriteLine("The min is : {0} and the max is {1}", filter.d_min, filter.d_max);
-					Console.WriteLine("The price we're looking for is {0}", price);
 					b_matchFound = true;
 				} 
 			}
