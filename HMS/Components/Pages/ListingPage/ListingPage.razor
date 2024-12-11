@@ -40,30 +40,12 @@
 			<div class="filter-box-top">
 				<p class="filter-heading-text" style="margin: auto;">Your Budget Per Day</p>
 			</div>
-			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem; padding-top: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-1" name="price-range-1" @bind="b_filter1">
-				<label for="price-range-1">$0 - $199</label><br>
-			</div>
-			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-2" name="price-range-2" @bind="b_filter2">
-				<label for="price-range-2">$200 - $399</label><br>
-			</div>
-			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter3">
-				<label for="price-range-3">$400 - $999</label><br>
-			</div>
-			<div style="margin-bottom: 0.8rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter4">
-				<label for="price-range-3">$1000 - $1999</label><br>
-			</div>
-			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter5">
-				<label for="price-range-3">$2000 - $4999</label><br>
-			</div>
-			<div style="margin-bottom: 0.5rem; padding-left: 0.9rem;">
-				<input class="filter-button" type="checkbox" id="price-range-3" name="price-range-3" @bind="b_filter6">
-				<label for="price-range-3">$5000+</label><br>
-			</div>
+			@foreach (var (filter, index) in l_PriceFilters.Select((f, i) => (f, i))) {
+				<div style="margin-bottom: 0.3rem; padding-left: 0.9rem; padding-top: 0.5rem;">
+					<input class="filter-button" type="checkbox" id="price-range-@index" name="price-range-@index" @bind="l_PriceFilters[index].b_isActive">
+					<label for="price-range-@index">$@filter.d_min - $@(filter.d_max - 1)</label><br>
+				</div>
+			}
 		</div>
 		@*
 		<div class="filter-box">
@@ -133,18 +115,10 @@
 		
 	</div>
 	<div class="right">
-		@*
 		@foreach(var hotel in hotelInfo) {
-			if(b_someFiltersChecked(hotel)) {
-				<h1>@hotel.s_name</h1>
-			}
-		}
-		*@
-	
-		@foreach(var hotel in hotelInfo) {
-			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price) || b_Filter6Function(@hotel.d_price)) {
+			@if(b_ApplyPriceFilters(hotel.d_price)) {
 				i_resultCount++;	
-			} else if (b_noFiltersChecked()) {
+			} else if (b_PriceFiltersTurnedOff()) {
 				i_resultCount++;
 				if(i_resultCount == 10) {
 					stopping_filter = true;
@@ -157,7 +131,7 @@
 			stopping_filter = false;
 		} 
 		@foreach(var hotel in hotelInfo) {
-			@if(b_Filter1Function(@hotel.d_price) || b_Filter2Function(@hotel.d_price) || b_Filter3Function(@hotel.d_price) || b_Filter4Function(@hotel.d_price) || b_Filter5Function(@hotel.d_price) || b_Filter6Function(@hotel.d_price)) {
+			@if(b_ApplyPriceFilters(hotel.d_price)) {
 				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
 					<div class="column" style="width: 35%;">
 						<img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
@@ -173,7 +147,7 @@
 							<p>The price is $@hotel.d_price</p>
 						</div>
 				</div>
-			} else if (b_noFiltersChecked()) {
+			} else if (b_PriceFiltersTurnedOff()) {
 				<div class="hotel-info-border" style="margin-bottom: 1.5rem;">
 					<div class="column" style="width: 35%;">
 						<img src=@hotel.s_hotelImgPath class="center" alt="Nice Hotel" style="border-radius: 6px; height: 15rem;">
@@ -208,12 +182,6 @@
 	public int i_resultCount;
 
 	// The below variables act as an on and off button for each filter toggle
-	public bool b_filter1 = false;
-	public bool b_filter2 = false;
-	public bool b_filter3 = false;
-	public bool b_filter4 = false;
-	public bool b_filter5 = false;
-	public bool b_filter6 = false;
 	public bool stopping_filter = false;
 
 	public string query { get; set; }= "";
@@ -271,95 +239,53 @@
         hotelInfo = lst;
 	}
 
-	/*
-	* The below bool Filter functions are keeping track of if a filter is turned on or off
-	* If it is turned on, they are returning true under certain conditions and false under other conditions
-	*/
+	public class c_PriceFilter {
+		public bool b_isActive {get; set;}
+		public double d_min { get; set; }
+		public double d_max { get; set; }
 
-	public bool b_Filter1Function(double x) {
-		if(b_filter1 == true) {
-			if(x >= 0 && x < 200) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
+		// The 'p' appended on to every variavle name means 'parameter'
+		public c_PriceFilter(bool bp_isActive, double dp_min, double dp_max) {
+			b_isActive = bp_isActive;
+			d_min = dp_min;
+			d_max = dp_max;
 		}
 	}
 
-	public bool b_Filter2Function(double x) {
-		if(b_filter2 == true) {
-			if(x >= 200 && x < 400) {
-				return true;
-			} else {
+	public List<c_PriceFilter> l_PriceFilters = new() {
+		new c_PriceFilter(false, 0, 200),
+		new c_PriceFilter(false, 200, 400),
+		new c_PriceFilter(false, 400, 1000),
+		new c_PriceFilter(false, 1000, 2000),
+		new c_PriceFilter(false, 2000, 5000),
+		new c_PriceFilter(false, 5000, 10000),
+	};
+
+	public bool b_ApplyPriceFilters(double price) {
+		bool b_matchFound = false;
+		foreach(var filter in l_PriceFilters) {
+			if(filter.b_isActive == true) {
+				if(price >= filter.d_min && price < filter.d_max) {
+					Console.WriteLine("The min is : {0} and the max is {1}", filter.d_min, filter.d_max);
+					Console.WriteLine("The price we're looking for is {0}", price);
+					b_matchFound = true;
+				} 
+			}
+		}
+		return b_matchFound;
+	}	
+
+	public bool b_PriceFiltersTurnedOff() {
+		foreach(var filter in l_PriceFilters) {
+			if(filter.b_isActive) {
 				return false;
 			}
-		} else {
-			return false;
 		}
-	}
-
-	public bool b_Filter3Function(double x) {
-		if(b_filter3) {
-			if(x >= 400 && x < 1000) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	public bool b_Filter4Function(double x) {
-		if(b_filter4) {
-			if(x >= 1000 && x < 2000) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	public bool b_Filter5Function(double x) {
-		if(b_filter5) {
-			if(x >= 2000 && x <= 5000) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	public bool b_Filter6Function(double x) {
-		if(b_filter6) {
-			if(x >= 5000) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	// Makes sure that no filters at all are checked
-	public bool b_noFiltersChecked() {
-		if(b_filter1 == false && b_filter2 == false && b_filter3 == false && b_filter4 == false && b_filter5 == false && stopping_filter == false && b_filter6 == false) {
+		if(!stopping_filter) {
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	public bool b_someFiltersChecked(c_hotelInfo hotel) {
-		Console.WriteLine("Hotel do be hotelling at the name of {0}", hotel.s_name);
-		return true;
 	}
 
 	public async void search(string qry)
