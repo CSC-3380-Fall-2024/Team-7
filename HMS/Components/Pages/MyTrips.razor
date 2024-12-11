@@ -9,44 +9,23 @@
     
     <div class="upcoming-trips">
         <h4>Upcoming Trips</h4>
-        @foreach(var hotel in hotelInfo.Take(2)) {  @*Only display the first two hotels, needed to pull from actual users*@
-            <div class="hotel-info-border" style="margin-bottom: 1.5rem;">
-                <div class="column" style="width: 35%;">
-                    <img src="@hotel.s_hotelImgPath" class="center" alt="Hotel Image" style="border-radius: 6px; height: 15rem;">
-                </div>
-                <div class="column" style="width: 45%">
-                    <h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
-                    <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">Rating: @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
-                    <b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
-                    <p style="font-size: 0.9rem;">@hotel.s_description</p>
-                    <button class="button-to-book">See Rooms</button>
-                </div>
-                <div class="column" style="width: 20%">
-                    <p>The price is $@hotel.d_price</p>
-                </div>
-            </div>
-        }
+        <ul>
+          @foreach(var reservation in reservations) {  
+            <li>
+              <p>@reservation.s_hotelName</p>
+              <p>@reservation.s_roomType</p>
+              <p>@reservation.s_checkInDate</p>
+              <p>@reservation.s_checkOutDate</p>
+              <p>@reservation.s_checkOutDate</p>
+              <p>@reservation.s_guests</p>
+              <p>@reservation.s_email</p>
+            </li>
+          }
+        </ul>
     </div>        
 
     <div class="previous-trips">
         <h4>Previous Trips</h4>
-        @foreach(var hotel in hotelInfo.Take(2)) {  @*Only display the first two hotels, needed to pull from actual users*@
-          <div class="hotel-info-border" style="margin-bottom: 1.5rem;">
-            <div class="column" style="width: 35%;">
-              <img src="@hotel.s_hotelImgPath" class="center" alt="Hotel Image" style="border-radius: 6px; height: 15rem;">
-            </div>
-            <div class="column" style="width: 45%">
-              <h1 class="filter-heading-text" style="text-align: left; font-size: 24px;">@hotel.s_name</h1>
-              <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">Rating: @hotel.d_rating (@hotel.i_reviewCount reviews)</p>
-              <b class="filter-heading-text" style="font-size: 0.9rem;">@hotel.s_slogan</b>
-              <p style="font-size: 0.9rem;">@hotel.s_description</p>
-              <button class="button-to-book">See Rooms</button>
-            </div>
-            <div class="column" style="width: 20%">
-              <p>The price is $@hotel.d_price</p>
-            </div>
-          </div>
-        }
     </div>
 
     <div class="next-destination">
@@ -257,47 +236,46 @@ h4 {
 </style>
 
 @code {
-    FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
+  FirestoreDb db = FirestoreDb.Create("hotelmanagementsystem-3f342");
 
-    public class c_hotelInfo {
-		public string s_id {get; set;} = string.Empty;
-		public string s_name {get; set;} = string.Empty;
-		public string s_hotelImgPath {get; set;} = string.Empty;
-		public double d_rating {get; set;} = 0.0;
-		public double d_price {get; set;} = 0.0;
-		public int i_reviewCount {get; set;} = 0;
-		public string s_slogan {get; set;} = string.Empty;
-		public string s_description {get; set;} = string.Empty;
+  // create instance where we can pull user's reservationsCollection
+  public class c_users {
+    public string s_hotelName { get; set;} = string.Empty;
+    public string s_roomType { get; set;} = string.Empty;
+    public string s_checkInDate { get; set;} = string.Empty;
+    public string s_checkOutDate { get; set;} = string.Empty;
+    public string s_guests { get; set;} = string.Empty;
+    public string s_email { get; set;} = string.Empty;
+  }
+
+  private List<c_users> reservations = new List<c_users>();
+
+  protected override async Task OnInitializedAsync() {
+    await PullReservationInfo();
 	}
 
-	private IEnumerable<c_hotelInfo> hotelInfo = Array.Empty<c_hotelInfo>();
+  private async Task PullReservationInfo(){
+    CollectionReference usersCollection = db.Collection("UserAccount");
 
-    protected override async Task OnInitializedAsync() {
-		await refreshList();
-	}
+    // figure out to do constant user tracker later
+    DocumentReference userDoc = usersCollection.Document("AEtES443hJlarMtsFI0o");
+    CollectionReference cr_reservationColection = userDoc.Collection("Reservations");
 
-    private async Task refreshList() {
+    // retrieves reservation data
+    QuerySnapshot reservationSnapshot = await cr_reservationColection.GetSnapshotAsync();
 
-		// List of colection references to be able to access different parts of the database
-		CollectionReference cr_hotels =  db.Collection("Hotels");
-		QuerySnapshot qs_hotelDocs = await cr_hotels.GetSnapshotAsync();
-
-		var lst = new List<c_hotelInfo>();
-			foreach (var doc in qs_hotelDocs.Documents)
-            {
-				DocumentReference cr_hotelImg = cr_hotels.Document(doc.Id).Collection("images").Document("0");
-				DocumentSnapshot hotelImgs = await cr_hotelImg.GetSnapshotAsync();
-                lst.Add(new c_hotelInfo{s_id = doc.Id, 
-				s_name = doc.GetValue<string>("name"), 
-				s_hotelImgPath = hotelImgs.GetValue<string>("path"),
-				d_rating = doc.GetValue<double>("rating"),
-				d_price = doc.GetValue<double>("price"),
-				i_reviewCount = doc.GetValue<int>("review_count"),
-				s_slogan = doc.GetValue<string>("slogan"),
-				s_description = doc.GetValue<string>("description")
-				});
-            }
-        hotelInfo = lst;
-	}
-
+    reservations.Clear();
+    foreach (DocumentSnapshot reservationDoc in reservationSnapshot) {
+      if (reservationDoc.Exists) {
+        reservations.Add(new c_users {
+          s_hotelName = reservationDoc.GetValue<string>("HotelName"),
+          s_roomType = reservationDoc.GetValue<string>("LastName"),
+          s_checkInDate = reservationDoc.GetValue<string>("CheckInDate"),
+          s_checkOutDate = reservationDoc.GetValue<string>("CheckOutDate"),
+          s_guests = reservationDoc.GetValue<string>("Guests"),
+          s_email = reservationDoc.GetValue<string>("Email")
+        });
+      }
+    }
+  }
 }
