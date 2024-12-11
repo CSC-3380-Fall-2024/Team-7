@@ -13,11 +13,9 @@
           @foreach(var reservation in reservations) {  
             <li>
               <p>Hotel Name: @reservation.s_hotelName</p>
-              <p>Room Type: @reservation.s_roomType</p>
               <p>Check In Date: @reservation.s_checkInDate</p>
-              <p>Check Out Date:# @reservation.s_checkOutDate</p>
+              <p>Check Out Date: @reservation.s_checkOutDate</p>
               <p>Guests: @reservation.s_guests</p>
-              <p>Email: @reservation.s_email</p>
             </li>
           }
         </ul>
@@ -233,7 +231,7 @@ h4 {
 }
 
 ul, li {
-  text-decoration: none;
+  list-style: none;
 }
 
 </style>
@@ -244,11 +242,9 @@ ul, li {
   // create instance where we can pull user's reservationsCollection
   public class c_users {
     public string s_hotelName { get; set;} = string.Empty;
-    public string s_roomType { get; set;} = string.Empty;
     public string s_checkInDate { get; set;} = string.Empty;
     public string s_checkOutDate { get; set;} = string.Empty;
     public string s_guests { get; set;} = string.Empty;
-    public string s_email { get; set;} = string.Empty;
   }
 
   private List<c_users> reservations = new List<c_users>();
@@ -272,11 +268,9 @@ ul, li {
       if (reservationDoc.Exists) {
         reservations.Add(new c_users {
           s_hotelName = reservationDoc.GetValue<string>("HotelName"),
-          s_roomType = reservationDoc.GetValue<string>("RoomType"),
           s_checkInDate = reservationDoc.GetValue<string>("CheckInDate"),
           s_checkOutDate = reservationDoc.GetValue<string>("CheckOutDate"),
-          s_guests = reservationDoc.GetValue<string>("Guests"),
-          s_email = reservationDoc.GetValue<string>("Email")
+          s_guests = reservationDoc.GetValue<string>("Guests")
         });
       }
     }
