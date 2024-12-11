@@ -76,3 +76,10 @@ dotnet build
 Then after go into a file called program.cs and hit play(if you have vscode) if you do not have vscode
 download vscode here
 https://code.visualstudio.com/
+
+### How to Run
+Put both API keys that JP sent you in the same directory/folder as the Team-7 folder. That means that if you're in the HMS directory, the API keys should be two directories above that. `../../HMS`
+
+In your terminal, you must be in the HMS directory to run the project. You can either run the `dotnet watch` or `dotnet run` commands from the HMS directory and the web page will load.
+
+Make sure to look at all of our pages. Some are in the Nav Bar at the top. Some are in the footer. Some are only accessible to employees (so make sure to make an employee account and log into it). Some are only accessible to users. Some are only accessible through buttons that you get to by going through other pages. We know you'll be thorough but we wanted to make you aware of all of our work :).
