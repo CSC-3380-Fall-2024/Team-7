@@ -323,22 +323,15 @@
 
 	private void SelectHotel(c_hotelInfo hotel)
 	{
-		try 
-		{
-			BookingService.HotelName = hotel.s_name;
-			BookingService.CheckInDate = date1.ToString("yyyy-MM-dd");
-			BookingService.CheckOutDate = date2.ToString("yyyy-MM-dd");
-			BookingService.Guests = guests;
+		BookingService.HotelName = hotel.s_name;
+		BookingService.CheckInDate = date1.ToDateTime(TimeOnly.MinValue);
+		BookingService.CheckOutDate = date2.ToDateTime(TimeOnly.MinValue);
+		BookingService.Guests = guests;
+		BookingService.TotalPrice = hotel.d_price;
 
-			Console.WriteLine($"Selected Hotel: {BookingService.HotelName}");
-			
-			NavManager.NavigateTo("/hotelselection");
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Error selecting hotel: {ex.Message}");
-		}
+		NavManager.NavigateTo("/hotelselection");
 	}
+
 	
 }
 

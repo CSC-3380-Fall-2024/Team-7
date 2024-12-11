@@ -1,0 +1,33 @@
+@inject BookingService BookingService
+@inject NavigationManager NavManager
+@page "/hotelselection"
+
+
+<h1>Rooms for @BookingService.HotelName</h1>
+<p>Check-in: @BookingService.CheckInDate.ToShortDateString()</p>
+<p>Check-out: @BookingService.CheckOutDate.ToShortDateString()</p>
+<p>Guests: @BookingService.Guests</p>
+<p>Price: @BookingService.TotalPrice</p>
+
+
+<div>
+    <!-- testing -->
+    <div class="room-option">
+        <h2>Deluxe Ocean View</h2>
+        <button @onclick='() => SelectRoom("Deluxe Ocean View")'>Select</button>
+    </div>
+    <div class="room-option">
+        <h2>Luxury Suite</h2>
+        <p>Price: $400/night</p>
+        <button @onclick='() => SelectRoom("Luxury Suite")'>Select</button>
+    </div>
+</div>
+
+@code {
+    private void SelectRoom(string roomType)
+    {
+        BookingService.RoomType = roomType;
+
+        NavManager.NavigateTo("/checkout");
+    }
+}
