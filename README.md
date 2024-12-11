@@ -71,3 +71,8 @@ then
 ```
 dotnet build
 ```
+
+
+Then after go into a file called program.cs and hit play(if you have vscode) if you do not have vscode
+download vscode here
+https://code.visualstudio.com/
